@@ -10,7 +10,8 @@
 2. AdSense: 「▼AdSense手動ユニット」で検索(4箇所)。.ad-slotは空なら自動非表示
    ※位置は保留中(2026-06-12ユーザー回答)。本文中4箇所はKKP共通ルール「下部のみ」と衝突するため、設置時に再確認
 3. [済 2026-06-12] OGP: ogp.png(1200x630)設置済み。canonical/og:url/og:image有効化済み(shigoto.kkpwebninja.com)
-4. [済 2026-06-12] 運営者情報・PP・お問い合わせリンク追加(フッター+つくった人。KKP共通先へのリンク)
+4. [済 2026-06-12] 運営者情報・PP・お問い合わせリンクは統一フッター(WEBNINJA_UNIFIED_FOOTER)に集約
+   ※「このサイトの約束」「つくった人」セクションはユーザー指示で削除(2026-06-12)
    ※制度・税率を更新したらフッターの「2026年6月時点」も更新すること
 5. [済 2026-06-12] favicon追加(KKP共通の忍者アイコンPNG一式)
 ■ 設計ルール
@@ -301,15 +302,7 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 .exp-body h4{font-size:14px;margin:12px 0 4px;}
 .exp-body p{margin-bottom:6px;}
 
-/* ===== 約束・FAQ ===== */
-.promise{
-  background:#fff;border:2px solid var(--line);border-radius:18px;
-  padding:26px 22px;margin:44px 0 34px;
-}
-.promise h2{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:17px;letter-spacing:.08em;margin-bottom:14px;
-  background:var(--orange);color:#fff;border-radius:8px;padding:4px 16px 5px;}
-.promise ol{padding-left:22px;font-size:14px;}
-.promise li{margin-bottom:10px;}
+/* ===== FAQ ===== */
 .faq h2{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:17px;letter-spacing:.08em;margin-bottom:14px;
   background:var(--orange);color:#fff;border-radius:8px;padding:4px 16px 5px;}
 .faq .explain{background:#fff;margin-top:10px;}
@@ -320,8 +313,6 @@ footer{
   text-align:center;font-size:12px;color:var(--ink-soft);
 }
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
-.maker-links{font-size:13px;margin-top:12px;}
-.maker-links a{color:var(--orange-deep);}
 </style>
 </head>
 <body>
@@ -614,21 +605,6 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
       <p class="cta-note">PR・外部の転職サービスに移動します</p>
     </div>
   </div>
-</section>
-
-<section class="promise">
-  <h2>このサイトの約束</h2>
-  <ol>
-    <li><b>全ツール無料・登録不要。</b>計算はすべてお使いの端末内で完結し、入力した給与や貯蓄のデータがどこかに送信・保存されることはありません。</li>
-    <li><b>広告には必ずPR表記をつけます。</b>当サイトは広告収入で運営されていますが、紹介するのは「その場面で本当に役立つ」と判断したサービスだけです。</li>
-    <li><b>「辞めない」「登録しない」が正解の人には、そう伝えます。</b>診断で「残る時期」と出た方に転職サービスは案内しません。あなたの判断が良くなることが、結果的に紹介先のサービスにとっても、このサイトにとっても一番の利益だと考えています。</li>
-  </ol>
-</section>
-
-<section class="promise">
-  <h2>つくった人</h2>
-  <p style="font-size:14px;">広島で交代勤務(昼勤・夜勤)をしている現役の製造・整備職が、「自分が働きかたで迷ったときに欲しかった道具」を形にしたサイトです。夜勤手当込みの手取り比較や、シフト勤務者の目線は、自分自身の生活の中から出てきたものです。計算ロジックや解説に間違いを見つけたら、ぜひ教えてください。すぐ直します。</p>
-  <p class="maker-links">運営: <a href="https://kkpwebninja.com/" target="_blank" rel="noopener">web忍者の砦</a> / <a href="https://privacypolicy.kkpwebninja.com/" target="_blank" rel="noopener">プライバシーポリシー</a> / <a href="https://kkpwebninja.com/otoiawase" target="_blank" rel="noopener">お問い合わせ</a></p>
 </section>
 
 <section class="faq">
