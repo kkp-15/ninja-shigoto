@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shigoto.kkpwebninja.com/sitemap.xml

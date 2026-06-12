@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<!--
+═══════════ 開発メモ(Claude Code引き継ぎ用) ═══════════
+■ 残TODO
+1. アフィリエイトリンク差し替え: 「▼アフィリエイトリンクに差し替え」で検索(4箇所)
+   - tool-jikyu下: 求人サイト/第二新卒・若手転職系(A8/アクセストレード)
+   - calcQuiz内(JS): 総合型転職エージェント ※情報収集期/動く期で文言別・2箇所
+   - tool-compare下: エージェント+転職サイトの2枚置きも検討
+   - tool-unemploy下: エージェント or 退職代行(理由=自己都合/会社都合で出し分け拡張可)
+2. AdSense: 「▼AdSense手動ユニット」で検索(4箇所)。.ad-slotは空なら自動非表示
+   ※位置は保留中(2026-06-12ユーザー回答)。本文中4箇所はKKP共通ルール「下部のみ」と衝突するため、設置時に再確認
+3. [済 2026-06-12] OGP: ogp.png(1200x630)設置済み。canonical/og:url/og:image有効化済み(shigoto.kkpwebninja.com)
+4. [済 2026-06-12] 運営者情報・PP・お問い合わせリンク追加(フッター+つくった人。KKP共通先へのリンク)
+   ※制度・税率を更新したらフッターの「2026年6月時点」も更新すること
+5. [済 2026-06-12] favicon追加(KKP共通の忍者アイコンPNG一式)
+■ 設計ルール
+- 単一HTMLファイル/フレームワークなし/Cloudflare Pages(kkpwebninja.comサブドメイン)
+- カテゴリ色: 就職=--cyan, 転職=--coral, 退職=--green(各stageの--accentで継承)
+- 診断「残る」判定にはCTAを出さない(三方良し方針・変更しないこと)
+- 計算はすべて概算。税率等の更新時はnetFromAnnual()とcalcUnemploy()を修正
+═══════════════════════════════════════════════
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#F08A3C">
+<title>手取り計算・実質時給・辞めどき診断・退職日・失業手当シミュレーター|しごとの乗りかえ案内</title>
+<meta name="description" content="月収から手取りを計算、固定残業込みの実質時給チェック、辞めどき診断、ボーナスと有給を取りこぼさない退職日プランナー、失業手当の総額シミュレーション。就職・転職・退職の判断に必要な数字が全部無料で分かるツール集。登録不要、入力データは保存されません。">
+<meta property="og:title" content="しごとの乗りかえ案内|就職・転職・退職の無料計算ツール集">
+<meta property="og:description" content="手取り・実質時給・辞めどき・退職日・失業手当。働きかたの分岐点で迷ったとき、感情ではなく数字で考えるための道具箱。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="web忍者の砦">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://shigoto.kkpwebninja.com/ogp.png?v=1">
+<link rel="canonical" href="https://shigoto.kkpwebninja.com">
+<meta property="og:url" content="https://shigoto.kkpwebninja.com">
+<meta property="og:image" content="https://shigoto.kkpwebninja.com/ogp.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "しごとの乗りかえ案内",
+  "url": "https://shigoto.kkpwebninja.com/",
+  "description": "手取り計算・実質時給チェック・辞めどき診断・退職日プランナー・失業手当シミュレーター。就職・転職・退職の判断に使う無料計算ツール集。",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {"@type":"Offer","price":"0","priceCurrency":"JPY"},
+  "author": {"@type":"Organization","name":"web忍者の砦"}
+}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2LM85GJN0L"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-2LM85GJN0L');
+</script>
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1298304917726270" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"月収25万円の手取りはいくらですか?","acceptedAnswer":{"@type":"Answer","text":"扶養なし・賞与なしの場合、社会保険料と税金を引いた手取りはおよそ19〜20万円(額面の約78〜80%)が目安です。正確な金額は扶養や控除で変わるため、当サイトの手取り計算機で概算できます。"}},
+    {"@type":"Question","name":"固定残業代(みなし残業)とは何ですか?","acceptedAnswer":{"@type":"Answer","text":"一定時間分の残業代を最初から月給に含める制度です。例えば「月給25万円(固定残業30時間分を含む)」の場合、30時間残業しても給与は増えません。求人を比べるときは固定残業時間を引いた実質時給で比較するのが確実です。"}},
+    {"@type":"Question","name":"退職日は月末と月途中のどちらが得ですか?","acceptedAnswer":{"@type":"Answer","text":"一般的には月末退職が有利です。月途中で退職するとその月の社会保険が会社の保険から外れ、国民年金・国民健康保険を自己負担で払うケースがあるためです。月末日まで在籍すれば退職月も会社と保険料を折半できます。"}},
+    {"@type":"Question","name":"失業手当は自己都合だといつからもらえますか?","acceptedAnswer":{"@type":"Answer","text":"自己都合退職の場合、7日間の待期のあと原則1ヶ月の給付制限があります(2025年4月から短縮)。実際に振り込まれるまで2ヶ月程度かかる前提で資金計画を立てるのが安全です。会社都合の場合は待期7日のみです。"}},
+    {"@type":"Question","name":"ボーナスをもらってから退職を伝えても問題ありませんか?","acceptedAnswer":{"@type":"Answer","text":"法的に問題ありません。むしろ支給前に退職意思を伝えると査定でボーナスを減額されるリスクがあるため、支給を確認してから申し出るのが一般的な進め方です。"}},
+    {"@type":"Question","name":"仕事を辞めたいと思うのは甘えですか?","acceptedAnswer":{"@type":"Answer","text":"甘えかどうかという問いの立て方より、消耗の度合いと原因を客観的に確かめるほうが建設的です。体調に影響が出ているなら休む・環境を変えるのは合理的な判断であり、残る・情報収集する・動くのどれが今の自分に合うかを診断ツールで整理できます。"}}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#F08A3C;
+  --orange-deep:#E06A20;
+  --cyan:#3EB8CE;
+  --coral:#F0615C;
+  --green:#5BB97E;
+  --cream:#FBEFDC;
+  --cream-deep:#F7E3C6;
+  --ink:#4A3B28;
+  --ink-soft:#8A7560;
+  --line:#EFD9B6;
+  --ok:#4E7A4E;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  line-height:1.85;
+  font-size:16px;
+}
+.en{font-family:'M PLUS Rounded 1c',sans-serif;letter-spacing:.12em;}
+.maru{font-family:'M PLUS Rounded 1c',sans-serif;}
+
+/* ===== header ===== */
+header{
+  background:var(--cream);
+  border-bottom:1px solid var(--line);
+  padding:36px 20px 0;
+  text-align:center;
+}
+.brand-en{font-size:13px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.3em;}
+h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:.06em;margin:6px 0 4px;color:var(--orange-deep);}
+.lead{color:var(--ink-soft);font-size:14px;max-width:560px;margin:0 auto 22px;}
+
+/* ===== カテゴリタブ切り替え ===== */
+.tab-hint{
+  display:inline-block;position:relative;
+  font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:14.5px;
+  background:var(--orange);color:#fff;border-radius:999px;
+  padding:7px 22px 8px;margin-bottom:16px;
+  animation:hintbob 1.6s ease-in-out infinite;
+}
+.tab-hint::after{
+  content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);
+  border:8px solid transparent;border-top:8px solid var(--orange);border-bottom:none;
+}
+.tab-hint-sub{display:block;font-size:10.5px;font-weight:500;opacity:.95;line-height:1.3;}
+@keyframes hintbob{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+@media (prefers-reduced-motion: reduce){.tab-hint{animation:none;}}
+.route{
+  max-width:640px;margin:0 auto;
+  display:flex;gap:10px;padding:0 4px 26px;
+}
+.station{
+  flex:1;position:relative;cursor:pointer;
+  font-family:inherit;color:var(--tab);
+  background:#fff;border:2.5px solid var(--tab);border-radius:14px;
+  padding:10px 4px 11px;
+  box-shadow:0 4px 0 color-mix(in srgb, var(--tab) 65%, #7a4a20);
+  transition:background .15s,color .15s,transform .1s,box-shadow .1s;
+}
+.station:nth-child(1){--tab:var(--cyan);}
+.station:nth-child(2){--tab:var(--coral);}
+.station:nth-child(3){--tab:var(--green);}
+.station .st-ja{
+  display:block;font-family:'M PLUS Rounded 1c',sans-serif;
+  font-weight:800;font-size:20px;letter-spacing:.08em;line-height:1.3;
+}
+.station .st-sub{display:block;font-size:10.5px;line-height:1.5;opacity:.9;}
+.station:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb, var(--tab) 65%, #7a4a20);}
+.station.active{
+  background:var(--tab);color:#fff;
+  transform:translateY(3px);
+  box-shadow:0 1px 0 color-mix(in srgb, var(--tab) 65%, #7a4a20);
+}
+.station.active::after{
+  content:"";position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);
+  border:10px solid transparent;border-top:10px solid var(--tab);border-bottom:none;
+}
+.station:focus-visible{outline:3px solid var(--ink);outline-offset:3px;}
+
+/* ===== layout ===== */
+main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange);}
+#stage-board{--accent:var(--cyan);}
+#stage-transfer{--accent:var(--coral);}
+#stage-exit{--accent:var(--green);}
+.stage{display:none;}
+.stage.show{display:block;animation:fade .35s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion: reduce){
+  .stage.show{animation:none;}
+  html{scroll-behavior:auto;}
+}
+.stage-title{
+  display:flex;align-items:baseline;gap:14px;margin-bottom:8px;
+  border-bottom:3px dotted var(--line);padding-bottom:10px;
+}
+.stage-title h2{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:24px;letter-spacing:.1em;color:var(--accent);}
+.stage-title span{font-size:12px;color:var(--ink-soft);}
+.stage-intro{font-size:14px;color:var(--ink-soft);margin:14px 0 28px;}
+
+/* ===== tool card ===== */
+.tool{
+  background:#fff;border:2px solid var(--line);border-radius:18px;
+  padding:24px 22px;margin-bottom:34px;
+  box-shadow:0 3px 0 rgba(150,110,60,.10);
+}
+.tool h3{
+  display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;
+  font-size:16.5px;letter-spacing:.06em;margin-bottom:6px;
+  background:var(--accent);color:#fff;border-radius:8px;padding:4px 16px 5px;
+}
+.tool .tool-note{font-size:13px;color:var(--ink-soft);margin-bottom:18px;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:13.5px;font-weight:500;margin-bottom:4px;}
+.field input[type=number],.field select{
+  width:100%;padding:10px 12px;font-size:16px;
+  font-family:inherit;color:var(--ink);
+  border:1.5px solid var(--line);border-radius:8px;background:var(--cream);
+}
+.field input:focus,.field select:focus{outline:2px solid var(--orange);border-color:var(--orange);}
+.field .unit{font-size:12.5px;color:var(--ink-soft);margin-left:4px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
+@media (max-width:520px){.grid2{grid-template-columns:1fr;}}
+.btn{
+  display:inline-block;width:100%;padding:13px;margin-top:6px;
+  background:var(--accent);color:#fff;border:none;border-radius:12px;
+  font-family:'M PLUS Rounded 1c',sans-serif;font-size:16px;font-weight:700;letter-spacing:.14em;
+  cursor:pointer;transition:background .15s;
+}
+.btn:hover{filter:brightness(.92);}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px;}
+
+/* ===== results ===== */
+.result{
+  display:none;margin-top:20px;padding:20px 18px;
+  background:#FFFDF7;border-radius:12px;border:2px dashed var(--accent);
+}
+.result.show{display:block;}
+.result .big{
+  font-family:'M PLUS Rounded 1c',sans-serif;font-size:30px;font-weight:800;color:var(--accent);letter-spacing:.04em;
+}
+.result .big small{font-size:15px;color:var(--ink);font-weight:500;}
+.result p{font-size:14px;margin-top:8px;}
+.result table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px;}
+.result th,.result td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;}
+.result td.num{text-align:right;font-variant-numeric:tabular-nums;}
+.result .plus{color:var(--ok);font-weight:700;}
+.result .minus{color:var(--orange-deep);font-weight:700;}
+
+/* ===== diagnosis ===== */
+.q{margin-bottom:18px;}
+.q p{font-size:14.5px;font-weight:500;margin-bottom:8px;}
+.q .opts{display:flex;gap:8px;flex-wrap:wrap;}
+.q .opts label{
+  flex:1;min-width:90px;text-align:center;font-size:13.5px;
+  padding:9px 6px;border:1.5px solid var(--line);border-radius:8px;
+  background:var(--cream);cursor:pointer;transition:all .15s;
+}
+.q .opts input{position:absolute;opacity:0;}
+.q .opts input:checked + span{color:var(--accent);font-weight:700;}
+.q .opts label:has(input:checked){border-color:var(--accent);background:#fff;}
+.q .opts input:focus-visible + span{outline:2px solid var(--orange);outline-offset:6px;}
+
+/* ===== timeline (退職日プランナー) ===== */
+.timeline{margin-top:14px;}
+.tstep{
+  position:relative;padding:0 0 18px 26px;border-left:3px solid var(--accent);
+  margin-left:8px;font-size:14px;
+}
+.tstep:last-child{border-left-color:transparent;padding-bottom:0;}
+.tstep::before{
+  content:"";position:absolute;left:-9px;top:4px;width:15px;height:15px;
+  border-radius:50%;background:var(--accent);border:3px solid #fff;
+}
+.tstep b{display:block;font-size:14.5px;}
+
+/* ===== 内部リンク ===== */
+.innerlink{
+  display:block;margin-top:14px;padding:11px 14px;text-align:center;
+  background:#fff;border:2px solid var(--accent);border-radius:12px;
+  color:var(--accent);text-decoration:none;font-weight:700;font-size:14px;
+  font-family:'M PLUS Rounded 1c',sans-serif;cursor:pointer;width:100%;
+}
+.innerlink:hover{background:var(--cream);}
+.innerlink:focus-visible{outline:3px solid var(--ink);outline-offset:2px;}
+
+/* ===== AdSense枠(空のときは非表示) ===== */
+.ad-slot{margin-top:14px;text-align:center;}
+.ad-slot:empty{display:none;}
+
+/* ===== CTA(アフィリエイト枠) ===== */
+.cta{
+  margin-top:18px;padding:16px;border-radius:14px;
+  background:#fff;border:2px solid var(--orange);
+}
+.cta p{font-size:13.5px;margin-bottom:10px;}
+.cta a{
+  display:block;text-align:center;padding:12px;border-radius:8px;
+  background:var(--orange);color:#fff;text-decoration:none;
+  font-weight:700;letter-spacing:.1em;font-size:14.5px;
+}
+.cta a:hover{background:var(--orange-deep);}
+.cta .cta-note{font-size:11px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
+
+/* ===== 解説ブロック(検索ニーズ対応) ===== */
+.explain{margin-top:16px;border:1px solid var(--line);border-radius:10px;background:var(--cream);}
+.explain summary{cursor:pointer;padding:12px 16px;font-size:14px;font-weight:700;color:var(--accent);list-style:none;}
+.explain summary::-webkit-details-marker{display:none;}
+.explain summary::before{content:"+ ";}
+.explain[open] summary::before{content:"− ";}
+.explain summary:focus-visible{outline:2px solid var(--orange);outline-offset:-2px;border-radius:10px;}
+.exp-body{padding:0 16px 16px;font-size:13.5px;}
+.exp-body h4{font-size:14px;margin:12px 0 4px;}
+.exp-body p{margin-bottom:6px;}
+
+/* ===== 約束・FAQ ===== */
+.promise{
+  background:#fff;border:2px solid var(--line);border-radius:18px;
+  padding:26px 22px;margin:44px 0 34px;
+}
+.promise h2{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:17px;letter-spacing:.08em;margin-bottom:14px;
+  background:var(--orange);color:#fff;border-radius:8px;padding:4px 16px 5px;}
+.promise ol{padding-left:22px;font-size:14px;}
+.promise li{margin-bottom:10px;}
+.faq h2{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:17px;letter-spacing:.08em;margin-bottom:14px;
+  background:var(--orange);color:#fff;border-radius:8px;padding:4px 16px 5px;}
+.faq .explain{background:#fff;margin-top:10px;}
+
+/* ===== footer ===== */
+footer{
+  border-top:1px solid var(--line);padding:30px 20px 44px;
+  text-align:center;font-size:12px;color:var(--ink-soft);
+}
+footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
+.maker-links{font-size:13px;margin-top:12px;}
+.maker-links a{color:var(--orange-deep);}
+</style>
+</head>
+<body>
+
+<header>
+  <p class="brand-en en">SHIGOTO TRANSIT GUIDE</p>
+  <h1>しごとの乗りかえ案内</h1>
+  <p class="lead">就職・転職・退職。働きかたの分岐点で迷ったとき、感情ではなく数字で考えるための小さな道具箱です。</p>
+
+  <p class="tab-hint">いまのあなたは、どの段階?<span class="tab-hint-sub">タップで切り替わります</span></p>
+  <nav class="route" aria-label="ステージ切り替え">
+    <button class="station active" data-stage="board" aria-pressed="true">
+      <span class="st-ja">就職</span>
+      <span class="st-sub">はたらき始める前に</span>
+    </button>
+    <button class="station" data-stage="transfer" aria-pressed="false">
+      <span class="st-ja">転職</span>
+      <span class="st-sub">動くか残るか迷ったら</span>
+    </button>
+    <button class="station" data-stage="exit" aria-pressed="false">
+      <span class="st-ja">退職</span>
+      <span class="st-sub">損しない辞め方を知る</span>
+    </button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ================= 乗る(就職) ================= -->
+<section class="stage show" id="stage-board">
+  <div class="stage-title"><h2>就職</h2><span>求人票の額面に惑わされないために</span></div>
+  <p class="stage-intro">求人票の「月給」と、実際に口座に入る金額は別物です。まずは手取りの感覚をつかみましょう。</p>
+
+  <div class="tool" id="tool-tedori">
+    <h3>手取り計算機</h3>
+    <p class="tool-note">額面月収から、社会保険料と税金を引いた手取りの概算を計算します(賞与なし・扶養なしの簡易計算)。</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="b-gross">額面月収<span class="unit">万円</span></label>
+        <input type="number" id="b-gross" min="5" max="200" step="0.5" placeholder="例: 25">
+      </div>
+      <div class="field">
+        <label for="b-bonus">賞与(年間)<span class="unit">万円・なければ0</span></label>
+        <input type="number" id="b-bonus" min="0" max="500" step="1" value="0">
+      </div>
+    </div>
+    <button class="btn" onclick="calcTedori()">計算する</button>
+    <div class="result" id="b-result"></div>
+    <details class="explain">
+      <summary>額面と手取りの違い|給料から何が引かれている?</summary>
+      <div class="exp-body">
+        <p>求人票の「月給」は<b>額面</b>(総支給額)で、ここから次の4つが引かれた残りが手取りです。</p>
+        <p>(1) <b>健康保険料</b>と(2) <b>厚生年金保険料</b>で額面の約14%、(3) <b>雇用保険料</b>が約0.5%。さらに(4) <b>所得税・住民税</b>が収入に応じてかかります。合計すると、額面の<b>75〜85%程度が手取り</b>になるのが一般的です。</p>
+        <h4>住民税は2年目から重くなる</h4>
+        <p>住民税は前年の所得に対して課税されるため、新卒1年目はほぼ引かれず、2年目から本格的に天引きが始まります。「2年目なのに手取りが減った」のはこの仕組みのせいで、給料が下がったわけではありません。</p>
+      <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="tool" id="tool-jikyu">
+    <h3>求人票の実質時給チェッカー</h3>
+    <p class="tool-note">「月給25万円」の中身は会社によって全く違います。固定残業・年間休日・通勤時間まで含めた1時間あたりの実質的な稼ぎを計算して、求人を同じ物差しで比べます。</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="j-gross">月給(額面・固定残業代込み)<span class="unit">万円</span></label>
+        <input type="number" id="j-gross" min="5" max="200" step="0.5" placeholder="例: 25">
+      </div>
+      <div class="field">
+        <label for="j-zangyo">固定残業(みなし残業)時間<span class="unit">時間/月・なければ0</span></label>
+        <input type="number" id="j-zangyo" min="0" max="100" step="1" value="0">
+      </div>
+      <div class="field">
+        <label for="j-holiday">年間休日<span class="unit">日</span></label>
+        <input type="number" id="j-holiday" min="52" max="160" step="1" placeholder="例: 120">
+      </div>
+      <div class="field">
+        <label for="j-commute">通勤時間(片道)<span class="unit">分</span></label>
+        <input type="number" id="j-commute" min="0" max="180" step="5" value="0">
+      </div>
+    </div>
+    <button class="btn" onclick="calcJikyu()">実質時給を出す</button>
+    <div class="result" id="j-result"></div>
+    <details class="explain">
+      <summary>固定残業代(みなし残業)とは|「月給25万」の罠</summary>
+      <div class="exp-body">
+        <p>固定残業代は、<b>一定時間分の残業代を最初から月給に含める</b>制度です。「月給25万円(固定残業30時間分・4.5万円を含む)」なら、基本給は実質20.5万円。30時間まで何時間残業しても給与は1円も増えません。</p>
+        <p>制度自体は違法ではありませんが、<b>見かけの月給を大きく見せる</b>ために使われがちです。求人票で「月給に固定残業代を含む」の記載を見たら、必ず時間数を確認してください。</p>
+        <h4>年間休日の10日差は大きい</h4>
+        <p>年間休日105日は「週休2日+祝日ほぼ出勤」、120日は「完全週休2日+祝日休み」の水準です。同じ月給なら、休日が15日少ない会社は<b>タダ働きが15日分ある</b>のと同じ。月給の額だけで比べると、この差が見えなくなります。だからこのツールは時給に換算しています。</p>
+      <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
+      </div>
+    </details>
+    <div class="cta">
+      <p>「固定残業なし」「年間休日120日以上」のように、条件で絞り込んで探せるサービスを使うと、ここで計算したような落とし穴を入口で避けられます。</p>
+      <!-- ▼アフィリエイトリンクに差し替え(就職・求人サイト系) -->
+      <a href="#" rel="nofollow sponsored">条件を絞って求人を探す(無料)</a>
+      <p class="cta-note">PR・外部の求人サービスに移動します</p>
+    </div>
+  </div>
+
+  <div class="tool" id="tool-hitori">
+    <h3>ひとり暮らしやっていける?シミュレーター</h3>
+    <p class="tool-note">その手取りでひとり暮らしが成り立つか、家賃の目安と生活費の配分例を確認します。</p>
+    <div class="field">
+      <label for="h-gross">額面月収<span class="unit">万円</span></label>
+      <input type="number" id="h-gross" min="5" max="200" step="0.5" placeholder="例: 22">
+    </div>
+    <button class="btn" onclick="calcHitori()">配分を見る</button>
+    <div class="result" id="h-result"></div>
+    <details class="explain">
+      <summary>手取りいくらあればひとり暮らしできる?</summary>
+      <div class="exp-body">
+        <p>目安として、<b>手取り15万円</b>が地方都市でのひとり暮らしの現実的なライン、<b>手取り18万円</b>あれば貯蓄しながら無理なく暮らせる水準です。都市部は家賃次第で+2〜3万円を見てください。</p>
+        <h4>順番がすべて:固定費→先取り貯蓄→残りで生活</h4>
+        <p>家計が崩れる原因のほとんどは「余ったら貯金する」方式です。先に家賃と通信費を低く固定し、給料日に貯蓄分を別口座へ移してしまえば、残りは全部使っても家計は回ります。節約の根性より、最初の仕組みづくりです。</p>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ================= 乗りかえる(転職) ================= -->
+<section class="stage" id="stage-transfer">
+  <div class="stage-title"><h2>転職</h2><span>動くか、残るか、まだ決めなくていい</span></div>
+  <p class="stage-intro">転職は「するか・しないか」の二択ではありません。今の位置を確かめてから、必要なら数字で比べる。その順番で考えます。</p>
+
+  <div class="tool" id="tool-quiz">
+    <h3>辞めどき診断</h3>
+    <p class="tool-note">6つの質問に直感で答えてください。「残る」という結果もきちんと出ます。</p>
+    <div id="quiz"></div>
+    <button class="btn" onclick="calcQuiz()">診断する</button>
+    <div class="result" id="q-result"></div>
+    <details class="explain">
+      <summary>「仕事を辞めたい」は甘え?|考え方の整理</summary>
+      <div class="exp-body">
+        <p>「甘えかどうか」を考え始めると答えは出ません。問いを変えて、<b>消耗の度合い</b>と<b>原因が変えられるものか</b>の2つで整理するのがおすすめです。</p>
+        <p>体調や睡眠に影響が出ているなら、それは気持ちの問題ではなく身体からのサインです。一方、原因が「今の部署の人間関係」のように局所的なら、転職より異動や相談で解決する場合もあります。原因が「業界の構造」「会社の体質」なら、自分の努力では変わらないので環境を変える合理性が高くなります。</p>
+        <h4>「辞める」と「転職活動を始める」は別物</h4>
+        <p>転職活動はノーリスクです。求人を見ても、エージェントと話しても、辞める義務は発生しません。「辞めるか迷う」段階でやるべきは退職届ではなく、外の選択肢を知ることです。逆に、何も調べずに勢いで辞めるのが一番リスクの高い選択です。</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="tool" id="tool-compare">
+    <h3>手取り比較シミュレーター</h3>
+    <p class="tool-note">現職(夜勤手当・交代手当込み)と転職先想定の手取りを並べて比較します。額面が下がっても手取り差は意外と小さいことがあります。</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="t-base">現職:基本給(月)<span class="unit">万円</span></label>
+        <input type="number" id="t-base" min="5" max="200" step="0.5" placeholder="例: 22">
+      </div>
+      <div class="field">
+        <label for="t-shift">現職:夜勤・交代手当(月)<span class="unit">万円</span></label>
+        <input type="number" id="t-shift" min="0" max="50" step="0.5" placeholder="例: 4">
+      </div>
+    </div>
+    <div class="field">
+      <label for="t-new">転職先の想定月収(額面)<span class="unit">万円</span></label>
+      <input type="number" id="t-new" min="5" max="200" step="0.5" placeholder="例: 24">
+    </div>
+    <button class="btn" onclick="calcCompare()">比較する</button>
+    <div class="result" id="t-result"></div>
+    <details class="explain">
+      <summary>夜勤・交代勤務を辞めると生活はどう変わる?</summary>
+      <div class="exp-body">
+        <p>夜勤手当は額面を月3〜5万円押し上げますが、税と社会保険を引いた<b>手取りベースの差はそれより縮みます</b>。さらに、夜勤生活で増えがちな出費(コンビニ食、眠れない時間の課金、体調不良の通院)が減る家計効果もあり、額面の差ほど生活水準は落ちないケースが多いです。</p>
+        <h4>お金に換算できないものを忘れずに</h4>
+        <p>体内時計の安定、家族や友人と予定が合うこと、長期的な健康リスクの低下。これらは給与明細に載りませんが、確実に資産です。逆に「夜勤はメリットが大きいから続ける」も立派な判断で、大事なのは<b>手当の額と引き換えにしているものを把握したうえで選ぶ</b>ことです。</p>
+      </div>
+    </details>
+    <div class="cta">
+      <p>想定月収の欄に入れる数字に自信がないときは、エージェントに登録して同じ職種の求人相場を見るのが一番早い方法です。登録は無料で、辞める前提でなくても使えます。</p>
+      <!-- ▼アフィリエイトリンクに差し替え -->
+      <a href="#" rel="nofollow sponsored">求人の相場を見てみる(無料)</a>
+      <p class="cta-note">PR・外部の転職サービスに移動します</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 降りる(退職) ================= -->
+<section class="stage" id="stage-exit">
+  <div class="stage-title"><h2>退職</h2><span>損しない辞め方には、順番がある</span></div>
+  <p class="stage-intro">退職は段取りで手元に残るお金が変わります。「いつ言うか・いつ辞めるか・辞めたあと何ヶ月もつか」を順に確認します。</p>
+
+  <div class="tool" id="tool-exitplan">
+    <h3>退職日プランナー</h3>
+    <p class="tool-note">ボーナスと有給を取りこぼさない退職スケジュールの目安を組み立てます。</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="e-bonus">次のボーナス支給月</label>
+        <select id="e-bonus">
+          <option value="0">ボーナスはない・考慮しない</option>
+          <option value="1">1月</option><option value="2">2月</option>
+          <option value="3">3月</option><option value="4">4月</option>
+          <option value="5">5月</option><option value="6">6月</option>
+          <option value="7">7月</option><option value="8">8月</option>
+          <option value="9">9月</option><option value="10">10月</option>
+          <option value="11">11月</option><option value="12">12月</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="e-paid">有給の残り日数<span class="unit">日</span></label>
+        <input type="number" id="e-paid" min="0" max="40" step="1" placeholder="例: 20">
+      </div>
+    </div>
+    <div class="field">
+      <label for="e-handover">引き継ぎに必要な期間</label>
+      <select id="e-handover">
+        <option value="2">2週間ほど</option>
+        <option value="4" selected>1ヶ月ほど</option>
+        <option value="8">2ヶ月ほど</option>
+      </select>
+    </div>
+    <button class="btn" onclick="calcExitPlan()">スケジュールを組む</button>
+    <div class="result" id="e-result"></div>
+    <details class="explain">
+      <summary>退職日は月末が得な理由|ボーナス前に言うと減らされる?</summary>
+      <div class="exp-body">
+        <h4>月末退職と月途中退職の違い</h4>
+        <p>社会保険の資格は退職日の翌日に失われます。<b>月末日に退職すれば退職月まで会社の社会保険</b>(保険料は会社と折半)が使えますが、月途中で辞めるとその月から国民年金・国民健康保険を全額自己負担で払うケースがあり、数万円の差になることがあります。</p>
+        <h4>ボーナスと退職申し出の順番</h4>
+        <p>支給日前に退職意思を伝えると、査定や支給率の調整で減額されるリスクがあります(就業規則によっては支給日在籍が条件のことも)。<b>支給を口座で確認してから申し出る</b>のが、揉めずに受け取る確実な順番です。もらってから辞めることに後ろめたさを感じる必要はありません。ボーナスはこれまでの働きへの対価です。</p>
+        <p>退職後の国民健康保険・国民年金の切り替え手続きは、お住まいの市区町村の窓口が正確な情報源です。</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="tool" id="tool-unemploy">
+    <h3>失業手当シミュレーター</h3>
+    <p class="tool-note">雇用保険の基本手当(失業手当)の日額・給付日数・総額の概算と、貯蓄と合わせて「何ヶ月もつか」を計算します。</p>
+    <div class="grid2">
+      <div class="field">
+        <label for="u-age">年齢</label>
+        <select id="u-age">
+          <option value="29">30歳未満</option>
+          <option value="34">30〜34歳</option>
+          <option value="44" selected>35〜44歳</option>
+          <option value="59">45〜59歳</option>
+          <option value="64">60〜64歳</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="u-years">勤続年数(雇用保険の加入年数)</label>
+        <select id="u-years">
+          <option value="0">1年未満</option>
+          <option value="4">1〜4年</option>
+          <option value="9" selected>5〜9年</option>
+          <option value="19">10〜19年</option>
+          <option value="20">20年以上</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="u-salary">退職前6ヶ月の平均月収(額面・賞与除く)<span class="unit">万円</span></label>
+        <input type="number" id="u-salary" min="5" max="200" step="0.5" placeholder="例: 28">
+      </div>
+      <div class="field">
+        <label for="u-reason">退職理由</label>
+        <select id="u-reason">
+          <option value="self" selected>自己都合</option>
+          <option value="company">会社都合(倒産・解雇など)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="u-save">いまの貯蓄<span class="unit">万円・任意</span></label>
+        <input type="number" id="u-save" min="0" max="100000" step="10" value="0">
+      </div>
+      <div class="field">
+        <label for="u-cost">ひと月の生活費<span class="unit">万円・任意</span></label>
+        <input type="number" id="u-cost" min="1" max="200" step="1" placeholder="例: 18">
+      </div>
+    </div>
+    <button class="btn" onclick="calcUnemploy()">計算する</button>
+    <div class="result" id="u-result"></div>
+    <details class="explain">
+      <summary>失業手当はいつから・いくら?|自己都合と会社都合の違い</summary>
+      <div class="exp-body">
+        <p>金額は退職前6ヶ月の平均月収のおよそ<b>50〜80%</b>(収入が低いほど高率・日額に上限あり)、期間は年齢と勤続年数で<b>90〜330日</b>です。</p>
+        <h4>自己都合は「すぐもらえない」に注意</h4>
+        <p>自己都合退職は待期7日+<b>原則1ヶ月の給付制限</b>(2025年4月から短縮)があり、実際の振込まで2ヶ月程度かかります。会社都合(倒産・解雇・退職勧奨など)は待期7日のみで、給付日数も長くなります。</p>
+        <p>受給条件や手続きの正確な情報は<a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700;">ハローワーク インターネットサービス(公式)</a>で確認できます。</p>
+        <h4>もらう前提で辞めない</h4>
+        <p>失業手当は再就職までの命綱ですが、受給中は求職活動の実績報告が必要で、金額も現役収入より確実に下がります。理想は<b>在職中に次を決めて、手当に頼らず移る</b>こと。このシミュレーターは「辞めても大丈夫」の確認ではなく、「焦らず活動できる期間」を知るために使ってください。</p>
+      <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
+      </div>
+    </details>
+    <div class="cta">
+      <p>「辞めても○ヶ月もつ」が見えたら、その期間を焦らない転職活動にあてられます。在職中からの準備が結局いちばん安全です。</p>
+      <!-- ▼アフィリエイトリンクに差し替え -->
+      <a href="#" rel="nofollow sponsored">在職中に転職の準備を始める(無料)</a>
+      <p class="cta-note">PR・外部の転職サービスに移動します</p>
+    </div>
+  </div>
+</section>
+
+<section class="promise">
+  <h2>このサイトの約束</h2>
+  <ol>
+    <li><b>全ツール無料・登録不要。</b>計算はすべてお使いの端末内で完結し、入力した給与や貯蓄のデータがどこかに送信・保存されることはありません。</li>
+    <li><b>広告には必ずPR表記をつけます。</b>当サイトは広告収入で運営されていますが、紹介するのは「その場面で本当に役立つ」と判断したサービスだけです。</li>
+    <li><b>「辞めない」「登録しない」が正解の人には、そう伝えます。</b>診断で「残る時期」と出た方に転職サービスは案内しません。あなたの判断が良くなることが、結果的に紹介先のサービスにとっても、このサイトにとっても一番の利益だと考えています。</li>
+  </ol>
+</section>
+
+<section class="promise">
+  <h2>つくった人</h2>
+  <p style="font-size:14px;">広島で交代勤務(昼勤・夜勤)をしている現役の製造・整備職が、「自分が働きかたで迷ったときに欲しかった道具」を形にしたサイトです。夜勤手当込みの手取り比較や、シフト勤務者の目線は、自分自身の生活の中から出てきたものです。計算ロジックや解説に間違いを見つけたら、ぜひ教えてください。すぐ直します。</p>
+  <p class="maker-links">運営: <a href="https://kkpwebninja.com/" target="_blank" rel="noopener">web忍者の砦</a> / <a href="https://privacypolicy.kkpwebninja.com/" target="_blank" rel="noopener">プライバシーポリシー</a> / <a href="https://kkpwebninja.com/otoiawase" target="_blank" rel="noopener">お問い合わせ</a></p>
+</section>
+
+<section class="faq">
+  <h2>よくある質問</h2>
+  <details class="explain">
+    <summary>月収25万円の手取りはいくら?</summary>
+    <div class="exp-body"><p>扶養なし・賞与なしならおよそ19〜20万円(額面の約78〜80%)が目安です。扶養や控除の状況で変わるので、上の手取り計算機で自分の条件に近い概算を出せます。</p></div>
+  </details>
+  <details class="explain">
+    <summary>転職エージェントと転職サイトは何が違う?</summary>
+    <div class="exp-body"><p>転職サイトは求人を自分で探して応募する形式、エージェントは担当者がついて求人紹介・日程調整・条件交渉まで代行してくれる形式です。どちらも求職者は無料(企業側が採用時に費用を払う仕組み)。在職中で時間がない人ほど、面接調整を代行してくれるエージェントの恩恵が大きくなります。</p></div>
+  </details>
+  <details class="explain">
+    <summary>有給は退職時に買い取ってもらえる?</summary>
+    <div class="exp-body"><p>会社に買い取り義務はありません(任意で買い取る会社はあります)。原則は退職日までに使い切ることで、退職日プランナーは有給消化期間を組み込んだスケジュールを作ります。</p></div>
+  </details>
+  <details class="explain">
+    <summary>計算結果はどのくらい正確?</summary>
+    <div class="exp-body"><p>すべて簡易的な概算です。扶養控除・iDeCo・住宅ローン控除などの個人事情、健康保険組合ごとの料率差、雇用保険の細かい条件は反映していません。意思決定の方向性をつかむ用途で使い、正確な金額は自治体・ハローワーク・税理士等で確認してください。</p></div>
+  </details>
+  <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
+</section>
+</main>
+
+<footer>
+  <p class="disclaimer">※ 計算と解説は2026年6月時点の制度・税率に基づいています。当サイトの計算結果はすべて簡易的な概算です。税金・社会保険料・雇用保険の給付額は個人の状況(扶養・控除・加入状況など)により変わります。正確な金額は、お住まいの自治体・ハローワーク・税理士等にご確認ください。当サイトにはプロモーションが含まれます。</p>
+  <p class="en">SHIGOTO TRANSIT GUIDE &copy; 2026 KKP</p>
+</footer>
+
+<!-- WEBNINJA_UNIFIED_FOOTER -->
+<footer style="text-align:center;padding:2rem 1rem 2.5rem;font-size:0.78rem;color:#94a3b8;line-height:2;border-top:1px solid #f0e6d2;margin-top:0;background:#fffcf7;">
+  <div style="font-weight:800;color:#8b6b3d;font-size:0.85rem;margin-bottom:0.4rem;">web忍者の砦</div>
+  <div>
+    <a href="https://kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">本丸トップ</a>·
+    <a href="https://privacypolicy.kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">プライバシーポリシー</a>·
+    <a href="https://kkpwebninja.com/otoiawase" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">お問い合わせ</a>·
+    <a href="https://x.com/kkp_webninja" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">@kkp_webninja</a>
+  </div>
+  <div style="margin-top:0.5rem;color:#bfa97a;">© 2025-2026 web忍者の砦</div>
+</footer>
+
+<script>
+/* ========== ステージ切り替え ========== */
+const stages = {board:"stage-board", transfer:"stage-transfer", exit:"stage-exit"};
+document.querySelectorAll(".station").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll(".station").forEach(b=>{
+      b.classList.remove("active"); b.setAttribute("aria-pressed","false");
+    });
+    btn.classList.add("active"); btn.setAttribute("aria-pressed","true");
+    document.querySelectorAll(".stage").forEach(s=>s.classList.remove("show"));
+    document.getElementById(stages[btn.dataset.stage]).classList.add("show");
+  });
+});
+
+/* ========== 内部リンク: ステージ切替+移動 ========== */
+function goTool(stageKey, toolId){
+  const btn = document.querySelector(`.station[data-stage="${stageKey}"]`);
+  if(btn) btn.click();
+  setTimeout(()=>{
+    const el = document.getElementById(toolId);
+    if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+  }, 60);
+}
+
+/* ========== 共通: 手取り概算ロジック ==========
+   年収(万円)から手取り(万円)を返す簡易計算。
+   社会保険料率14.5%、給与所得控除・基礎控除・累進課税・住民税10%の概算。 */
+function netFromAnnual(annualMan){
+  const annual = annualMan * 10000;
+  const shaho = annual * 0.145;
+  // 給与所得控除(2025年改正反映の簡易版)
+  let koujo;
+  if(annual <= 1900000) koujo = 650000;
+  else if(annual <= 3600000) koujo = annual*0.3 + 80000;
+  else if(annual <= 6600000) koujo = annual*0.2 + 440000;
+  else if(annual <= 8500000) koujo = annual*0.1 + 1100000;
+  else koujo = 1950000;
+  // 所得税(基礎控除95万円の簡易版・復興税込み)
+  let taxable = Math.max(0, annual - koujo - shaho - 950000);
+  let shotoku;
+  if(taxable <= 1950000) shotoku = taxable*0.05;
+  else if(taxable <= 3300000) shotoku = taxable*0.10 - 97500;
+  else if(taxable <= 6950000) shotoku = taxable*0.20 - 427500;
+  else if(taxable <= 9000000) shotoku = taxable*0.23 - 636000;
+  else shotoku = taxable*0.33 - 1536000;
+  shotoku *= 1.021;
+  // 住民税(基礎控除43万円・税率10%+均等割の簡易版)
+  let juminBase = Math.max(0, annual - koujo - shaho - 430000);
+  const jumin = juminBase*0.10 + 5000;
+  const net = annual - shaho - shotoku - jumin;
+  return {net: net/10000, shaho: shaho/10000, tax:(shotoku+jumin)/10000};
+}
+const f1 = n => (Math.round(n*10)/10).toLocaleString("ja-JP",{minimumFractionDigits:1,maximumFractionDigits:1});
+const f0 = n => Math.round(n).toLocaleString("ja-JP");
+
+/* ========== 乗る: 手取り計算機 ========== */
+function calcTedori(){
+  const g = parseFloat(document.getElementById("b-gross").value);
+  const bonus = parseFloat(document.getElementById("b-bonus").value) || 0;
+  const box = document.getElementById("b-result");
+  if(!g || g<=0){ box.innerHTML="<p>額面月収を入力してください。</p>"; box.classList.add("show"); return; }
+  const annual = g*12 + bonus;
+  const r = netFromAnnual(annual);
+  box.innerHTML = `
+    <p class="big">手取り 月およそ ${f1(r.net/ (12 + (bonus>0 ? bonus/g : 0)) )}<small> 万円</small></p>
+    <table>
+      <tr><th>年収(額面)</th><td class="num">${f1(annual)} 万円</td></tr>
+      <tr><th>社会保険料(年)</th><td class="num">− ${f1(r.shaho)} 万円</td></tr>
+      <tr><th>所得税+住民税(年)</th><td class="num">− ${f1(r.tax)} 万円</td></tr>
+      <tr><th>手取り(年)</th><td class="num"><b>${f1(r.net)} 万円</b></td></tr>
+    </table>
+    <p>額面のおよそ ${Math.round(r.net/annual*100)}% が手元に残る計算です。求人を比べるときは、月給ではなくこの「手取り年収」で並べると判断を間違えにくくなります。</p>
+    <button class="innerlink" onclick="goTool('board','tool-jikyu')">次は、固定残業・休日込みの「実質時給」も見てみる →</button>`;
+  box.classList.add("show");
+}
+
+/* ========== 乗る: 実質時給チェッカー ========== */
+function calcJikyu(){
+  const gross = parseFloat(document.getElementById("j-gross").value);
+  const zangyo = parseFloat(document.getElementById("j-zangyo").value) || 0;
+  const holiday = parseInt(document.getElementById("j-holiday").value);
+  const commute = parseFloat(document.getElementById("j-commute").value) || 0;
+  const box = document.getElementById("j-result");
+  if(!gross || !holiday){ box.innerHTML="<p>月給と年間休日を入力してください。</p>"; box.classList.add("show"); return; }
+
+  const workDaysM = (365 - holiday)/12;            // 月の出勤日数
+  const baseHoursM = workDaysM * 8;                // 所定労働時間/月
+  const workHoursM = baseHoursM + zangyo;          // 残業込み
+  const commuteHoursM = workDaysM * commute*2/60;  // 往復通勤時間/月
+  const surface = gross*10000 / baseHoursM;        // 表面の時給
+  const net = netFromAnnual(gross*12).net/12;      // 手取り月収(万円)
+  const real = net*10000 / (workHoursM + commuteHoursM); // 実質時給
+
+  box.innerHTML = `
+    <p class="big">実質時給 ${f0(real)}<small> 円</small></p>
+    <table>
+      <tr><th>求人票どおりの時給(額面÷所定労働)</th><td class="num">${f0(surface)} 円</td></tr>
+      <tr><th>月の出勤日数</th><td class="num">約 ${f1(workDaysM)} 日</td></tr>
+      <tr><th>仕事に使う時間(残業・通勤込み)</th><td class="num">約 ${f0(workHoursM + commuteHoursM)} 時間/月</td></tr>
+      <tr><th>手取り月収(概算)</th><td class="num">約 ${f1(net)} 万円</td></tr>
+    </table>
+    <p>${zangyo>0 ? `固定残業${zangyo}時間込みの月給なので、表面の金額より時給は下がります。固定残業代は「その時間分の残業代が最初から月給に含まれている」仕組みで、残業ゼロでも金額は同じです。` : ""}複数の求人で迷ったら、この実質時給で並べると条件の良し悪しが一目で分かります。年間休日の10日差は、実質時給に換算すると意外と大きく効きます。</p>
+    <button class="innerlink" onclick="goTool('transfer','tool-quiz')">いま働いている職場の数字だった方へ:辞めどき診断 →</button>`;
+  box.classList.add("show");
+}
+
+/* ========== 乗る: ひとり暮らしシミュレーター ========== */
+function calcHitori(){
+  const gross = parseFloat(document.getElementById("h-gross").value);
+  const box = document.getElementById("h-result");
+  if(!gross){ box.innerHTML="<p>額面月収を入力してください。</p>"; box.classList.add("show"); return; }
+  const net = netFromAnnual(gross*12).net/12;
+  const rent = net*0.28;
+  const items = [
+    ["家賃(手取りの25〜30%)", rent],
+    ["食費", net*0.16],
+    ["水道光熱費", net*0.06],
+    ["通信費(格安SIM前提)", net*0.02],
+    ["日用品・雑費", net*0.05],
+    ["交際費・趣味", net*0.13],
+    ["先取り貯蓄(目標20%)", net*0.20],
+    ["予備費", net*0.10]
+  ];
+  const rows = items.map(i=>`<tr><th>${i[0]}</th><td class="num">約 ${f1(i[1])} 万円</td></tr>`).join("");
+  let verdict;
+  if(rent < 4) verdict = "家賃4万円未満の物件は地域によっては選択肢が限られます。実家からの通勤や寮・社宅つきの求人も含めて検討すると現実的です。";
+  else if(rent < 6) verdict = "地方都市なら十分やっていける水準です。家賃を目安より下に抑えられれば、その分がそのまま貯蓄と自由なお金になります。";
+  else verdict = "都市部でも無理なくひとり暮らしできる水準です。最初に固定費(家賃・通信)を低く決めてしまえば、あとはほぼ自動で家計が回ります。";
+  box.innerHTML = `
+    <p class="big">手取り 約 ${f1(net)}<small> 万円/月</small></p>
+    <table>${rows}</table>
+    <p>家賃の目安は約 ${f1(rent)} 万円まで。${verdict}</p>
+    <p style="margin-top:8px;font-size:12.5px;color:var(--ink-soft);">※ 配分はあくまで一例です。大事なのは項目の正確さより「先取り貯蓄を最初に確保する」順番のほうです。</p>`;
+  box.classList.add("show");
+}
+
+/* ========== 乗りかえる: 辞めどき診断 ========== */
+const questions = [
+  "出勤前や勤務中、体調やメンタルに影響が出るほどつらいと感じることがある",
+  "この1年で「辞めたい」と思った回数が、月1回を超えている",
+  "給与・待遇への不満が、がんばりでは解消できないと感じる",
+  "職場の人間関係に、慢性的に消耗している",
+  "3年後も今の職場で働いている自分を、前向きに想像できる",
+  "仕事の内容そのものは、嫌いではない"
+];
+const reversed = [false,false,false,false,true,true];
+(function buildQuiz(){
+  const wrap = document.getElementById("quiz");
+  questions.forEach((q,i)=>{
+    const div = document.createElement("div");
+    div.className = "q";
+    div.innerHTML = `<p>Q${i+1}. ${q}</p>
+      <div class="opts">
+        <label><input type="radio" name="q${i}" value="2"><span>あてはまる</span></label>
+        <label><input type="radio" name="q${i}" value="1"><span>どちらとも</span></label>
+        <label><input type="radio" name="q${i}" value="0"><span>あてはまらない</span></label>
+      </div>`;
+    wrap.appendChild(div);
+  });
+})();
+function calcQuiz(){
+  const box = document.getElementById("q-result");
+  let score = 0;
+  for(let i=0;i<questions.length;i++){
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    if(!sel){ box.innerHTML = `<p>Q${i+1} がまだ未回答です。</p>`; box.classList.add("show"); return; }
+    let v = parseInt(sel.value);
+    if(reversed[i]) v = 2 - v;
+    score += v;
+  }
+  let title, body, cta = "";
+  if(score <= 4){
+    title = "いまは「残って土台を固める」時期";
+    body = "現状への深刻な消耗は見られません。今の職場で経験とスキルを積み上げるほうが、将来の選択肢はむしろ広がります。年に一度、同じ診断をして変化を確かめる程度で十分です。";
+  } else if(score <= 8){
+    title = "いまは「情報収集を始める」時期";
+    body = "辞めるほどではないけれど、引っかかりが積もり始めています。この段階でやるべきは退職ではなく、自分の市場価値と求人相場を知ること。下の手取り比較シミュレーターで、転職した場合の数字を一度見ておくと、感情と事実を切り分けられます。";
+    cta = `<div class="cta" style="margin-top:14px;">
+      <p>相場を知るだけならエージェント登録(無料)が最短です。登録しても辞める義務はなく、「外の選択肢を知っている」こと自体が今の職場で働く心の余裕になります。</p>
+      <!-- ▼アフィリエイトリンクに差し替え(転職エージェント系) -->
+      <a href="#" rel="nofollow sponsored">自分の市場価値を確かめる(無料)</a>
+      <p class="cta-note">PR・外部の転職サービスに移動します</p></div>`;
+  } else {
+    title = "いまは「具体的に動く」時期";
+    body = "消耗のサインがはっきり出ています。ただし「今すぐ辞める」ではなく「在職中に転職活動を始める」が正解です。収入が途切れない状態で動くほうが、条件交渉でも精神面でも圧倒的に有利です。体調への影響が大きい場合は、まず休むことも選択肢に入れてください。";
+    cta = `<div class="cta" style="margin-top:14px;">
+      <p>在職中の転職活動は時間との勝負です。求人探し・日程調整を代行してくれるエージェントを使うと、働きながらでも活動が回ります。</p>
+      <!-- ▼アフィリエイトリンクに差し替え(転職エージェント系) -->
+      <a href="#" rel="nofollow sponsored">在職中の転職活動を始める(無料)</a>
+      <p class="cta-note">PR・外部の転職サービスに移動します</p></div>`;
+  }
+  box.innerHTML = `<p class="big" style="font-size:20px;">${title}</p><p>${body}</p>
+    <p style="margin-top:10px;font-size:12.5px;color:var(--ink-soft);">※ この診断は簡易的な目安です。重要な決断は、信頼できる人や専門家にも相談しながら進めてください。</p>${cta}`;
+  box.classList.add("show");
+}
+
+/* ========== 乗りかえる: 手取り比較 ========== */
+function calcCompare(){
+  const base = parseFloat(document.getElementById("t-base").value);
+  const shift = parseFloat(document.getElementById("t-shift").value) || 0;
+  const next = parseFloat(document.getElementById("t-new").value);
+  const box = document.getElementById("t-result");
+  if(!base || !next){ box.innerHTML="<p>現職の基本給と転職先の想定月収を入力してください。</p>"; box.classList.add("show"); return; }
+  const nowAnnual = (base+shift)*12;
+  const newAnnual = next*12;
+  const rNow = netFromAnnual(nowAnnual);
+  const rNew = netFromAnnual(newAnnual);
+  const diffM = (rNew.net - rNow.net)/12;
+  const diffY = rNew.net - rNow.net;
+  const sign = diffY >= 0 ? "plus" : "minus";
+  const word = diffY >= 0 ? "増える" : "減る";
+  box.innerHTML = `
+    <p class="big"><span class="${sign}">月 ${f1(Math.abs(diffM))} 万円 ${word}</span><small>(年 ${f1(Math.abs(diffY))} 万円)</small></p>
+    <table>
+      <tr><th></th><th style="text-align:right;">現職</th><th style="text-align:right;">転職後</th></tr>
+      <tr><th>額面(年)</th><td class="num">${f1(nowAnnual)} 万円</td><td class="num">${f1(newAnnual)} 万円</td></tr>
+      <tr><th>手取り(年)</th><td class="num">${f1(rNow.net)} 万円</td><td class="num">${f1(rNew.net)} 万円</td></tr>
+      <tr><th>手取り(月平均)</th><td class="num">${f1(rNow.net/12)} 万円</td><td class="num">${f1(rNew.net/12)} 万円</td></tr>
+    </table>
+    <p>${shift>0 ? `夜勤・交代手当 ${f1(shift)} 万円が額面を押し上げていますが、税と社会保険を引いた手取りの差は額面の差より縮みます。` : ""}手取りの差額と引き換えに得るもの・失うもの(生活リズム、健康、時間)まで含めて比べるのがこのツールの目的です。</p>
+    <button class="innerlink" onclick="goTool('transfer','tool-quiz')">数字は分かった、でも気持ちが決まらない方へ:辞めどき診断 →</button>`;
+  box.classList.add("show");
+}
+
+/* ========== 降りる: 退職日プランナー ========== */
+function calcExitPlan(){
+  const bonusMonth = parseInt(document.getElementById("e-bonus").value);
+  const paid = parseInt(document.getElementById("e-paid").value) || 0;
+  const handoverWeeks = parseInt(document.getElementById("e-handover").value);
+  const box = document.getElementById("e-result");
+  const today = new Date();
+
+  // 起点: ボーナス支給後 or 今
+  let start = new Date(today);
+  let bonusNote = "";
+  if(bonusMonth > 0){
+    let by = today.getFullYear();
+    if(bonusMonth < today.getMonth()+1 || (bonusMonth === today.getMonth()+1 && today.getDate() > 25)) by++;
+    start = new Date(by, bonusMonth-1, 25); // 支給を25日と仮定
+    bonusNote = `${by}年${bonusMonth}月のボーナス支給を確認してから`;
+  } else {
+    bonusNote = "準備ができ次第";
+  }
+  // 申し出 → 引き継ぎ → 有給消化(営業日換算: 週5日) → 月末退職
+  const notice = new Date(start); notice.setDate(notice.getDate()+3);
+  const handoverEnd = new Date(notice); handoverEnd.setDate(handoverEnd.getDate() + handoverWeeks*7);
+  const paidDays = Math.ceil(paid * 7/5); // 暦日換算
+  const paidEnd = new Date(handoverEnd); paidEnd.setDate(paidEnd.getDate() + paidDays);
+  // 退職日 = 有給消化が終わる月の末日
+  const lastDay = new Date(paidEnd.getFullYear(), paidEnd.getMonth()+1, 0);
+  const fmt = d => `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日ごろ`;
+  const fmtM = d => `${d.getFullYear()}年${d.getMonth()+1}月`;
+
+  box.innerHTML = `
+    <p class="big" style="font-size:22px;">退職日の目安: ${fmtM(lastDay)}末日</p>
+    <div class="timeline">
+      <div class="tstep"><b>退職を申し出る(${fmt(notice)})</b>${bonusNote}、直属の上司に伝えます。支給「後」に伝えるのは、査定でボーナスを減らされるリスクを避けるためです。</div>
+      <div class="tstep"><b>引き継ぎ(約${handoverWeeks/4 >= 1 ? Math.round(handoverWeeks/4)+"ヶ月" : handoverWeeks+"週間"})</b>引き継ぎ資料を文書で残すと、最後まで関係を悪くせずに済みます。</div>
+      ${paid>0 ? `<div class="tstep"><b>有給消化(${paid}日)</b>引き継ぎ後にまとめて消化します。退職時の有給は買い取り義務がないため、使い切るのが原則です。</div>` : ""}
+      <div class="tstep"><b>退職日: ${fmtM(lastDay)}の末日</b>月の途中で辞めると、その月から国民年金・国民健康保険への切り替えで自己負担が増えるケースがあります。末日退職なら退職月まで会社の社会保険(会社と折半)が使えます。</div>
+    </div>
+    <p style="margin-top:12px;font-size:12.5px;color:var(--ink-soft);">※ 就業規則で「退職は○ヶ月前までに申し出」と定められている場合はそちらが優先です。あくまで一般的な目安として使ってください。</p>`;
+  box.classList.add("show");
+}
+
+/* ========== 降りる: 失業手当シミュレーター ========== */
+function calcUnemploy(){
+  const age = parseInt(document.getElementById("u-age").value);
+  const years = parseInt(document.getElementById("u-years").value);
+  const salary = parseFloat(document.getElementById("u-salary").value);
+  const reason = document.getElementById("u-reason").value;
+  const save = parseFloat(document.getElementById("u-save").value) || 0;
+  const cost = parseFloat(document.getElementById("u-cost").value) || 0;
+  const box = document.getElementById("u-result");
+  if(!salary){ box.innerHTML="<p>退職前の平均月収を入力してください。</p>"; box.classList.add("show"); return; }
+
+  if(reason==="self" && years===0){
+    box.innerHTML = `<p class="big" style="font-size:20px;">受給できない可能性が高いです</p>
+    <p>自己都合退職の場合、原則として退職前2年間に雇用保険の加入期間が通算12ヶ月以上必要です。加入1年未満の自己都合退職では基本手当を受け取れないのが一般的です。</p>`;
+    box.classList.add("show"); return;
+  }
+
+  // 賃金日額と給付率(簡易)
+  const wage = salary*10000/30;
+  let rate;
+  if(wage <= 5200) rate = 0.8;
+  else if(wage <= 12790) rate = 0.5 + 0.3*(12790-wage)/(12790-5200);
+  else rate = 0.5;
+  let daily = wage*rate;
+  const caps = {29:7255, 34:8055, 44:8055, 59:8870, 64:7623}; // 上限日額の目安
+  daily = Math.min(daily, caps[age]);
+
+  // 給付日数
+  let days;
+  if(reason==="self"){
+    days = years>=20 ? 150 : years>=19 ? 120 : 90;
+  } else {
+    const table = {
+      29:{0:90,4:90,9:120,19:180,20:180},
+      34:{0:90,4:120,9:180,19:210,20:240},
+      44:{0:90,4:150,9:180,19:240,20:270},
+      59:{0:90,4:180,9:240,19:270,20:330},
+      64:{0:90,4:150,9:180,19:210,20:240}
+    };
+    days = table[age][years];
+  }
+  const total = daily*days/10000;
+  const monthly = daily*30/10000;
+
+  let runway = "";
+  if(cost>0){
+    const months = (save + total) / cost;
+    runway = `<tr><th>貯蓄+手当で暮らせる期間</th><td class="num"><b>約 ${f1(months)} ヶ月</b></td></tr>`;
+  }
+  const restriction = reason==="self"
+    ? "自己都合退職は、待期7日のあと原則1ヶ月の給付制限があります(2025年4月から短縮)。実際にお金が入るまで2ヶ月程度かかる前提で資金計画を立ててください。"
+    : "会社都合退職は待期7日のみで給付制限がなく、比較的早く受給が始まります。";
+
+  box.innerHTML = `
+    <p class="big">総額 およそ ${f0(total)}<small> 万円</small></p>
+    <table>
+      <tr><th>基本手当日額(概算)</th><td class="num">${f0(daily)} 円</td></tr>
+      <tr><th>月額に換算すると</th><td class="num">約 ${f1(monthly)} 万円</td></tr>
+      <tr><th>給付日数</th><td class="num">${days} 日</td></tr>
+      ${runway}
+    </table>
+    <p>${restriction}</p>
+    <button class="innerlink" onclick="goTool('transfer','tool-quiz')">「辞める」とまだ決めきれていない方へ:辞めどき診断 →</button>`;
+  box.classList.add("show");
+}
+</script>
+</body>
+</html>
