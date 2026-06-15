@@ -7,8 +7,8 @@
    - calcQuiz内(JS): 総合型転職エージェント ※情報収集期/動く期で文言別・2箇所
    - tool-compare下: エージェント+転職サイトの2枚置きも検討
    - tool-unemploy下: エージェント or 退職代行(理由=自己都合/会社都合で出し分け拡張可)
-2. AdSense: 「▼AdSense手動ユニット」で検索(4箇所)。.ad-slotは空なら自動非表示
-   ※位置は保留中(2026-06-12ユーザー回答)。本文中4箇所はKKP共通ルール「下部のみ」と衝突するため、設置時に再確認
+2. AdSense: 下部1枠に集約済み(2026-06-16・KKP「広告は下部のみ」準拠)。本文中3枠は撤去。
+   `</main>`直前の `.ad-slot` 上のコメントに本番ユニットの貼り方を記載。スロットID発行後に有効化。.ad-slotは空なら自動非表示
 3. [済 2026-06-12] OGP: ogp.png(1200x630)設置済み。canonical/og:url/og:image有効化済み(shigoto.kkpwebninja.com)
 4. [済 2026-06-12] 運営者情報・PP・お問い合わせリンクは統一フッター(WEBNINJA_UNIFIED_FOOTER)に集約
    ※「このサイトの約束」「つくった人」セクションはユーザー指示で削除(2026-06-12)
@@ -368,7 +368,6 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
         <p>(1) <b>健康保険料</b>と(2) <b>厚生年金保険料</b>で額面の約14%、(3) <b>雇用保険料</b>が約0.5%。さらに(4) <b>所得税・住民税</b>が収入に応じてかかります。合計すると、額面の<b>75〜85%程度が手取り</b>になるのが一般的です。</p>
         <h4>住民税は2年目から重くなる</h4>
         <p>住民税は前年の所得に対して課税されるため、新卒1年目はほぼ引かれず、2年目から本格的に天引きが始まります。「2年目なのに手取りが減った」のはこの仕組みのせいで、給料が下がったわけではありません。</p>
-      <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
       </div>
     </details>
   </div>
@@ -403,7 +402,6 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
         <p>制度自体は違法ではありませんが、<b>見かけの月給を大きく見せる</b>ために使われがちです。求人票で「月給に固定残業代を含む」の記載を見たら、必ず時間数を確認してください。</p>
         <h4>年間休日の10日差は大きい</h4>
         <p>年間休日105日は「週休2日+祝日ほぼ出勤」、120日は「完全週休2日+祝日休み」の水準です。同じ月給なら、休日が15日少ない会社は<b>タダ働きが15日分ある</b>のと同じ。月給の額だけで比べると、この差が見えなくなります。だからこのツールは時給に換算しています。</p>
-      <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
       </div>
     </details>
     <div class="cta">
@@ -595,14 +593,13 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
         <p>受給条件や手続きの正確な情報は<a href="https://www.hellowork.mhlw.go.jp/insurance/insurance_basicbenefit.html" target="_blank" rel="noopener" style="color:var(--accent);font-weight:700;">ハローワーク インターネットサービス(公式)</a>で確認できます。</p>
         <h4>もらう前提で辞めない</h4>
         <p>失業手当は再就職までの命綱ですが、受給中は求職活動の実績報告が必要で、金額も現役収入より確実に下がります。理想は<b>在職中に次を決めて、手当に頼らず移る</b>こと。このシミュレーターは「辞めても大丈夫」の確認ではなく、「焦らず活動できる期間」を知るために使ってください。</p>
-      <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
       </div>
     </details>
     <div class="cta">
-      <p>「辞めても○ヶ月もつ」が見えたら、その期間を焦らない転職活動にあてられます。在職中からの準備が結局いちばん安全です。</p>
-      <!-- ▼アフィリエイトリンクに差し替え -->
-      <a href="#" rel="nofollow sponsored">在職中に転職の準備を始める(無料)</a>
-      <p class="cta-note">PR・外部の転職サービスに移動します</p>
+      <p>退職は本来、自分で「辞めます」と伝えれば成立します。ただ、引き止めが強い・辞めさせてもらえない・未払い賃金やハラスメントがある——そんなときは、弁護士が運営する退職代行に任せる選択肢もあります。</p>
+      <!-- ▼アフィリエイトリンク設置済み(退職代行・弁護士系 / VC弁護士法人みやび sid=3773481 pid=892635584) -->
+      <a href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3773481&amp;pid=892635584" rel="nofollow sponsored noopener" target="_blank">弁護士運営の退職代行を見る<img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3773481&amp;pid=892635584" height="1" width="1" border="0" alt=""></a>
+      <p class="cta-note">PR・弁護士法人みやびの退職代行(外部サイト)に移動します</p>
     </div>
   </div>
 </section>
@@ -625,7 +622,17 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     <summary>計算結果はどのくらい正確?</summary>
     <div class="exp-body"><p>すべて簡易的な概算です。扶養控除・iDeCo・住宅ローン控除などの個人事情、健康保険組合ごとの料率差、雇用保険の細かい条件は反映していません。意思決定の方向性をつかむ用途で使い、正確な金額は自治体・ハローワーク・税理士等で確認してください。</p></div>
   </details>
-  <div class="ad-slot"><!-- ▼AdSense手動ユニット(ディスプレイ・レスポンシブ)をここに --></div>
+  <!-- ▼AdSense手動ユニット(下部1枠・KKP「広告は下部のみ」準拠)。
+       AdSense管理画面で「ディスプレイ広告(レスポンシブ)」ユニットを作成し、
+       発行された data-ad-slot の値を入れて、下の<ins>+<script>を .ad-slot の中に移してコメント解除する。
+       貼るまでは .ad-slot は空=自動非表示(:empty)。
+  <ins class="adsbygoogle" style="display:block"
+       data-ad-client="ca-pub-1298304917726270"
+       data-ad-slot="（ここにAdSenseのスロットIDを入れる）"
+       data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+  <div class="ad-slot"></div>
 </section>
 </main>
 
