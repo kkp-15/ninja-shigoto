@@ -7,8 +7,8 @@
    - calcQuiz内(JS): 総合型転職エージェント ※情報収集期/動く期で文言別・2箇所
    - tool-compare下: エージェント+転職サイトの2枚置きも検討
    - tool-unemploy下: エージェント or 退職代行(理由=自己都合/会社都合で出し分け拡張可)
-2. AdSense: 下部1枠に集約済み(2026-06-16・KKP「広告は下部のみ」準拠)。本文中3枠は撤去。
-   `</main>`直前の `.ad-slot` 上のコメントに本番ユニットの貼り方を記載。スロットID発行後に有効化。.ad-slotは空なら自動非表示
+2. AdSense: 下部1枠に集約・有効化済み(2026-06-16・KKP「広告は下部のみ」準拠)。本文中3枠は撤去。
+   `</main>`直前の `.ad-slot` に既存ユニット「kkpwebninja」slot=2937937957 を設置済み(client=ca-pub-1298304917726270)。本番のみ表示
 3. [済 2026-06-12] OGP: ogp.png(1200x630)設置済み。canonical/og:url/og:image有効化済み(shigoto.kkpwebninja.com)
 4. [済 2026-06-12] 運営者情報・PP・お問い合わせリンクは統一フッター(WEBNINJA_UNIFIED_FOOTER)に集約
    ※「このサイトの約束」「つくった人」セクションはユーザー指示で削除(2026-06-12)
@@ -622,17 +622,14 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     <summary>計算結果はどのくらい正確?</summary>
     <div class="exp-body"><p>すべて簡易的な概算です。扶養控除・iDeCo・住宅ローン控除などの個人事情、健康保険組合ごとの料率差、雇用保険の細かい条件は反映していません。意思決定の方向性をつかむ用途で使い、正確な金額は自治体・ハローワーク・税理士等で確認してください。</p></div>
   </details>
-  <!-- ▼AdSense手動ユニット(下部1枠・KKP「広告は下部のみ」準拠)。
-       AdSense管理画面で「ディスプレイ広告(レスポンシブ)」ユニットを作成し、
-       発行された data-ad-slot の値を入れて、下の<ins>+<script>を .ad-slot の中に移してコメント解除する。
-       貼るまでは .ad-slot は空=自動非表示(:empty)。
-  <ins class="adsbygoogle" style="display:block"
-       data-ad-client="ca-pub-1298304917726270"
-       data-ad-slot="（ここにAdSenseのスロットIDを入れる）"
-       data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  -->
-  <div class="ad-slot"></div>
+  <!-- ▼AdSense手動ユニット(下部1枠・KKP「広告は下部のみ」準拠 / 既存ユニット「kkpwebninja」slot=2937937957 を使用)。ローダー<script>はhead済み -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle" style="display:block"
+         data-ad-client="ca-pub-1298304917726270"
+         data-ad-slot="2937937957"
+         data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 </section>
 </main>
 
