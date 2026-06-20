@@ -208,6 +208,20 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 }
 .field input:focus,.field select:focus{outline:2px solid var(--orange);border-color:var(--orange);}
 .field .unit{font-size:12.5px;color:var(--ink-soft);margin-left:4px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.chip{font-family:inherit;font-size:12.5px;color:var(--ink-soft);background:#fff;
+  border:1.5px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer;
+  transition:border-color .12s,color .12s;}
+.chip:hover,.chip:focus,.chip.on{border-color:var(--accent);color:var(--accent);outline:none;}
+.stepper{display:flex;align-items:stretch;gap:8px;}
+.step-btn{
+  flex:0 0 52px;font-family:'M PLUS Rounded 1c',sans-serif;font-size:24px;font-weight:800;line-height:1;
+  color:var(--accent);background:#fff;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;
+  transition:background .1s,color .1s;
+}
+.step-btn:hover{border-color:var(--accent);}
+.step-btn:active{background:var(--accent);color:#fff;}
+.field input.step-input{flex:1;width:auto;text-align:center;font-weight:700;font-variant-numeric:tabular-nums;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px;}
 @media (max-width:520px){.grid2{grid-template-columns:1fr;}}
 .btn{
@@ -348,18 +362,52 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 
   <div class="tool" id="tool-tedori">
     <h3>手取り計算機</h3>
-    <p class="tool-note">額面月収から、社会保険料と税金を引いた手取りの概算を計算します(賞与なし・扶養なしの簡易計算)。</p>
-    <div class="grid2">
+    <p class="tool-note">月収でも年収でも、社会保険料と税金を引いた手取りの概算を計算します(扶養なしの簡易計算)。</p>
+    <div class="field">
+      <label for="b-mode">入力方法</label>
+      <select id="b-mode" onchange="toggleTedoriMode()">
+        <option value="month">月収＋賞与で入力</option>
+        <option value="annual">年収で入力</option>
+      </select>
+    </div>
+    <div id="b-month-fields">
       <div class="field">
         <label for="b-gross">額面月収<span class="unit">万円</span></label>
-        <input type="number" id="b-gross" min="5" max="200" step="0.5" placeholder="例: 25">
+        <div class="stepper">
+          <button type="button" class="step-btn" onclick="stepVal('b-gross',-1)" aria-label="1万円 減らす">−</button>
+          <input type="number" id="b-gross" class="step-input" min="10" max="200" step="1" value="25" inputmode="numeric" oninput="calcTedori()">
+          <button type="button" class="step-btn" onclick="stepVal('b-gross',1)" aria-label="1万円 増やす">＋</button>
+        </div>
+        <div class="chips">
+          <button type="button" class="chip" onclick="setVal('b-gross',20)">20万</button>
+          <button type="button" class="chip" onclick="setVal('b-gross',25)">25万</button>
+          <button type="button" class="chip" onclick="setVal('b-gross',30)">30万</button>
+          <button type="button" class="chip" onclick="setVal('b-gross',40)">40万</button>
+        </div>
       </div>
       <div class="field">
         <label for="b-bonus">賞与(年間)<span class="unit">万円・なければ0</span></label>
-        <input type="number" id="b-bonus" min="0" max="500" step="1" value="0">
+        <div class="stepper">
+          <button type="button" class="step-btn" onclick="stepVal('b-bonus',-5)" aria-label="5万円 減らす">−</button>
+          <input type="number" id="b-bonus" class="step-input" min="0" max="500" step="5" value="0" inputmode="numeric" oninput="calcTedori()">
+          <button type="button" class="step-btn" onclick="stepVal('b-bonus',5)" aria-label="5万円 増やす">＋</button>
+        </div>
       </div>
     </div>
-    <button class="btn" onclick="calcTedori()">計算する</button>
+    <div class="field" id="b-annual-field" style="display:none;">
+      <label for="b-annual">額面年収<span class="unit">万円</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('b-annual',-10)" aria-label="10万円 減らす">−</button>
+        <input type="number" id="b-annual" class="step-input" min="60" max="3000" step="10" value="400" inputmode="numeric" oninput="calcTedori()">
+        <button type="button" class="step-btn" onclick="stepVal('b-annual',10)" aria-label="10万円 増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('b-annual',300)">300万</button>
+        <button type="button" class="chip" onclick="setVal('b-annual',400)">400万</button>
+        <button type="button" class="chip" onclick="setVal('b-annual',500)">500万</button>
+        <button type="button" class="chip" onclick="setVal('b-annual',700)">700万</button>
+      </div>
+    </div>
     <div class="result" id="b-result"></div>
     <details class="explain">
       <summary>額面と手取りの違い|給料から何が引かれている?</summary>
@@ -375,25 +423,61 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
   <div class="tool" id="tool-jikyu">
     <h3>求人票の実質時給チェッカー</h3>
     <p class="tool-note">「月給25万円」の中身は会社によって全く違います。固定残業・年間休日・通勤時間まで含めた1時間あたりの実質的な稼ぎを計算して、求人を同じ物差しで比べます。</p>
-    <div class="grid2">
-      <div class="field">
-        <label for="j-gross">月給(額面・固定残業代込み)<span class="unit">万円</span></label>
-        <input type="number" id="j-gross" min="5" max="200" step="0.5" placeholder="例: 25">
+    <div class="field">
+      <label for="j-gross">月給(額面・固定残業代込み)<span class="unit">万円</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('j-gross',-1)" aria-label="減らす">−</button>
+        <input type="number" id="j-gross" class="step-input" min="5" max="200" step="1" value="25" inputmode="numeric" oninput="calcJikyu()">
+        <button type="button" class="step-btn" onclick="stepVal('j-gross',1)" aria-label="増やす">＋</button>
       </div>
-      <div class="field">
-        <label for="j-zangyo">固定残業(みなし残業)時間<span class="unit">時間/月・なければ0</span></label>
-        <input type="number" id="j-zangyo" min="0" max="100" step="1" value="0">
-      </div>
-      <div class="field">
-        <label for="j-holiday">年間休日<span class="unit">日</span></label>
-        <input type="number" id="j-holiday" min="52" max="160" step="1" placeholder="例: 120">
-      </div>
-      <div class="field">
-        <label for="j-commute">通勤時間(片道)<span class="unit">分</span></label>
-        <input type="number" id="j-commute" min="0" max="180" step="5" value="0">
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('j-gross',20)">20万</button>
+        <button type="button" class="chip" onclick="setVal('j-gross',25)">25万</button>
+        <button type="button" class="chip" onclick="setVal('j-gross',30)">30万</button>
+        <button type="button" class="chip" onclick="setVal('j-gross',35)">35万</button>
       </div>
     </div>
-    <button class="btn" onclick="calcJikyu()">実質時給を出す</button>
+    <div class="field">
+      <label for="j-holiday">年間休日<span class="unit">日</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('j-holiday',-1)" aria-label="減らす">−</button>
+        <input type="number" id="j-holiday" class="step-input" min="52" max="160" step="1" value="120" inputmode="numeric" oninput="calcJikyu()">
+        <button type="button" class="step-btn" onclick="stepVal('j-holiday',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('j-holiday',105)">105日</button>
+        <button type="button" class="chip" onclick="setVal('j-holiday',120)">120日</button>
+        <button type="button" class="chip" onclick="setVal('j-holiday',125)">125日</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="j-zangyo">固定残業(みなし残業)時間<span class="unit">時間/月・なければ0</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('j-zangyo',-5)" aria-label="減らす">−</button>
+        <input type="number" id="j-zangyo" class="step-input" min="0" max="100" step="5" value="0" inputmode="numeric" oninput="calcJikyu()">
+        <button type="button" class="step-btn" onclick="stepVal('j-zangyo',5)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('j-zangyo',0)">なし</button>
+        <button type="button" class="chip" onclick="setVal('j-zangyo',20)">20h</button>
+        <button type="button" class="chip" onclick="setVal('j-zangyo',30)">30h</button>
+        <button type="button" class="chip" onclick="setVal('j-zangyo',45)">45h</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="j-commute">通勤時間(片道)<span class="unit">分</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('j-commute',-5)" aria-label="減らす">−</button>
+        <input type="number" id="j-commute" class="step-input" min="0" max="180" step="5" value="30" inputmode="numeric" oninput="calcJikyu()">
+        <button type="button" class="step-btn" onclick="stepVal('j-commute',5)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('j-commute',0)">なし</button>
+        <button type="button" class="chip" onclick="setVal('j-commute',15)">15分</button>
+        <button type="button" class="chip" onclick="setVal('j-commute',30)">30分</button>
+        <button type="button" class="chip" onclick="setVal('j-commute',60)">60分</button>
+      </div>
+    </div>
     <div class="result" id="j-result"></div>
     <details class="explain">
       <summary>固定残業代(みなし残業)とは|「月給25万」の罠</summary>
@@ -417,9 +501,18 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     <p class="tool-note">その手取りでひとり暮らしが成り立つか、家賃の目安と生活費の配分例を確認します。</p>
     <div class="field">
       <label for="h-gross">額面月収<span class="unit">万円</span></label>
-      <input type="number" id="h-gross" min="5" max="200" step="0.5" placeholder="例: 22">
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('h-gross',-1)" aria-label="減らす">−</button>
+        <input type="number" id="h-gross" class="step-input" min="5" max="200" step="1" value="22" inputmode="numeric" oninput="calcHitori()">
+        <button type="button" class="step-btn" onclick="stepVal('h-gross',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('h-gross',18)">18万</button>
+        <button type="button" class="chip" onclick="setVal('h-gross',22)">22万</button>
+        <button type="button" class="chip" onclick="setVal('h-gross',26)">26万</button>
+        <button type="button" class="chip" onclick="setVal('h-gross',30)">30万</button>
+      </div>
     </div>
-    <button class="btn" onclick="calcHitori()">配分を見る</button>
     <div class="result" id="h-result"></div>
     <details class="explain">
       <summary>手取りいくらあればひとり暮らしできる?</summary>
@@ -441,7 +534,6 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     <h3>辞めどき診断</h3>
     <p class="tool-note">6つの質問に直感で答えてください。「残る」という結果もきちんと出ます。</p>
     <div id="quiz"></div>
-    <button class="btn" onclick="calcQuiz()">診断する</button>
     <div class="result" id="q-result"></div>
     <details class="explain">
       <summary>「仕事を辞めたい」は甘え?|考え方の整理</summary>
@@ -457,21 +549,45 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
   <div class="tool" id="tool-compare">
     <h3>手取り比較シミュレーター</h3>
     <p class="tool-note">現職(夜勤手当・交代手当込み)と転職先想定の手取りを並べて比較します。額面が下がっても手取り差は意外と小さいことがあります。</p>
-    <div class="grid2">
-      <div class="field">
-        <label for="t-base">現職:基本給(月)<span class="unit">万円</span></label>
-        <input type="number" id="t-base" min="5" max="200" step="0.5" placeholder="例: 22">
+    <div class="field">
+      <label for="t-base">現職:基本給(月)<span class="unit">万円</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('t-base',-1)" aria-label="減らす">−</button>
+        <input type="number" id="t-base" class="step-input" min="5" max="200" step="1" value="22" inputmode="numeric" oninput="calcCompare()">
+        <button type="button" class="step-btn" onclick="stepVal('t-base',1)" aria-label="増やす">＋</button>
       </div>
-      <div class="field">
-        <label for="t-shift">現職:夜勤・交代手当(月)<span class="unit">万円</span></label>
-        <input type="number" id="t-shift" min="0" max="50" step="0.5" placeholder="例: 4">
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('t-base',20)">20万</button>
+        <button type="button" class="chip" onclick="setVal('t-base',25)">25万</button>
+        <button type="button" class="chip" onclick="setVal('t-base',30)">30万</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="t-shift">現職:夜勤・交代手当(月)<span class="unit">万円</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('t-shift',-1)" aria-label="減らす">−</button>
+        <input type="number" id="t-shift" class="step-input" min="0" max="50" step="1" value="4" inputmode="numeric" oninput="calcCompare()">
+        <button type="button" class="step-btn" onclick="stepVal('t-shift',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('t-shift',0)">なし</button>
+        <button type="button" class="chip" onclick="setVal('t-shift',3)">3万</button>
+        <button type="button" class="chip" onclick="setVal('t-shift',5)">5万</button>
       </div>
     </div>
     <div class="field">
       <label for="t-new">転職先の想定月収(額面)<span class="unit">万円</span></label>
-      <input type="number" id="t-new" min="5" max="200" step="0.5" placeholder="例: 24">
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('t-new',-1)" aria-label="減らす">−</button>
+        <input type="number" id="t-new" class="step-input" min="5" max="200" step="1" value="24" inputmode="numeric" oninput="calcCompare()">
+        <button type="button" class="step-btn" onclick="stepVal('t-new',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('t-new',22)">22万</button>
+        <button type="button" class="chip" onclick="setVal('t-new',26)">26万</button>
+        <button type="button" class="chip" onclick="setVal('t-new',30)">30万</button>
+      </div>
     </div>
-    <button class="btn" onclick="calcCompare()">比較する</button>
     <div class="result" id="t-result"></div>
     <details class="explain">
       <summary>夜勤・交代勤務を辞めると生活はどう変わる?</summary>
@@ -498,33 +614,40 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
   <div class="tool" id="tool-exitplan">
     <h3>退職日プランナー</h3>
     <p class="tool-note">ボーナスと有給を取りこぼさない退職スケジュールの目安を組み立てます。</p>
-    <div class="grid2">
-      <div class="field">
-        <label for="e-bonus">次のボーナス支給月</label>
-        <select id="e-bonus">
-          <option value="0">ボーナスはない・考慮しない</option>
-          <option value="1">1月</option><option value="2">2月</option>
-          <option value="3">3月</option><option value="4">4月</option>
-          <option value="5">5月</option><option value="6">6月</option>
-          <option value="7">7月</option><option value="8">8月</option>
-          <option value="9">9月</option><option value="10">10月</option>
-          <option value="11">11月</option><option value="12">12月</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="e-paid">有給の残り日数<span class="unit">日</span></label>
-        <input type="number" id="e-paid" min="0" max="40" step="1" placeholder="例: 20">
-      </div>
+    <div class="field">
+      <label for="e-bonus">次のボーナス支給月</label>
+      <select id="e-bonus" onchange="calcExitPlan()">
+        <option value="0">ボーナスはない・考慮しない</option>
+        <option value="1">1月</option><option value="2">2月</option>
+        <option value="3">3月</option><option value="4">4月</option>
+        <option value="5">5月</option><option value="6">6月</option>
+        <option value="7">7月</option><option value="8">8月</option>
+        <option value="9">9月</option><option value="10">10月</option>
+        <option value="11">11月</option><option value="12">12月</option>
+      </select>
     </div>
     <div class="field">
       <label for="e-handover">引き継ぎに必要な期間</label>
-      <select id="e-handover">
+      <select id="e-handover" onchange="calcExitPlan()">
         <option value="2">2週間ほど</option>
         <option value="4" selected>1ヶ月ほど</option>
         <option value="8">2ヶ月ほど</option>
       </select>
     </div>
-    <button class="btn" onclick="calcExitPlan()">スケジュールを組む</button>
+    <div class="field">
+      <label for="e-paid">有給の残り日数<span class="unit">日</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('e-paid',-1)" aria-label="減らす">−</button>
+        <input type="number" id="e-paid" class="step-input" min="0" max="40" step="1" value="20" inputmode="numeric" oninput="calcExitPlan()">
+        <button type="button" class="step-btn" onclick="stepVal('e-paid',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('e-paid',0)">なし</button>
+        <button type="button" class="chip" onclick="setVal('e-paid',10)">10日</button>
+        <button type="button" class="chip" onclick="setVal('e-paid',20)">20日</button>
+        <button type="button" class="chip" onclick="setVal('e-paid',40)">40日</button>
+      </div>
+    </div>
     <div class="result" id="e-result"></div>
     <details class="explain">
       <summary>退職日は月末が得な理由|ボーナス前に言うと減らされる?</summary>
@@ -538,51 +661,119 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     </details>
   </div>
 
+  <div class="tool" id="tool-taishokukin">
+    <h3>退職金の手取り計算</h3>
+    <p class="tool-note">退職金にかかる税金(所得税・住民税)を引いた手取りの概算を出します。退職金は税制優遇が大きく、額面に近い金額が手元に残ります。</p>
+    <div class="field">
+      <label for="rk-amount">退職金(額面)<span class="unit">万円</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('rk-amount',-50)" aria-label="減らす">−</button>
+        <input type="number" id="rk-amount" class="step-input" min="0" max="20000" step="50" value="1000" inputmode="numeric" oninput="calcTaishokukin()">
+        <button type="button" class="step-btn" onclick="stepVal('rk-amount',50)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('rk-amount',500)">500万</button>
+        <button type="button" class="chip" onclick="setVal('rk-amount',1000)">1000万</button>
+        <button type="button" class="chip" onclick="setVal('rk-amount',1500)">1500万</button>
+        <button type="button" class="chip" onclick="setVal('rk-amount',2000)">2000万</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="rk-years">勤続年数<span class="unit">年</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('rk-years',-1)" aria-label="減らす">−</button>
+        <input type="number" id="rk-years" class="step-input" min="1" max="50" step="1" value="20" inputmode="numeric" oninput="calcTaishokukin()">
+        <button type="button" class="step-btn" onclick="stepVal('rk-years',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('rk-years',10)">10年</button>
+        <button type="button" class="chip" onclick="setVal('rk-years',20)">20年</button>
+        <button type="button" class="chip" onclick="setVal('rk-years',30)">30年</button>
+        <button type="button" class="chip" onclick="setVal('rk-years',40)">40年</button>
+      </div>
+    </div>
+    <div class="result" id="rk-result"></div>
+    <details class="explain">
+      <summary>退職金に税金はいくらかかる?|退職所得控除のしくみ</summary>
+      <div class="exp-body">
+        <p>退職金は「退職所得」として、給与とは別に<b>大きく優遇</b>されています。理由は2つ。</p>
+        <p>(1) <b>退職所得控除</b>:勤続20年までは1年あたり40万円、20年を超えた分は1年あたり70万円が退職金から差し引かれます(勤続20年なら800万円、30年なら1,500万円が非課税枠)。<br>(2) <b>1/2課税</b>:控除を引いた残りの、さらに半分にだけ課税されます。</p>
+        <p>このため、勤続が長く退職金が控除の範囲内なら<b>税金ゼロ・額面そのまま手取り</b>になることも珍しくありません。なお退職金には社会保険料はかかりません。</p>
+        <h4>「退職所得の受給に関する申告書」を必ず出す</h4>
+        <p>会社にこの申告書を提出していれば、上の優遇を適用したうえで源泉徴収され、原則確定申告も不要です。出し忘れると一律20.42%が源泉徴収され、払い過ぎを取り戻すには確定申告が必要になります。正確な金額は勤務先・税務署でご確認ください。</p>
+      </div>
+    </details>
+  </div>
+
   <div class="tool" id="tool-unemploy">
     <h3>失業手当シミュレーター</h3>
     <p class="tool-note">雇用保険の基本手当(失業手当)の日額・給付日数・総額の概算と、貯蓄と合わせて「何ヶ月もつか」を計算します。</p>
-    <div class="grid2">
-      <div class="field">
-        <label for="u-age">年齢</label>
-        <select id="u-age">
-          <option value="29">30歳未満</option>
-          <option value="34">30〜34歳</option>
-          <option value="44" selected>35〜44歳</option>
-          <option value="59">45〜59歳</option>
-          <option value="64">60〜64歳</option>
-        </select>
+    <div class="field">
+      <label for="u-age">年齢</label>
+      <select id="u-age" onchange="calcUnemploy()">
+        <option value="29">30歳未満</option>
+        <option value="34">30〜34歳</option>
+        <option value="44" selected>35〜44歳</option>
+        <option value="59">45〜59歳</option>
+        <option value="64">60〜64歳</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="u-years">勤続年数(雇用保険の加入年数)</label>
+      <select id="u-years" onchange="calcUnemploy()">
+        <option value="0">1年未満</option>
+        <option value="4">1〜4年</option>
+        <option value="9" selected>5〜9年</option>
+        <option value="19">10〜19年</option>
+        <option value="20">20年以上</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="u-reason">退職理由</label>
+      <select id="u-reason" onchange="calcUnemploy()">
+        <option value="self" selected>自己都合</option>
+        <option value="company">会社都合(倒産・解雇など)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="u-salary">退職前6ヶ月の平均月収(額面・賞与除く)<span class="unit">万円</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('u-salary',-1)" aria-label="減らす">−</button>
+        <input type="number" id="u-salary" class="step-input" min="5" max="200" step="1" value="28" inputmode="numeric" oninput="calcUnemploy()">
+        <button type="button" class="step-btn" onclick="stepVal('u-salary',1)" aria-label="増やす">＋</button>
       </div>
-      <div class="field">
-        <label for="u-years">勤続年数(雇用保険の加入年数)</label>
-        <select id="u-years">
-          <option value="0">1年未満</option>
-          <option value="4">1〜4年</option>
-          <option value="9" selected>5〜9年</option>
-          <option value="19">10〜19年</option>
-          <option value="20">20年以上</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="u-salary">退職前6ヶ月の平均月収(額面・賞与除く)<span class="unit">万円</span></label>
-        <input type="number" id="u-salary" min="5" max="200" step="0.5" placeholder="例: 28">
-      </div>
-      <div class="field">
-        <label for="u-reason">退職理由</label>
-        <select id="u-reason">
-          <option value="self" selected>自己都合</option>
-          <option value="company">会社都合(倒産・解雇など)</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="u-save">いまの貯蓄<span class="unit">万円・任意</span></label>
-        <input type="number" id="u-save" min="0" max="100000" step="10" value="0">
-      </div>
-      <div class="field">
-        <label for="u-cost">ひと月の生活費<span class="unit">万円・任意</span></label>
-        <input type="number" id="u-cost" min="1" max="200" step="1" placeholder="例: 18">
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('u-salary',22)">22万</button>
+        <button type="button" class="chip" onclick="setVal('u-salary',28)">28万</button>
+        <button type="button" class="chip" onclick="setVal('u-salary',35)">35万</button>
       </div>
     </div>
-    <button class="btn" onclick="calcUnemploy()">計算する</button>
+    <div class="field">
+      <label for="u-save">いまの貯蓄<span class="unit">万円・任意</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('u-save',-10)" aria-label="減らす">−</button>
+        <input type="number" id="u-save" class="step-input" min="0" max="100000" step="10" value="0" inputmode="numeric" oninput="calcUnemploy()">
+        <button type="button" class="step-btn" onclick="stepVal('u-save',10)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('u-save',0)">なし</button>
+        <button type="button" class="chip" onclick="setVal('u-save',100)">100万</button>
+        <button type="button" class="chip" onclick="setVal('u-save',300)">300万</button>
+      </div>
+    </div>
+    <div class="field">
+      <label for="u-cost">ひと月の生活費<span class="unit">万円・任意</span></label>
+      <div class="stepper">
+        <button type="button" class="step-btn" onclick="stepVal('u-cost',-1)" aria-label="減らす">−</button>
+        <input type="number" id="u-cost" class="step-input" min="1" max="200" step="1" value="18" inputmode="numeric" oninput="calcUnemploy()">
+        <button type="button" class="step-btn" onclick="stepVal('u-cost',1)" aria-label="増やす">＋</button>
+      </div>
+      <div class="chips">
+        <button type="button" class="chip" onclick="setVal('u-cost',15)">15万</button>
+        <button type="button" class="chip" onclick="setVal('u-cost',18)">18万</button>
+        <button type="button" class="chip" onclick="setVal('u-cost',22)">22万</button>
+      </div>
+    </div>
     <div class="result" id="u-result"></div>
     <details class="explain">
       <summary>失業手当はいつから・いくら?|自己都合と会社都合の違い</summary>
@@ -704,17 +895,48 @@ function netFromAnnual(annualMan){
 }
 const f1 = n => (Math.round(n*10)/10).toLocaleString("ja-JP",{minimumFractionDigits:1,maximumFractionDigits:1});
 const f0 = n => Math.round(n).toLocaleString("ja-JP");
+/* ワンタップ入力: 値をセットして即・自動再計算(oninputを発火) */
+function setVal(id, v){
+  const el = document.getElementById(id);
+  el.value = v;
+  el.dispatchEvent(new Event("input", {bubbles:true}));
+}
+/* ステッパー: −/＋ で値を増減して即・自動再計算 */
+function stepVal(id, delta){
+  const el = document.getElementById(id);
+  const min = el.min!=="" ? parseFloat(el.min) : -Infinity;
+  const max = el.max!=="" ? parseFloat(el.max) :  Infinity;
+  let v = (parseFloat(el.value)||0) + delta;
+  v = Math.min(max, Math.max(min, v));
+  el.value = v;
+  el.dispatchEvent(new Event("input", {bubbles:true}));
+}
 
 /* ========== 乗る: 手取り計算機 ========== */
+function toggleTedoriMode(){
+  const mode = document.getElementById("b-mode").value;
+  document.getElementById("b-month-fields").style.display = mode==="annual" ? "none" : "";
+  document.getElementById("b-annual-field").style.display = mode==="annual" ? "" : "none";
+  calcTedori();
+}
 function calcTedori(){
-  const g = parseFloat(document.getElementById("b-gross").value);
-  const bonus = parseFloat(document.getElementById("b-bonus").value) || 0;
+  const mode = document.getElementById("b-mode").value;
   const box = document.getElementById("b-result");
-  if(!g || g<=0){ box.innerHTML="<p>額面月収を入力してください。</p>"; box.classList.add("show"); return; }
-  const annual = g*12 + bonus;
+  let annual, monthsDivisor;
+  if(mode === "annual"){
+    annual = parseFloat(document.getElementById("b-annual").value);
+    if(!annual || annual<=0){ box.innerHTML="<p>額面年収を入力してください。</p>"; box.classList.add("show"); return; }
+    monthsDivisor = 12;
+  } else {
+    const g = parseFloat(document.getElementById("b-gross").value);
+    const bonus = parseFloat(document.getElementById("b-bonus").value) || 0;
+    if(!g || g<=0){ box.innerHTML="<p>額面月収を入力してください。</p>"; box.classList.add("show"); return; }
+    annual = g*12 + bonus;
+    monthsDivisor = 12 + (bonus>0 ? bonus/g : 0);
+  }
   const r = netFromAnnual(annual);
   box.innerHTML = `
-    <p class="big">手取り 月およそ ${f1(r.net/ (12 + (bonus>0 ? bonus/g : 0)) )}<small> 万円</small></p>
+    <p class="big">手取り 月およそ ${f1(r.net/monthsDivisor)}<small> 万円</small></p>
     <table>
       <tr><th>年収(額面)</th><td class="num">${f1(annual)} 万円</td></tr>
       <tr><th>社会保険料(年)</th><td class="num">− ${f1(r.shaho)} 万円</td></tr>
@@ -803,13 +1025,20 @@ const reversed = [false,false,false,false,true,true];
     div.className = "q";
     div.innerHTML = `<p>Q${i+1}. ${q}</p>
       <div class="opts">
-        <label><input type="radio" name="q${i}" value="2"><span>あてはまる</span></label>
-        <label><input type="radio" name="q${i}" value="1"><span>どちらとも</span></label>
-        <label><input type="radio" name="q${i}" value="0"><span>あてはまらない</span></label>
+        <label><input type="radio" name="q${i}" value="2" onchange="quizAuto()"><span>あてはまる</span></label>
+        <label><input type="radio" name="q${i}" value="1" onchange="quizAuto()"><span>どちらとも</span></label>
+        <label><input type="radio" name="q${i}" value="0" onchange="quizAuto()"><span>あてはまらない</span></label>
       </div>`;
     wrap.appendChild(div);
   });
 })();
+/* 6問すべて回答されたら自動で診断を表示する */
+function quizAuto(){
+  for(let i=0;i<questions.length;i++){
+    if(!document.querySelector(`input[name="q${i}"]:checked`)) return;
+  }
+  calcQuiz();
+}
 function calcQuiz(){
   const box = document.getElementById("q-result");
   let score = 0;
@@ -871,6 +1100,45 @@ function calcCompare(){
     </table>
     <p>${shift>0 ? `夜勤・交代手当 ${f1(shift)} 万円が額面を押し上げていますが、税と社会保険を引いた手取りの差は額面の差より縮みます。` : ""}手取りの差額と引き換えに得るもの・失うもの(生活リズム、健康、時間)まで含めて比べるのがこのツールの目的です。</p>
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">数字は分かった、でも気持ちが決まらない方へ:辞めどき診断 →</button>`;
+  box.classList.add("show");
+}
+
+/* ========== 降りる: 退職金の手取り計算 ========== */
+function calcTaishokukin(){
+  const amount = parseFloat(document.getElementById("rk-amount").value); // 万円
+  const years = parseInt(document.getElementById("rk-years").value);
+  const box = document.getElementById("rk-result");
+  if(!amount || amount<=0 || !years || years<=0){ box.innerHTML="<p>退職金と勤続年数を入力してください。</p>"; box.classList.add("show"); return; }
+  // 退職所得控除(万円): 勤続20年まで年40万(最低80万)、20年超は年70万
+  const kojoMan = years <= 20 ? Math.max(80, 40*years) : 800 + 70*(years-20);
+  // 課税退職所得(万円) = (退職金 - 控除) × 1/2
+  const taxableMan = Math.max(0, amount - kojoMan) / 2;
+  const taxableYen = taxableMan*10000;
+  // 所得税(分離課税・累進・復興特別所得税込み)
+  let shotokuYen;
+  if(taxableYen <= 1950000) shotokuYen = taxableYen*0.05;
+  else if(taxableYen <= 3300000) shotokuYen = taxableYen*0.10 - 97500;
+  else if(taxableYen <= 6950000) shotokuYen = taxableYen*0.20 - 427500;
+  else if(taxableYen <= 9000000) shotokuYen = taxableYen*0.23 - 636000;
+  else if(taxableYen <= 18000000) shotokuYen = taxableYen*0.33 - 1536000;
+  else if(taxableYen <= 40000000) shotokuYen = taxableYen*0.40 - 2796000;
+  else shotokuYen = taxableYen*0.45 - 4796000;
+  shotokuYen *= 1.021;
+  const juminYen = taxableYen*0.10; // 住民税10%
+  const taxMan = (shotokuYen + juminYen)/10000;
+  const netMan = amount - taxMan;
+  box.innerHTML = `
+    <p class="big">手取り 約 ${f1(netMan)}<small> 万円</small></p>
+    <table>
+      <tr><th>退職金(額面)</th><td class="num">${f1(amount)} 万円</td></tr>
+      <tr><th>退職所得控除(勤続${years}年)</th><td class="num">${f1(kojoMan)} 万円</td></tr>
+      <tr><th>課税対象(控除後×1/2)</th><td class="num">${f1(taxableMan)} 万円</td></tr>
+      <tr><th>所得税+住民税</th><td class="num">− ${f1(taxMan)} 万円</td></tr>
+      <tr><th>手取り</th><td class="num"><b>${f1(netMan)} 万円</b></td></tr>
+    </table>
+    <p>${taxableMan<=0
+      ? `勤続${years}年の退職所得控除(${f1(kojoMan)}万円)が退職金を上回るため、<b>税金はかからず額面がそのまま手取り</b>になります。`
+      : `退職金は税制優遇が大きく、額面の約${Math.round(netMan/amount*100)}%が手元に残ります。会社に「退職所得の受給に関する申告書」を出していれば、この優遇が自動で適用されます。`}</p>`;
   box.classList.add("show");
 }
 
@@ -980,6 +1248,10 @@ function calcUnemploy(){
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">「辞める」とまだ決めきれていない方へ:辞めどき診断 →</button>`;
   box.classList.add("show");
 }
+
+/* 読込時に各ツールの結果を表示(空フォーム離脱を防ぐ) */
+calcTedori();
+calcJikyu(); calcHitori(); calcCompare(); calcExitPlan(); calcTaishokukin(); calcUnemploy();
 </script>
 </body>
 </html>
