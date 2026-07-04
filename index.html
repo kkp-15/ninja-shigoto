@@ -83,6 +83,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- 共有ボタン(砦共通) -->
+<link rel="stylesheet" href="https://kkpwebninja.com/shared/fortress-share.css">
 <style>
 :root{
   --orange:#F08A3C;
@@ -599,6 +601,14 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
       </div>
     </div>
     <div class="result" id="t-result"></div>
+    <!-- 共有(B型・診断ではなく数字ツールのみ設置) -->
+    <div data-fortress-share
+         data-site="shigoto-norikae"
+         data-trigger="compare"
+         data-text-fn="shareTextCompare"
+         data-hashtags="#転職"
+         data-url="https://shigoto.kkpwebninja.com/"
+         data-label="結果をシェア"></div>
     <details class="explain">
       <summary>夜勤・交代勤務を辞めると生活はどう変わる?</summary>
       <div class="exp-body">
@@ -704,6 +714,14 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
       </div>
     </div>
     <div class="result" id="rk-result"></div>
+    <!-- 共有(B型) -->
+    <div data-fortress-share
+         data-site="shigoto-norikae"
+         data-trigger="taishokukin"
+         data-text-fn="shareTextTaishokukin"
+         data-hashtags="#退職金 #退職"
+         data-url="https://shigoto.kkpwebninja.com/"
+         data-label="結果をシェア"></div>
     <details class="explain">
       <summary>退職金に税金はいくらかかる?|退職所得控除のしくみ</summary>
       <div class="exp-body">
@@ -787,6 +805,14 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
       </div>
     </div>
     <div class="result" id="u-result"></div>
+    <!-- 共有(B型) -->
+    <div data-fortress-share
+         data-site="shigoto-norikae"
+         data-trigger="unemploy"
+         data-text-fn="shareTextUnemploy"
+         data-hashtags="#失業保険 #退職"
+         data-url="https://shigoto.kkpwebninja.com/"
+         data-label="結果をシェア"></div>
     <details class="explain">
       <summary>失業手当はいつから・いくら?|自己都合と会社都合の違い</summary>
       <div class="exp-body">
@@ -837,6 +863,13 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     <summary>計算結果はどのくらい正確?</summary>
     <div class="exp-body"><p>すべて簡易的な概算です。扶養控除・iDeCo・住宅ローン控除などの個人事情、健康保険組合ごとの料率差、雇用保険の細かい条件は反映していません。意思決定の方向性をつかむ用途で使い、正確な金額は自治体・ハローワーク・税理士等で確認してください。</p></div>
   </details>
+  <!-- 共有(D型常設・広告と同じくページ下部のみ。辞めどき診断の結果にはどの判定でも共有を出さない) -->
+  <div data-fortress-share
+       data-site="shigoto-norikae"
+       data-trigger="footer"
+       data-text="転職・退職のお金(手取り・退職金・失業手当)をぜんぶ無料で試算できる計算ツール集"
+       data-hashtags="#転職 #退職"
+       data-url="https://shigoto.kkpwebninja.com/"></div>
   <!-- ▼AdSense手動ユニット(下部1枠・KKP「広告は下部のみ」準拠 / 既存ユニット「kkpwebninja」slot=2937937957 を使用)。ローダー<script>はhead済み -->
   <div class="ad-slot">
     <ins class="adsbygoogle" style="display:block"
@@ -1122,7 +1155,7 @@ function calcCompare(){
   const shift = parseFloat(document.getElementById("t-shift").value) || 0;
   const next = parseFloat(document.getElementById("t-new").value);
   const box = document.getElementById("t-result");
-  if(!base || !next){ box.innerHTML="<p>現職の基本給と転職先の想定月収を入力してください。</p>"; box.classList.add("show"); return; }
+  if(!base || !next){ shareVals.compare = null; box.innerHTML="<p>現職の基本給と転職先の想定月収を入力してください。</p>"; box.classList.add("show"); return; }
   const nowAnnual = (base+shift)*12;
   const newAnnual = next*12;
   const rNow = netFromAnnual(nowAnnual);
@@ -1131,6 +1164,7 @@ function calcCompare(){
   const diffY = rNew.net - rNow.net;
   const sign = diffY >= 0 ? "plus" : "minus";
   const word = diffY >= 0 ? "増える" : "減る";
+  shareVals.compare = { diffM: Math.abs(diffM), word };
   box.innerHTML = `
     <p class="big"><span class="${sign}">月 ${f1(Math.abs(diffM))} 万円 ${word}</span><small>(年 ${f1(Math.abs(diffY))} 万円)</small></p>
     <table>
@@ -1149,7 +1183,7 @@ function calcTaishokukin(){
   const amount = parseFloat(document.getElementById("rk-amount").value); // 万円
   const years = parseInt(document.getElementById("rk-years").value);
   const box = document.getElementById("rk-result");
-  if(!amount || amount<=0 || !years || years<=0){ box.innerHTML="<p>退職金と勤続年数を入力してください。</p>"; box.classList.add("show"); return; }
+  if(!amount || amount<=0 || !years || years<=0){ shareVals.taishokukin = null; box.innerHTML="<p>退職金と勤続年数を入力してください。</p>"; box.classList.add("show"); return; }
   // 退職所得控除(万円): 勤続20年まで年40万(最低80万)、20年超は年70万
   const kojoMan = years <= 20 ? Math.max(80, 40*years) : 800 + 70*(years-20);
   // 課税退職所得(万円) = (退職金 - 控除) × 1/2
@@ -1168,6 +1202,7 @@ function calcTaishokukin(){
   const juminYen = taxableYen*0.10; // 住民税10%
   const taxMan = (shotokuYen + juminYen)/10000;
   const netMan = amount - taxMan;
+  shareVals.taishokukin = { amount, netMan };
   box.innerHTML = `
     <p class="big">手取り 約 ${f1(netMan)}<small> 万円</small></p>
     <table>
@@ -1233,9 +1268,10 @@ function calcUnemploy(){
   const save = parseFloat(document.getElementById("u-save").value) || 0;
   const cost = parseFloat(document.getElementById("u-cost").value) || 0;
   const box = document.getElementById("u-result");
-  if(!salary){ box.innerHTML="<p>退職前の平均月収を入力してください。</p>"; box.classList.add("show"); return; }
+  if(!salary){ shareVals.unemploy = null; box.innerHTML="<p>退職前の平均月収を入力してください。</p>"; box.classList.add("show"); return; }
 
   if(reason==="self" && years===0){
+    shareVals.unemploy = null;
     box.innerHTML = `<p class="big" style="font-size:20px;">受給できない可能性が高いです</p>
     <p>自己都合退職の場合、原則として退職前2年間に雇用保険の加入期間が通算12ヶ月以上必要です。加入1年未満の自己都合退職では基本手当を受け取れないのが一般的です。</p>`;
     box.classList.add("show"); return;
@@ -1267,6 +1303,7 @@ function calcUnemploy(){
   }
   const total = daily*days/10000;
   const monthly = daily*30/10000;
+  shareVals.unemploy = { total, monthly };
 
   let runway = "";
   if(cost>0){
@@ -1290,9 +1327,30 @@ function calcUnemploy(){
   box.classList.add("show");
 }
 
+/* ========== 共有(シェア統一標準 2026-07-04) ==========
+   辞めどき診断の結果には「残る」を含む全判定で共有を出さない(CTAと同じ配慮)。
+   文面はfortress-share.jsがクリック時にdata-text-fn経由で取得。タグはdata-hashtags側(LINEには付かない) */
+const shareVals = { compare: null, taishokukin: null, unemploy: null };
+window.shareTextCompare = function(){
+  const d = shareVals.compare;
+  if(!d) return '転職したら手取りがいくら変わるか、無料で試算できます';
+  return '【手取り比較】転職したら手取りが月' + f1(d.diffM) + '万円' + d.word + '計算だった\nあなたの場合は?';
+};
+window.shareTextTaishokukin = function(){
+  const d = shareVals.taishokukin;
+  if(!d) return '退職金の手取りを無料で試算できます';
+  return '【退職金の手取り】額面' + f1(d.amount) + '万円→手取り約' + f1(d.netMan) + '万円だった\nあなたの退職金は?';
+};
+window.shareTextUnemploy = function(){
+  const d = shareVals.unemploy;
+  if(!d) return '失業手当がいくら・いつからもらえるか、無料で試算できます';
+  return '【失業手当】もらえる総額はおよそ' + f0(d.total) + '万円(月あたり約' + f1(d.monthly) + '万円)だった\nあなたはいくら?';
+};
+
 /* 読込時に各ツールの結果を表示(空フォーム離脱を防ぐ) */
 calcTedori();
 calcJikyu(); calcHitori(); calcCompare(); calcExitPlan(); calcTaishokukin(); calcUnemploy();
 </script>
+<script src="https://kkpwebninja.com/shared/fortress-share.js" defer></script>
 </body>
 </html>
