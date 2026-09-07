@@ -339,6 +339,14 @@ footer{
   text-align:center;font-size:12px;color:var(--ink-soft);
 }
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
+
+/* 広告枠を標準サイズに固定する（2026-09-07）。
+   format="auto" だとスマホで正方形になり、誤タップを誘う。
+   高さを先に確保しておくと、読み込み時に本文が飛ばない。 */
+.kkp-ad{text-align:center;margin:1.4rem auto 0;max-width:680px;min-height:288px;padding-top:6px}
+.kkp-ad-label{font-size:11px;color:#999;letter-spacing:.08em;margin:0 0 6px;line-height:1}
+.kkp-ad ins.adsbygoogle{display:block;width:300px;height:250px;margin:0 auto}
+@media(min-width:768px){.kkp-ad{min-height:318px}.kkp-ad ins.adsbygoogle{width:336px;height:280px}}
 </style>
 </head>
 <body>
@@ -861,10 +869,11 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
        data-url="https://shigoto.kkpwebninja.com/"></div>
   <!-- ▼AdSense手動ユニット(下部1枠・KKP「広告は下部のみ」準拠 / 既存ユニット「kkpwebninja」slot=2937937957 を使用)。ローダー<script>はhead済み -->
   <div class="ad-slot">
-    <ins class="adsbygoogle" style="display:block"
-         data-ad-client="ca-pub-1298304917726270"
-         data-ad-slot="2937937957"
-         data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <div class="kkp-ad"><ins class="adsbygoogle" style="display:block"
+     data-ad-client="ca-pub-1298304917726270"
+     data-ad-slot="2937937957"
+     data-ad-format="rectangle"
+     data-full-width-responsive="false"></ins></div>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </section>
