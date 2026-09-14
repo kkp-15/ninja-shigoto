@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Remove non-public files
+        # Pages の deploy は .assetsignore を見ないので、配信しないファイルはここで消す
+        run: rm -rf CLAUDE.md CLAUDE.local.md AGENTS.md .claude .github .gitignore .assetsignore wrangler.jsonc .wrangler
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
