@@ -27,7 +27,7 @@
   "author": {"@type":"Organization","name":"web忍者の砦"},
   "publisher": {"@type":"Organization","name":"web忍者の砦"},
   "datePublished": "2026-07-02",
-  "dateModified": "2026-07-02",
+  "dateModified": "2026-09-19",
   "mainEntityOfPage": "https://shigoto.kkpwebninja.com/articles/taishokukin-tedori",
   "image": "https://shigoto.kkpwebninja.com/ogp.png"
 }
@@ -47,6 +47,9 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
+    {"@type":"Question","name":"退職金1,000万円の手取りはいくら?","acceptedAnswer":{"@type":"Answer","text":"退職金1,000万円の場合、勤続20年なら税金約15.1万円で手取り約984.9万円、勤続30年・38年なら退職所得控除の範囲内なので税金0円、1,000万円がそのまま手取りです(「退職所得の受給に関する申告書」を提出した一般の従業員の概算)。"}},
+    {"@type":"Question","name":"退職金2,000万円の手取りはいくら?","acceptedAnswer":{"@type":"Answer","text":"退職金2,000万円の場合、勤続20年なら税金約138.9万円で手取り約1,861.1万円、勤続30年なら税金約40.6万円で手取り約1,959.4万円、勤続38年なら退職所得控除の範囲内なので税金0円、2,000万円がそのまま手取りです(「退職所得の受給に関する申告書」を提出した一般の従業員の概算)。"}},
+    {"@type":"Question","name":"退職金3,000万円の手取りはいくら?","acceptedAnswer":{"@type":"Answer","text":"退職金3,000万円の場合、勤続20年なら税金約323.8万円で手取り約2,676.2万円、勤続30年なら税金約186.2万円で手取り約2,813.8万円、勤続38年なら税金約99.3万円で手取り約2,900.7万円です(「退職所得の受給に関する申告書」を提出した一般の従業員の概算)。"}},
     {"@type":"Question","name":"退職金に社会保険料はかかりますか?","acceptedAnswer":{"@type":"Answer","text":"かかりません。退職金は健康保険・厚生年金・雇用保険の保険料の対象外で、引かれるのは所得税(復興特別所得税含む)と住民税だけです。"}},
     {"@type":"Question","name":"退職金をもらったら確定申告は必要ですか?","acceptedAnswer":{"@type":"Answer","text":"「退職所得の受給に関する申告書」を会社に提出していれば、正しい税額が源泉徴収されるため原則確定申告は不要です。提出し忘れた場合は一律20.42%が源泉徴収されるので、確定申告で払い過ぎを取り戻せます。"}},
     {"@type":"Question","name":"退職金の住民税はいつ払いますか?","acceptedAnswer":{"@type":"Answer","text":"支給時に天引き(特別徴収)されます。給与の住民税と違って翌年にまとめて請求されることはありません。"}}
@@ -67,89 +70,104 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ===== 記事共通テンプレ(articles/共通。変更時は5記事すべて揃えること) ===== */
+/* ===== 記事共通テンプレ(articles/共通。変更時は5記事すべて揃えること。正本は scripts/article_style.css → scripts/apply_article_style.py で5記事へ反映) ===== */
 :root{
   --orange:#F08A3C;
   --orange-deep:#E06A20;
   --cyan:#3EB8CE;
   --coral:#F0615C;
   --green:#5BB97E;
+  --green-deep:#1F6B3F;
   --cream:#FBEFDC;
   --cream-deep:#F7E3C6;
-  --ink:#4A3B28;
-  --ink-soft:#8A7560;
-  --line:#EFD9B6;
+  --ink:#333333;
+  --ink-soft:#6B5D4D;
+  --line:#DDDDDD;
+  --band:#F1F7F2;
+  --link:#1A6FC4;
   --ok:#4E7A4E;
-  --accent:var(--green);
+  --accent:var(--green-deep);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--ink);line-height:1.9;font-size:16px;}
+body{font-family:'Noto Sans JP',sans-serif;background:#fff;color:var(--ink);line-height:1.8;font-size:16px;}
 .en{font-family:'M PLUS Rounded 1c',sans-serif;letter-spacing:.12em;}
-header.site{background:var(--cream);border-bottom:1px solid var(--line);padding:20px;text-align:center;}
+header.site{background:#fff;border-bottom:1px solid var(--line);padding:16px 20px;text-align:center;}
 header.site .brand-en{font-size:10.5px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.3em;}
 header.site .site-name{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:19px;letter-spacing:.06em;margin-top:2px;}
 header.site .site-name a{color:var(--orange-deep);text-decoration:none;}
-header.site .site-sub{font-size:11.5px;color:var(--ink-soft);}
-main{max-width:720px;margin:0 auto;padding:26px 18px 60px;}
-.breadcrumb{font-size:12px;color:var(--ink-soft);margin-bottom:16px;}
+header.site .site-sub{font-size:12px;color:var(--ink-soft);}
+main{max-width:740px;margin:0 auto;padding:22px 18px 60px;}
+.breadcrumb{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
 .breadcrumb a{color:var(--ink-soft);}
-article h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(21px,4.6vw,29px);font-weight:800;line-height:1.55;letter-spacing:.03em;color:var(--ink);margin-bottom:8px;}
-.article-meta{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;}
-.point{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:16px 18px;margin:0 0 24px;}
-.point .point-label{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:12.5px;background:var(--accent);color:#fff;border-radius:999px;padding:2px 14px 3px;margin-bottom:8px;}
-.point p{font-size:15px;font-weight:500;margin:0;}
-.toc{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:30px;font-size:14px;}
-.toc b{font-family:'M PLUS Rounded 1c',sans-serif;font-size:13px;color:var(--accent);}
-.toc ol{margin:6px 0 0 20px;}
-.toc a{color:var(--ink);text-decoration:none;}
-.toc a:hover{color:var(--accent);}
-article h2{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:20px;letter-spacing:.04em;color:var(--accent);border-bottom:3px dotted var(--line);padding-bottom:8px;margin:44px 0 16px;}
-article h3{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:16px;margin:26px 0 8px;}
-article p{margin-bottom:14px;font-size:15.5px;}
-article ul,article ol{margin:0 0 14px 22px;font-size:15.5px;}
+article h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(22px,4.6vw,29px);font-weight:800;line-height:1.5;letter-spacing:.02em;color:#222;margin-bottom:8px;}
+.article-meta{font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+article a{color:var(--link);}
+/* 色付きの角丸箱は「先に結論」の1つだけ */
+.point{background:#FFFAF0;border:1px solid #E8D5B0;border-radius:8px;padding:14px 16px;margin:0 0 20px;}
+.point .point-label{display:block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:14px;color:var(--accent);margin-bottom:4px;}
+.point p{font-size:16px;margin:0;}
+.toc{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 2px;margin-bottom:28px;font-size:15px;}
+.toc b{font-family:'M PLUS Rounded 1c',sans-serif;font-size:14px;color:var(--ink);}
+.toc ol{margin:6px 0 0 22px;}
+.toc a{color:var(--link);text-decoration:none;}
+.toc a:hover{text-decoration:underline;}
+article h2{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:22px;line-height:1.5;letter-spacing:.02em;color:var(--accent);background:var(--band);border-left:4px solid var(--accent);padding:8px 12px;margin:44px 0 16px;}
+article h3{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:18px;line-height:1.6;color:#222;border-bottom:1px solid var(--line);padding-bottom:4px;margin:30px 0 10px;}
+article p{margin-bottom:16px;font-size:16px;}
+article ul,article ol{margin:0 0 16px 24px;font-size:16px;}
 article li{margin-bottom:6px;}
-.note{font-size:12.5px;color:var(--ink-soft);}
+.note{font-size:13.5px;color:var(--ink-soft);}
 .table-wrap{overflow-x:auto;margin:14px 0 18px;}
-table.data{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border:1.5px solid var(--line);}
-table.data th{background:var(--cream-deep);font-size:13px;padding:9px 10px;text-align:left;white-space:nowrap;}
-table.data td{padding:9px 10px;border-top:1px solid var(--line);}
+table.data{width:100%;border-collapse:collapse;font-size:15px;background:#fff;border:1px solid var(--line);}
+table.data th{background:var(--band);font-size:15px;padding:9px 10px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line);}
+table.data td{padding:9px 10px;border-top:1px solid var(--line);font-size:15px;}
 table.data td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
-.example{background:#FFFDF7;border:2px dashed var(--accent);border-radius:12px;padding:16px 18px;margin:14px 0 18px;font-size:14.5px;}
-.example .ex-title{display:block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;color:var(--accent);margin-bottom:6px;}
-.example p{font-size:14.5px;margin-bottom:8px;}
+table.data td.c{text-align:center;}
+table.data th.num{text-align:right;}
+table.data th.grp{text-align:center;border-left:1px solid var(--line);}
+/* 列の多い早見表: スマホでは表の中だけ横に動かす。勤続年数の列は固定して、どの行を見ているか分かるようにする */
+table.data[data-gen] td:first-child{position:sticky;left:0;background:#fff;z-index:1;white-space:nowrap;box-shadow:1px 0 0 var(--line);}
+table.data[data-gen] tr:first-child th:first-child{position:sticky;left:0;z-index:2;box-shadow:1px 0 0 var(--line);}
+@media (max-width:700px){
+  .table-wrap:has(table[data-gen])::before{content:"表は横に動かせます";display:block;font-size:13px;color:var(--ink-soft);margin-bottom:4px;}
+}
+.example{border-left:3px solid #BBBBBB;padding:2px 0 2px 14px;margin:14px 0 18px;font-size:15px;}
+.example .ex-title{display:block;font-weight:700;color:#222;margin-bottom:4px;}
+.example p{font-size:15px;margin-bottom:8px;}
 .example p:last-child{margin-bottom:0;}
-.lines{background:#fff;border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 16px;margin:10px 0 16px;font-size:14.5px;}
+.lines{background:#F7F7F7;border-left:3px solid var(--accent);padding:10px 14px;margin:10px 0 16px;font-size:15px;}
 .timeline{margin:14px 0 18px;}
-.tstep{position:relative;padding:0 0 18px 26px;border-left:3px solid var(--accent);margin-left:8px;font-size:14.5px;}
+.tstep{position:relative;padding:0 0 18px 26px;border-left:3px solid var(--accent);margin-left:8px;font-size:15px;}
 .tstep:last-child{border-left-color:transparent;padding-bottom:0;}
 .tstep::before{content:"";position:absolute;left:-9px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--accent);border:3px solid #fff;}
-.tstep b{display:block;font-size:14.5px;}
-.toolcta{margin:24px 0;padding:18px 16px;border-radius:14px;background:#fff;border:2px solid var(--accent);}
-.toolcta p{font-size:13.5px;margin-bottom:10px;}
-.toolcta a{display:block;text-align:center;padding:13px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;letter-spacing:.08em;font-size:15px;}
-.toolcta a:hover{filter:brightness(.94);}
-.toolcta .free{font-size:11px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
-.cta{margin:24px 0;padding:16px;border-radius:14px;background:#fff;border:2px solid var(--orange);}
-.cta p{font-size:13.5px;margin-bottom:10px;}
-.cta a{display:block;text-align:center;padding:12px;border-radius:8px;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.1em;font-size:14.5px;}
+.tstep b{display:block;font-size:15px;}
+/* ツールへの導線: 罫線で区切るだけ(箱にしない) */
+.toolcta{margin:22px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.toolcta p{font-size:15px;margin-bottom:10px;}
+.toolcta a{display:inline-block;padding:10px 18px;border-radius:4px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:15.5px;}
+.toolcta a:hover{filter:brightness(1.12);}
+.toolcta .free{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;}
+.cta{margin:24px 0;padding:16px;border-radius:4px;background:#fff;border:1px solid var(--orange);}
+.cta p{font-size:14.5px;margin-bottom:10px;}
+.cta a{display:block;text-align:center;padding:12px;border-radius:4px;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.1em;font-size:15px;}
 .cta a:hover{background:var(--orange-deep);}
-.cta .cta-note{font-size:11px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
+.cta .cta-note{font-size:12px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
 .faqsec{margin-top:44px;}
-.explain{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:#fff;}
-.explain summary{cursor:pointer;padding:12px 16px;font-size:14px;font-weight:700;color:var(--accent);list-style:none;}
+.explain{border-bottom:1px solid var(--line);}
+.explain summary{cursor:pointer;padding:12px 2px;font-size:16px;font-weight:700;color:#222;list-style:none;}
 .explain summary::-webkit-details-marker{display:none;}
-.explain summary::before{content:"+ ";}
+.explain summary::before{content:"+ ";color:var(--accent);}
 .explain[open] summary::before{content:"− ";}
-.exp-body{padding:0 16px 16px;font-size:13.5px;}
-.exp-body p{margin-bottom:6px;font-size:13.5px;}
+.exp-body{padding:0 2px 14px;font-size:15px;}
+.exp-body p{margin-bottom:6px;font-size:15px;}
 .related{margin-top:44px;}
-.related a.rel-card{display:block;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;text-decoration:none;color:var(--ink);font-size:13.5px;line-height:1.7;}
-.related a.rel-card b{display:block;color:var(--accent);font-size:14.5px;}
-.related a.rel-card:hover{border-color:var(--accent);}
+.related a.rel-card{display:block;border-bottom:1px solid var(--line);padding:10px 2px;text-decoration:none;color:var(--ink);font-size:14.5px;line-height:1.7;}
+.related a.rel-card b{display:block;color:var(--link);font-size:16px;}
+.related a.rel-card:hover b{text-decoration:underline;}
 .ad-slot{margin-top:30px;text-align:center;}
 .ad-slot:empty{display:none;}
-footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12px;color:var(--ink-soft);}
+footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 </style>
 </head>
@@ -166,7 +184,7 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 
 <article>
 <h1>退職金の手取りはいくら?<br>税金の計算方法と早見表【2026年版】</h1>
-<p class="article-meta">公開日 2026年7月2日|筆者 web忍者の砦</p>
+<p class="article-meta">公開日 2026年7月2日|更新日 2026年9月19日|筆者 web忍者の砦</p>
 
 <div class="point">
   <span class="point-label">先に結論</span>
@@ -174,8 +192,8 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 </div>
 
 <div class="toolcta">
-  <p>自分の勤続年数と金額でサッと知りたい方は、計算ツールが早いです。</p>
-  <a href="/#tool-taishokukin">退職金の手取り計算ツールを使う(30秒)</a>
+  <p>自分の勤続年数と金額で知りたい方は、計算ツールに2つの数字を入れるだけで税金の内訳まで出ます。</p>
+  <a href="/#tool-taishokukin" onclick="if(typeof gtag==='function')gtag('event','xlink_tool')">自分の額で計算する(退職金の手取り計算ツール)</a>
   <p class="free">無料・登録不要・入力データは保存されません</p>
 </div>
 
@@ -186,6 +204,7 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
     <li><a href="#koujo">退職所得控除——勤続年数で決まる非課税枠</a></li>
     <li><a href="#keisan">手取り計算の3ステップと計算例</a></li>
     <li><a href="#hayami">勤続年数×退職金額の手取り早見表</a></li>
+    <li><a href="#kingaku">退職金1,000万円・2,000万円・3,000万円の手取り</a></li>
     <li><a href="#shinkokusho">「申告書」を出し忘れると2割引かれる</a></li>
     <li><a href="#tokurei">勤続5年以下の人は特例に注意</a></li>
     <li><a href="#ideco">iDeCo・企業型DCと重なると控除が減ることがある</a></li>
@@ -237,26 +256,97 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 <p class="note">※所得税は速算表(課税所得195万円以下5%、330万円以下10%−97,500円…)で計算しています。</p>
 
 <h2 id="hayami">勤続年数×退職金額の手取り早見表</h2>
-<p>よくある組み合わせの概算です(「退職所得の受給に関する申告書」提出済み・同年に他の退職金なしの前提)。</p>
+<p>勤続年数(5年刻み)と退職金の額面(500万円刻み)から、手取りと税金を引ける表です。単位はどちらも万円。左から2列目は、その勤続年数の退職所得控除(非課税枠)です。</p>
+<h3>手取りの早見表(単位:万円)</h3>
 <div class="table-wrap">
-<table class="data">
-  <tr><th>勤続年数</th><th>退職金(額面)</th><th>税金合計</th><th>手取り</th></tr>
-  <tr><td>10年</td><td class="num">300万円</td><td class="num">0円</td><td class="num">300万円</td></tr>
-  <tr><td>10年</td><td class="num">500万円</td><td class="num">約7.6万円</td><td class="num">約492万円</td></tr>
-  <tr><td>15年</td><td class="num">800万円</td><td class="num">約15.1万円</td><td class="num">約785万円</td></tr>
-  <tr><td>20年</td><td class="num">1,000万円</td><td class="num">約15.1万円</td><td class="num">約985万円</td></tr>
-  <tr><td>25年</td><td class="num">1,500万円</td><td class="num">約26.4万円</td><td class="num">約1,474万円</td></tr>
-  <tr><td>30年</td><td class="num">2,000万円</td><td class="num">約40.6万円</td><td class="num">約1,959万円</td></tr>
-  <tr><td>35年</td><td class="num">2,500万円</td><td class="num">約55.7万円</td><td class="num">約2,444万円</td></tr>
+<!-- gen:net -->
+<table class="data" data-gen="taishokukin-net">
+  <tr><th rowspan="2">勤続年数</th><th rowspan="2" class="num">控除額</th><th colspan="6" class="grp">退職金(額面)</th></tr>
+  <tr><th class="num">500万円</th><th class="num">1,000万円</th><th class="num">1,500万円</th><th class="num">2,000万円</th><th class="num">2,500万円</th><th class="num">3,000万円</th></tr>
+  <tr><td>5年(※)</td><td class="num">200</td><td class="num">477.3</td><td class="num">845.9</td><td class="num">1,154.4</td><td class="num">1,435.9</td><td class="num">1,692.4</td><td class="num">1,938.2</td></tr>
+  <tr><td>10年</td><td class="num">400</td><td class="num">492.4</td><td class="num">949.3</td><td class="num">1,376.3</td><td class="num">1,797.1</td><td class="num">2,198.0</td><td class="num">2,588.8</td></tr>
+  <tr><td>15年</td><td class="num">600</td><td class="num">500.0</td><td class="num">969.5</td><td class="num">1,406.8</td><td class="num">1,830.6</td><td class="num">2,241.7</td><td class="num">2,632.5</td></tr>
+  <tr><td>20年</td><td class="num">800</td><td class="num">500.0</td><td class="num">984.9</td><td class="num">1,437.2</td><td class="num">1,861.1</td><td class="num">2,280.3</td><td class="num">2,676.2</td></tr>
+  <tr><td>25年</td><td class="num">1,150</td><td class="num">500.0</td><td class="num">1,000.0</td><td class="num">1,473.6</td><td class="num">1,914.4</td><td class="num">2,338.3</td><td class="num">2,752.7</td></tr>
+  <tr><td>30年</td><td class="num">1,500</td><td class="num">500.0</td><td class="num">1,000.0</td><td class="num">1,500.0</td><td class="num">1,959.4</td><td class="num">2,391.5</td><td class="num">2,813.8</td></tr>
+  <tr><td>35年</td><td class="num">1,850</td><td class="num">500.0</td><td class="num">1,000.0</td><td class="num">1,500.0</td><td class="num">1,988.7</td><td class="num">2,444.3</td><td class="num">2,868.7</td></tr>
+  <tr><td>40年</td><td class="num">2,200</td><td class="num">500.0</td><td class="num">1,000.0</td><td class="num">1,500.0</td><td class="num">2,000.0</td><td class="num">2,477.3</td><td class="num">2,922.0</td></tr>
 </table>
+<!-- /gen:net -->
 </div>
-<p>どのケースも手取り率は97%以上。「退職金は半分くらい税金で持っていかれるのでは」という心配は、ほとんどの場合不要です。</p>
+<h3>税金(所得税+住民税)の早見表(単位:万円)</h3>
+<div class="table-wrap">
+<!-- gen:tax -->
+<table class="data" data-gen="taishokukin-tax">
+  <tr><th rowspan="2">勤続年数</th><th rowspan="2" class="num">控除額</th><th colspan="6" class="grp">退職金(額面)</th></tr>
+  <tr><th class="num">500万円</th><th class="num">1,000万円</th><th class="num">1,500万円</th><th class="num">2,000万円</th><th class="num">2,500万円</th><th class="num">3,000万円</th></tr>
+  <tr><td>5年(※)</td><td class="num">200</td><td class="num">22.7</td><td class="num">154.1</td><td class="num">345.6</td><td class="num">564.1</td><td class="num">807.6</td><td class="num">1,061.8</td></tr>
+  <tr><td>10年</td><td class="num">400</td><td class="num">7.6</td><td class="num">50.7</td><td class="num">123.7</td><td class="num">202.9</td><td class="num">302.0</td><td class="num">411.2</td></tr>
+  <tr><td>15年</td><td class="num">600</td><td class="num">0</td><td class="num">30.5</td><td class="num">93.2</td><td class="num">169.4</td><td class="num">258.3</td><td class="num">367.5</td></tr>
+  <tr><td>20年</td><td class="num">800</td><td class="num">0</td><td class="num">15.1</td><td class="num">62.8</td><td class="num">138.9</td><td class="num">219.7</td><td class="num">323.8</td></tr>
+  <tr><td>25年</td><td class="num">1,150</td><td class="num">0</td><td class="num">0</td><td class="num">26.4</td><td class="num">85.6</td><td class="num">161.7</td><td class="num">247.3</td></tr>
+  <tr><td>30年</td><td class="num">1,500</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">40.6</td><td class="num">108.5</td><td class="num">186.2</td></tr>
+  <tr><td>35年</td><td class="num">1,850</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">11.3</td><td class="num">55.7</td><td class="num">131.3</td></tr>
+  <tr><td>40年</td><td class="num">2,200</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">22.7</td><td class="num">78.0</td></tr>
+</table>
+<!-- /gen:tax -->
+</div>
+<p class="note">表の前提:会社に「退職所得の受給に関する申告書」を提出済み/役員等(会社役員・議員・公務員)で勤続5年以下の場合を除く/同じ年や前年以前に他の退職金・iDeCo等の一時金を受け取っていない/障害退職の加算なし。所得税は復興特別所得税(2.1%)を含み1円未満切り捨て、住民税は10%(市町村民税6%・道府県民税4%をそれぞれ100円未満切り捨て)。万円未満は小数第1位に四捨五入しています。<br>
+(※)勤続5年の行は「短期退職手当等」の計算です。勤続5年以下の従業員は、控除を引いた残りのうち300万円を超える部分に1/2課税が適用されません(くわしくは<a href="#tokurei">勤続5年以下の人は特例に注意</a>)。<br>
+出典:国税庁タックスアンサー <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732.htm" rel="noopener" target="_blank">No.2732 退職手当等に対する源泉徴収</a>・<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/gensen/2732_besshi.htm" rel="noopener" target="_blank">別紙 退職所得の源泉徴収税額の速算表</a>・<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1420.htm" rel="noopener" target="_blank">No.1420 退職金を受け取ったとき</a>(いずれも令和8年4月1日現在法令等)、総務省「<a href="https://www.soumu.go.jp/main_sosiki/jichi_zeisei/czaisei/65871.html" rel="noopener" target="_blank">退職所得に対する住民税の特別徴収について</a>」。確認日 2026年9月19日。</p>
+<p>表の右上ほど(勤続が短く、金額が大きいほど)税金が増えます。勤続30年以上なら、退職金3,000万円でも手取りは額面の93%以上。一方、勤続10年で3,000万円だと約86%まで下がります。勤続年数が1年違うだけで控除が40万〜70万円変わるので、表の間にある方はツールで確かめてください。</p>
 
 <div class="toolcta">
-  <p>表にない組み合わせは、ツールに勤続年数と金額を入れるだけで税金の内訳まで出せます。</p>
-  <a href="/#tool-taishokukin">自分の条件で手取りを計算する</a>
+  <p>表にない組み合わせ(勤続23年・1,800万円など)も、ツールなら勤続1年刻み・金額50万円刻みで出せます。計算式はこの表と同じです。</p>
+  <a href="/#tool-taishokukin" onclick="if(typeof gtag==='function')gtag('event','xlink_tool')">自分の額で計算する(退職金の手取り計算ツール)</a>
   <p class="free">無料・登録不要・入力データは保存されません</p>
 </div>
+
+<h2 id="kingaku">退職金1,000万円・2,000万円・3,000万円の手取り</h2>
+<p>金額を決めて知りたい方向けに、勤続20年・30年・38年(大卒で定年まで勤めた場合の目安)の3ケースを1円単位で出しました。前提は上の早見表と同じです。</p>
+<h3>退職金1,000万円の手取りはいくら?</h3>
+<p><!-- gen:s-1000 -->
+退職金1,000万円の場合、勤続20年なら税金約15.1万円で手取り約984.9万円、勤続30年・38年なら退職所得控除の範囲内なので税金0円、1,000万円がそのまま手取りです(「退職所得の受給に関する申告書」を提出した一般の従業員の概算)。
+<!-- /gen:s-1000 --></p>
+<div class="table-wrap">
+<!-- gen:case-1000 -->
+<table class="data" data-gen="taishokukin-case-1000">
+  <tr><th>勤続年数</th><th>控除額</th><th>課税退職所得</th><th>所得税(復興税込み)</th><th>住民税</th><th>税金合計</th><th>手取り</th></tr>
+  <tr><td>20年</td><td class="num">800万円</td><td class="num">100万円</td><td class="num">51,050円</td><td class="num">100,000円</td><td class="num">151,050円</td><td class="num"><b>9,848,950円</b></td></tr>
+  <tr><td>30年</td><td class="num">1,500万円</td><td class="num">0万円</td><td class="num">0円</td><td class="num">0円</td><td class="num">0円</td><td class="num"><b>10,000,000円</b></td></tr>
+  <tr><td>38年</td><td class="num">2,060万円</td><td class="num">0万円</td><td class="num">0円</td><td class="num">0円</td><td class="num">0円</td><td class="num"><b>10,000,000円</b></td></tr>
+</table>
+<!-- /gen:case-1000 -->
+</div>
+<h3>退職金2,000万円の手取りはいくら?</h3>
+<p><!-- gen:s-2000 -->
+退職金2,000万円の場合、勤続20年なら税金約138.9万円で手取り約1,861.1万円、勤続30年なら税金約40.6万円で手取り約1,959.4万円、勤続38年なら退職所得控除の範囲内なので税金0円、2,000万円がそのまま手取りです(「退職所得の受給に関する申告書」を提出した一般の従業員の概算)。
+<!-- /gen:s-2000 --></p>
+<div class="table-wrap">
+<!-- gen:case-2000 -->
+<table class="data" data-gen="taishokukin-case-2000">
+  <tr><th>勤続年数</th><th>控除額</th><th>課税退職所得</th><th>所得税(復興税込み)</th><th>住民税</th><th>税金合計</th><th>手取り</th></tr>
+  <tr><td>20年</td><td class="num">800万円</td><td class="num">600万円</td><td class="num">788,722円</td><td class="num">600,000円</td><td class="num">1,388,722円</td><td class="num"><b>18,611,278円</b></td></tr>
+  <tr><td>30年</td><td class="num">1,500万円</td><td class="num">250万円</td><td class="num">155,702円</td><td class="num">250,000円</td><td class="num">405,702円</td><td class="num"><b>19,594,298円</b></td></tr>
+  <tr><td>38年</td><td class="num">2,060万円</td><td class="num">0万円</td><td class="num">0円</td><td class="num">0円</td><td class="num">0円</td><td class="num"><b>20,000,000円</b></td></tr>
+</table>
+<!-- /gen:case-2000 -->
+</div>
+<h3>退職金3,000万円の手取りはいくら?</h3>
+<p><!-- gen:s-3000 -->
+退職金3,000万円の場合、勤続20年なら税金約323.8万円で手取り約2,676.2万円、勤続30年なら税金約186.2万円で手取り約2,813.8万円、勤続38年なら税金約99.3万円で手取り約2,900.7万円です(「退職所得の受給に関する申告書」を提出した一般の従業員の概算)。
+<!-- /gen:s-3000 --></p>
+<div class="table-wrap">
+<!-- gen:case-3000 -->
+<table class="data" data-gen="taishokukin-case-3000">
+  <tr><th>勤続年数</th><th>控除額</th><th>課税退職所得</th><th>所得税(復興税込み)</th><th>住民税</th><th>税金合計</th><th>手取り</th></tr>
+  <tr><td>20年</td><td class="num">800万円</td><td class="num">1,100万円</td><td class="num">2,137,974円</td><td class="num">1,100,000円</td><td class="num">3,237,974円</td><td class="num"><b>26,762,026円</b></td></tr>
+  <tr><td>30年</td><td class="num">1,500万円</td><td class="num">750万円</td><td class="num">1,111,869円</td><td class="num">750,000円</td><td class="num">1,861,869円</td><td class="num"><b>28,138,131円</b></td></tr>
+  <tr><td>38年</td><td class="num">2,060万円</td><td class="num">470万円</td><td class="num">523,262円</td><td class="num">470,000円</td><td class="num">993,262円</td><td class="num"><b>29,006,738円</b></td></tr>
+</table>
+<!-- /gen:case-3000 -->
+</div>
+<p>同じ3,000万円でも、勤続20年と38年では税金が200万円以上違います。差を生んでいるのは税率ではなく、勤続年数で決まる控除額です。</p>
 
 <h2 id="shinkokusho">「申告書」を出し忘れると2割引かれる</h2>
 <p>ここまでの優遇を受けるための唯一の手続きが、<b>「退職所得の受給に関する申告書」を会社に提出する</b>ことです。通常は退職手続きの書類一式に含まれていて、書いて出すだけ。提出していれば会社が正しい税額で源泉徴収してくれるので、<b>原則確定申告も不要</b>です。</p>
@@ -314,7 +404,7 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 <p>退職金の手取りが見えたら、次に気になるのは「辞めたあと、毎月いくらで何ヶ月もつか」。失業手当の金額と開始時期も先に把握しておくと、資金計画がぐっと立てやすくなります。</p>
 <div class="toolcta">
   <p>退職前6ヶ月の月収と勤続年数から、失業手当の総額と受給スケジュールを概算できます。</p>
-  <a href="/#tool-unemploy">失業手当シミュレーターを使う</a>
+  <a href="/#tool-unemploy" onclick="if(typeof gtag==='function')gtag('event','xlink_tool')">失業手当シミュレーターを使う</a>
   <p class="free">無料・登録不要・入力データは保存されません</p>
 </div>
 
@@ -352,7 +442,7 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 </main>
 
 <footer>
-  <p class="disclaimer">※ 本記事の内容は2026年7月時点の制度・税率に基づく一般的な解説です。計算例・早見表はすべて簡易的な概算で、個人の状況(他の所得・控除・受け取り方など)により実際の金額は変わります。正確な金額は勤務先・税務署・税理士等にご確認ください。当サイトにはプロモーションが含まれます。</p>
+  <p class="disclaimer">※ 本記事の内容は2026年9月時点の制度・税率に基づく一般的な解説です(国税庁タックスアンサーを2026年9月19日に確認)。計算例・早見表はすべて簡易的な概算で、個人の状況(他の所得・控除・受け取り方など)により実際の金額は変わります。正確な金額は勤務先・税務署・税理士等にご確認ください。当サイトにはプロモーションが含まれます。</p>
   <p class="en">SHIGOTO TRANSIT GUIDE &copy; 2026 KKP</p>
 </footer>
 

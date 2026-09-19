@@ -27,7 +27,7 @@
   "author": {"@type":"Organization","name":"web忍者の砦"},
   "publisher": {"@type":"Organization","name":"web忍者の砦"},
   "datePublished": "2026-07-02",
-  "dateModified": "2026-07-02",
+  "dateModified": "2026-09-19",
   "mainEntityOfPage": "https://shigoto.kkpwebninja.com/articles/taishoku-daiko-bengoshi",
   "image": "https://shigoto.kkpwebninja.com/ogp.png"
 }
@@ -67,90 +67,104 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ===== 記事共通テンプレ(articles/共通。変更時は5記事すべて揃えること) ===== */
+/* ===== 記事共通テンプレ(articles/共通。変更時は5記事すべて揃えること。正本は scripts/article_style.css → scripts/apply_article_style.py で5記事へ反映) ===== */
 :root{
   --orange:#F08A3C;
   --orange-deep:#E06A20;
   --cyan:#3EB8CE;
   --coral:#F0615C;
   --green:#5BB97E;
+  --green-deep:#1F6B3F;
   --cream:#FBEFDC;
   --cream-deep:#F7E3C6;
-  --ink:#4A3B28;
-  --ink-soft:#8A7560;
-  --line:#EFD9B6;
+  --ink:#333333;
+  --ink-soft:#6B5D4D;
+  --line:#DDDDDD;
+  --band:#F1F7F2;
+  --link:#1A6FC4;
   --ok:#4E7A4E;
-  --accent:var(--green);
+  --accent:var(--green-deep);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
-body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--ink);line-height:1.9;font-size:16px;}
+body{font-family:'Noto Sans JP',sans-serif;background:#fff;color:var(--ink);line-height:1.8;font-size:16px;}
 .en{font-family:'M PLUS Rounded 1c',sans-serif;letter-spacing:.12em;}
-header.site{background:var(--cream);border-bottom:1px solid var(--line);padding:20px;text-align:center;}
+header.site{background:#fff;border-bottom:1px solid var(--line);padding:16px 20px;text-align:center;}
 header.site .brand-en{font-size:10.5px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.3em;}
 header.site .site-name{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:19px;letter-spacing:.06em;margin-top:2px;}
 header.site .site-name a{color:var(--orange-deep);text-decoration:none;}
-header.site .site-sub{font-size:11.5px;color:var(--ink-soft);}
-main{max-width:720px;margin:0 auto;padding:26px 18px 60px;}
-.breadcrumb{font-size:12px;color:var(--ink-soft);margin-bottom:16px;}
+header.site .site-sub{font-size:12px;color:var(--ink-soft);}
+main{max-width:740px;margin:0 auto;padding:22px 18px 60px;}
+.breadcrumb{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
 .breadcrumb a{color:var(--ink-soft);}
-article h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(21px,4.6vw,29px);font-weight:800;line-height:1.55;letter-spacing:.03em;color:var(--ink);margin-bottom:8px;}
-.article-meta{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;}
-.point{background:#fff;border:2px solid var(--accent);border-radius:14px;padding:16px 18px;margin:0 0 24px;}
-.point .point-label{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:12.5px;background:var(--accent);color:#fff;border-radius:999px;padding:2px 14px 3px;margin-bottom:8px;}
-.point p{font-size:15px;font-weight:500;margin:0;}
-.toc{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:14px 18px;margin-bottom:30px;font-size:14px;}
-.toc b{font-family:'M PLUS Rounded 1c',sans-serif;font-size:13px;color:var(--accent);}
-.toc ol{margin:6px 0 0 20px;}
-.toc a{color:var(--ink);text-decoration:none;}
-.toc a:hover{color:var(--accent);}
-article h2{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:20px;letter-spacing:.04em;color:var(--accent);border-bottom:3px dotted var(--line);padding-bottom:8px;margin:44px 0 16px;}
-article h3{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:16px;margin:26px 0 8px;}
-article p{margin-bottom:14px;font-size:15.5px;}
-article ul,article ol{margin:0 0 14px 22px;font-size:15.5px;}
+article h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(22px,4.6vw,29px);font-weight:800;line-height:1.5;letter-spacing:.02em;color:#222;margin-bottom:8px;}
+.article-meta{font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+article a{color:var(--link);}
+/* 色付きの角丸箱は「先に結論」の1つだけ */
+.point{background:#FFFAF0;border:1px solid #E8D5B0;border-radius:8px;padding:14px 16px;margin:0 0 20px;}
+.point .point-label{display:block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:14px;color:var(--accent);margin-bottom:4px;}
+.point p{font-size:16px;margin:0;}
+.toc{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 2px;margin-bottom:28px;font-size:15px;}
+.toc b{font-family:'M PLUS Rounded 1c',sans-serif;font-size:14px;color:var(--ink);}
+.toc ol{margin:6px 0 0 22px;}
+.toc a{color:var(--link);text-decoration:none;}
+.toc a:hover{text-decoration:underline;}
+article h2{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:22px;line-height:1.5;letter-spacing:.02em;color:var(--accent);background:var(--band);border-left:4px solid var(--accent);padding:8px 12px;margin:44px 0 16px;}
+article h3{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:18px;line-height:1.6;color:#222;border-bottom:1px solid var(--line);padding-bottom:4px;margin:30px 0 10px;}
+article p{margin-bottom:16px;font-size:16px;}
+article ul,article ol{margin:0 0 16px 24px;font-size:16px;}
 article li{margin-bottom:6px;}
-.note{font-size:12.5px;color:var(--ink-soft);}
+.note{font-size:13.5px;color:var(--ink-soft);}
 .table-wrap{overflow-x:auto;margin:14px 0 18px;}
-table.data{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border:1.5px solid var(--line);}
-table.data th{background:var(--cream-deep);font-size:13px;padding:9px 10px;text-align:left;white-space:nowrap;}
-table.data td{padding:9px 10px;border-top:1px solid var(--line);}
+table.data{width:100%;border-collapse:collapse;font-size:15px;background:#fff;border:1px solid var(--line);}
+table.data th{background:var(--band);font-size:15px;padding:9px 10px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line);}
+table.data td{padding:9px 10px;border-top:1px solid var(--line);font-size:15px;}
 table.data td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
 table.data td.c{text-align:center;}
-.example{background:#FFFDF7;border:2px dashed var(--accent);border-radius:12px;padding:16px 18px;margin:14px 0 18px;font-size:14.5px;}
-.example .ex-title{display:block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;color:var(--accent);margin-bottom:6px;}
-.example p{font-size:14.5px;margin-bottom:8px;}
+table.data th.num{text-align:right;}
+table.data th.grp{text-align:center;border-left:1px solid var(--line);}
+/* 列の多い早見表: スマホでは表の中だけ横に動かす。勤続年数の列は固定して、どの行を見ているか分かるようにする */
+table.data[data-gen] td:first-child{position:sticky;left:0;background:#fff;z-index:1;white-space:nowrap;box-shadow:1px 0 0 var(--line);}
+table.data[data-gen] tr:first-child th:first-child{position:sticky;left:0;z-index:2;box-shadow:1px 0 0 var(--line);}
+@media (max-width:700px){
+  .table-wrap:has(table[data-gen])::before{content:"表は横に動かせます";display:block;font-size:13px;color:var(--ink-soft);margin-bottom:4px;}
+}
+.example{border-left:3px solid #BBBBBB;padding:2px 0 2px 14px;margin:14px 0 18px;font-size:15px;}
+.example .ex-title{display:block;font-weight:700;color:#222;margin-bottom:4px;}
+.example p{font-size:15px;margin-bottom:8px;}
 .example p:last-child{margin-bottom:0;}
-.lines{background:#fff;border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:12px 16px;margin:10px 0 16px;font-size:14.5px;}
+.lines{background:#F7F7F7;border-left:3px solid var(--accent);padding:10px 14px;margin:10px 0 16px;font-size:15px;}
 .timeline{margin:14px 0 18px;}
-.tstep{position:relative;padding:0 0 18px 26px;border-left:3px solid var(--accent);margin-left:8px;font-size:14.5px;}
+.tstep{position:relative;padding:0 0 18px 26px;border-left:3px solid var(--accent);margin-left:8px;font-size:15px;}
 .tstep:last-child{border-left-color:transparent;padding-bottom:0;}
 .tstep::before{content:"";position:absolute;left:-9px;top:4px;width:15px;height:15px;border-radius:50%;background:var(--accent);border:3px solid #fff;}
-.tstep b{display:block;font-size:14.5px;}
-.toolcta{margin:24px 0;padding:18px 16px;border-radius:14px;background:#fff;border:2px solid var(--accent);}
-.toolcta p{font-size:13.5px;margin-bottom:10px;}
-.toolcta a{display:block;text-align:center;padding:13px;border-radius:10px;background:var(--accent);color:#fff;text-decoration:none;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;letter-spacing:.08em;font-size:15px;}
-.toolcta a:hover{filter:brightness(.94);}
-.toolcta .free{font-size:11px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
-.cta{margin:24px 0;padding:16px;border-radius:14px;background:#fff;border:2px solid var(--orange);}
-.cta p{font-size:13.5px;margin-bottom:10px;}
-.cta a{display:block;text-align:center;padding:12px;border-radius:8px;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.1em;font-size:14.5px;}
+.tstep b{display:block;font-size:15px;}
+/* ツールへの導線: 罫線で区切るだけ(箱にしない) */
+.toolcta{margin:22px 0;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.toolcta p{font-size:15px;margin-bottom:10px;}
+.toolcta a{display:inline-block;padding:10px 18px;border-radius:4px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:15.5px;}
+.toolcta a:hover{filter:brightness(1.12);}
+.toolcta .free{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;}
+.cta{margin:24px 0;padding:16px;border-radius:4px;background:#fff;border:1px solid var(--orange);}
+.cta p{font-size:14.5px;margin-bottom:10px;}
+.cta a{display:block;text-align:center;padding:12px;border-radius:4px;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.1em;font-size:15px;}
 .cta a:hover{background:var(--orange-deep);}
-.cta .cta-note{font-size:11px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
+.cta .cta-note{font-size:12px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
 .faqsec{margin-top:44px;}
-.explain{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:#fff;}
-.explain summary{cursor:pointer;padding:12px 16px;font-size:14px;font-weight:700;color:var(--accent);list-style:none;}
+.explain{border-bottom:1px solid var(--line);}
+.explain summary{cursor:pointer;padding:12px 2px;font-size:16px;font-weight:700;color:#222;list-style:none;}
 .explain summary::-webkit-details-marker{display:none;}
-.explain summary::before{content:"+ ";}
+.explain summary::before{content:"+ ";color:var(--accent);}
 .explain[open] summary::before{content:"− ";}
-.exp-body{padding:0 16px 16px;font-size:13.5px;}
-.exp-body p{margin-bottom:6px;font-size:13.5px;}
+.exp-body{padding:0 2px 14px;font-size:15px;}
+.exp-body p{margin-bottom:6px;font-size:15px;}
 .related{margin-top:44px;}
-.related a.rel-card{display:block;background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:10px;text-decoration:none;color:var(--ink);font-size:13.5px;line-height:1.7;}
-.related a.rel-card b{display:block;color:var(--accent);font-size:14.5px;}
-.related a.rel-card:hover{border-color:var(--accent);}
+.related a.rel-card{display:block;border-bottom:1px solid var(--line);padding:10px 2px;text-decoration:none;color:var(--ink);font-size:14.5px;line-height:1.7;}
+.related a.rel-card b{display:block;color:var(--link);font-size:16px;}
+.related a.rel-card:hover b{text-decoration:underline;}
 .ad-slot{margin-top:30px;text-align:center;}
 .ad-slot:empty{display:none;}
-footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12px;color:var(--ink-soft);}
+footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 </style>
 </head>
@@ -167,11 +181,17 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 
 <article>
 <h1>退職代行は弁護士と民間どっち?<br>違い・料金相場・失敗しない選び方</h1>
-<p class="article-meta">公開日 2026年7月2日|筆者 web忍者の砦</p>
+<p class="article-meta">公開日 2026年7月2日|更新日 2026年9月19日|筆者 web忍者の砦</p>
 
 <div class="point">
   <span class="point-label">先に結論</span>
   <p>退職代行の違いはひとことで言えば<b>「会社と交渉できるかどうか」</b>です。退職の意思を伝えてもらうだけなら民間・労働組合で足ります。<b>未払い賃金の請求、ハラスメントへの対応、損害賠償の話——法律ごとが1つでも絡むなら弁護士一択</b>。高い方が偉いのではなく、状況で決めるのが正解です。</p>
+</div>
+
+<div class="toolcta">
+  <p>辞めるかどうか自体をまだ迷っている段階なら、先に6問の診断で気持ちを整理できます。「いまは残って土台を固める時期」という結果も出ます。</p>
+  <a href="/#tool-quiz" onclick="if(typeof gtag==='function')gtag('event','xlink_tool')">辞めどき診断を使う(6問)</a>
+  <p class="free">無料・登録不要・入力データは保存されません</p>
 </div>
 
 <div class="toc">
@@ -281,7 +301,7 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 <p>代行を使うかどうかに関わらず、辞めたあとの生活費の計算は必要です。失業手当の金額と受給開始時期、退職日の設定による社会保険の違いは、先に数字で押さえておきましょう。</p>
 <div class="toolcta">
   <p>退職前6ヶ月の月収から、失業手当の総額と「何ヶ月もつか」を概算できます。</p>
-  <a href="/#tool-unemploy">失業手当シミュレーターを使う(30秒)</a>
+  <a href="/#tool-unemploy" onclick="if(typeof gtag==='function')gtag('event','xlink_tool')">失業手当シミュレーターを使う(30秒)</a>
   <p class="free">無料・登録不要・入力データは保存されません</p>
 </div>
 
