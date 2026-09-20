@@ -162,8 +162,12 @@ table.data[data-gen] tr:first-child th:first-child{position:sticky;left:0;z-inde
 .related a.rel-card{display:block;border-bottom:1px solid var(--line);padding:10px 2px;text-decoration:none;color:var(--ink);font-size:14.5px;line-height:1.7;}
 .related a.rel-card b{display:block;color:var(--link);font-size:16px;}
 .related a.rel-card:hover b{text-decoration:underline;}
-.ad-slot{margin-top:30px;text-align:center;}
+.ad-slot{margin-top:30px;text-align:center;min-height:288px;}
 .ad-slot:empty{display:none;}
+/* 砦の標準サイズ（スマホ300x250 / PC336x280）。auto のままだと幅が取れず 0x0 で配信されない（2026-09-20 実測） */
+.ad-slot ins.adsbygoogle{display:block;width:300px;height:250px;margin:0 auto;}
+.ad-label{font-size:11px;color:#8a7d6d;letter-spacing:.08em;margin:0 0 6px;text-align:left;}
+@media(min-width:768px){.ad-slot{min-height:318px;}.ad-slot ins.adsbygoogle{width:336px;height:280px;}}
 footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 </style>
@@ -329,10 +333,11 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 
 <!-- ▼AdSense(記事下部1枠のみ・KKP「広告は下部のみ」準拠) -->
 <div class="ad-slot">
+  <div class="ad-label">広告</div>
   <ins class="adsbygoogle" style="display:block"
        data-ad-client="ca-pub-1298304917726270"
        data-ad-slot="2937937957"
-       data-ad-format="auto" data-full-width-responsive="true"></ins>
+       data-ad-format="rectangle" data-full-width-responsive="false"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 </article>
