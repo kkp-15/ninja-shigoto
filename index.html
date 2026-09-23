@@ -347,6 +347,22 @@ footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 .kkp-ad-label{font-size:11px;color:#999;letter-spacing:.08em;margin:0 0 6px;line-height:1}
 .kkp-ad ins.adsbygoogle{display:block;width:300px;height:250px;margin:0 auto}
 @media(min-width:768px){.kkp-ad{min-height:318px}.kkp-ad ins.adsbygoogle{width:336px;height:280px}}
+
+/* 見た目の調整（2026-09-24・AIっぽさを消す）
+   クリーム全面の地・英字の小見出し・吹き出し・影・ピル型の選択肢をやめる。駅に見立てた色分けは残す。元のルールは上に残し上書き。 */
+body { background: #fff; }
+.brand-en { display: none; }
+header { background: #fff; border-bottom: 1px solid #eadfcd; }
+.tab-hint { border-radius: 6px; }
+.tab-hint::after, .tab-hint::before { display: none; }
+.station { box-shadow: none; border-radius: 8px; }
+.tool { box-shadow: none; border-radius: 8px; }
+.result { border-radius: 6px; }
+.chip { border-radius: 4px; }
+.innerlink { border-radius: 6px; }
+.article-card { box-shadow: none; border-radius: 6px; }
+.fs-share { background: #fff; border-radius: 6px; }
+.fs-btn { box-shadow: none; border-radius: 6px; }
 </style>
 </head>
 <body>
