@@ -77,10 +77,14 @@ function toolNetMan(amountMan, years) {
   if (!m) throw new Error("index.html に calcTaishokukin が見つからない");
   const els = { "rk-amount": { value: String(amountMan) }, "rk-years": { value: String(years) }, "rk-result": { innerHTML: "", classList: { add() {} } } };
   const document = { getElementById: (id) => els[id] };
-  const shareVals = {};
+  const out = {};
   const f1 = (n) => (Math.round(n * 10) / 10).toLocaleString("ja-JP", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  new Function("document", "shareVals", "f1", m[0] + "calcTaishokukin();")(document, shareVals, f1);
-  return shareVals.taishokukin.netMan;
+  // 関数本体は触らず、手取り(netMan)を計算した直後で値を受け取る
+  const hook = "const netMan = amount - taxMan;";
+  if (!m[0].includes(hook)) throw new Error("calcTaishokukin に netMan の計算行が見つからない");
+  const body = m[0].replace(hook, hook + " __out.netMan = netMan;");
+  new Function("document", "__out", "f1", body + "calcTaishokukin();")(document, out, f1);
+  return out.netMan;
 }
 
 const yen = (n) => n.toLocaleString("ja-JP") + "円";
