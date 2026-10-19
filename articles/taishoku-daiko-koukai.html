@@ -55,6 +55,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- D4_KIT_START（scripts/apply_article_style.py が書く。手で直さない） -->
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Syuku&family=RocknRoll+One&display=swap&text=%28%29.0123456789%E3%80%81%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8B%E3%81%8C%E3%81%8D%E3%81%91%E3%81%93%E3%81%94%E3%81%97%E3%81%99%E3%81%9B%E3%81%9D%E3%81%9F%E3%81%A0%E3%81%A3%E3%81%A4%E3%81%A6%E3%81%A7%E3%81%A8%E3%81%A9%E3%81%AA%E3%81%AB%E3%81%AE%E3%81%AF%E3%81%BE%E3%81%BF%E3%82%80%E3%82%81%E3%82%82%E3%82%89%E3%82%8A%E3%82%8B%E3%82%8C%E3%82%8F%E3%82%92%E3%82%93%E3%82%A7%E3%82%AF%E3%82%B7%E3%82%B9%E3%82%BF%E3%83%81%E3%83%83%E3%83%88%E3%83%9F%E3%83%A5%E3%83%AA%E3%83%AC%E3%83%BC%E4%B9%97%E4%BA%8B%E4%BA%A4%E4%BB%A3%E4%BC%9D%E4%BD%BF%E5%85%88%E5%86%85%E5%88%86%E5%88%9D%E5%89%8D%E5%8F%97%E5%95%8F%E5%A3%AB%E5%A4%B1%E5%A5%91%E5%AE%9F%E5%BC%81%E5%BD%93%E5%BE%8C%E5%BF%85%E6%82%94%E6%89%8B%E6%96%AD%E6%9C%80%E6%9C%9F%E6%A1%88%E6%A5%AD%E6%B1%BA%E6%B3%95%E6%B8%89%E7%90%86%E7%94%B1%E7%96%91%E7%A2%BA%E7%A5%A8%E7%A7%92%E7%B4%84%E7%B5%90%E7%B5%A1%E8%80%85%E8%81%B7%E8%87%AA%E8%A1%8C%E8%A6%81%E8%A8%98%E8%A8%BA%E8%AA%AD%E8%AB%96%E8%AD%B7%E8%BE%9E%E9%80%80%E9%81%95%E9%96%93%E9%9B%A2%E9%A0%BC%EF%BC%9F" rel="stylesheet">
+<!-- 共通部品 D4（kkp-kit を kit/ にコピーしたもの。中は手で直さず kkp-kit 側で直して sync.sh） -->
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js" defer></script>
+<!-- D4_KIT_END -->
 <style>
 /* ===== 記事共通テンプレ(articles/共通。変更時は5記事すべて揃えること。正本は scripts/article_style.css → scripts/apply_article_style.py で5記事へ反映) ===== */
 :root{
@@ -167,9 +173,41 @@ table.kv td .src{display:block;font-size:12.5px;color:var(--ink-soft);margin-top
 table.data td.mark{text-align:center;white-space:nowrap;}
 footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
+/* ===== 2026-10-19 共通部品 D4（ストリート和忍者）に見た目をそろえる（トップ c97ef90 と同じ控えめな入れ方） =====
+   見出しを筆・墨のふち・道しるべ・和紙の地だけ。本文の書体（Noto Sans JP）・本文・数字・出典・
+   アフィリエイトの枠（.cta / .prlink / PR 表記 / 計測img）・広告の位置・GA4・JSON-LD・title は変えない。 */
+body.k-page{background:var(--k-surface) url(/kit/img/d4-washi.webp) 0 0/320px auto;color:var(--ink);font-family:'Noto Sans JP',sans-serif;font-size:16px;line-height:1.8;}
+header.site{background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border-bottom:var(--k-bw) solid var(--k-sumi);}
+header.site .site-name{font-family:var(--k-brush);font-weight:400;font-size:21px;letter-spacing:.12em;font-feature-settings:"palt" 1;}
+header.site .site-name a{color:var(--k-sumi);}
+article h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.06em;color:var(--k-sumi);font-feature-settings:"palt" 1;}
+article h2{font-family:var(--k-brush);font-weight:400;letter-spacing:.08em;color:var(--k-sumi);background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border:var(--k-bw-s) solid var(--k-sumi);border-left:8px solid var(--accent);border-radius:var(--k-r);font-feature-settings:"palt" 1;}
+article h3{border-bottom:var(--k-bw-s) solid var(--k-sumi);}
+.point{background:var(--k-surface);border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s);}
+.point .point-label,.toc b{font-family:var(--k-bold);font-weight:400;letter-spacing:.06em;}
+.toc{border-top:var(--k-bw-s) solid var(--k-sumi);border-bottom:var(--k-bw-s) solid var(--k-sumi);}
+table.data{border:var(--k-bw-s) solid var(--k-sumi);}
+table.data th{background:var(--k-kinari);}
+.toolcta{border-top:var(--k-bw-s) solid var(--k-sumi);border-bottom:var(--k-bw-s) solid var(--k-sumi);}
+/* 自分のツールへの導線は道しるべつきの札（同じ href・計測のまま） */
+.toolcta a{display:inline-flex;align-items:center;gap:10px;min-height:44px;border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s);font-family:var(--k-bold);font-weight:400;letter-spacing:.06em;text-shadow:var(--k-outline);font-feature-settings:"palt" 1;}
+.toolcta a::after{content:"";flex:none;width:26px;height:16px;background:var(--k-sign) center/100% 100% no-repeat;transition:transform .2s;}
+.toolcta a:hover{filter:none;}
+.toolcta a:hover::after{transform:translateX(4px);}
+.toolcta a:active{transform:translate(3px,3px);box-shadow:none;}
+.explain{border-bottom:var(--k-bw-s) solid rgba(31,26,23,.35);}
+/* あわせて読みたい: 右に道しるべ */
+.related a.rel-card{position:relative;padding-right:44px;border-bottom:var(--k-bw-s) solid rgba(31,26,23,.35);}
+.related a.rel-card::after{content:"";position:absolute;right:6px;top:50%;width:26px;height:16px;margin-top:-8px;background:var(--k-sign) center/100% 100% no-repeat;transition:transform .2s;}
+.related a.rel-card:hover::after{transform:translateX(4px);}
+.related a.rel-card b{color:var(--k-sumi);text-decoration:underline;text-decoration-color:var(--k-orange);text-decoration-thickness:2px;text-underline-offset:3px;}
+.related a.rel-card:hover b{color:var(--k-shu);}
+footer{border-top:var(--k-bw-s) solid var(--k-sumi);}
+/* アフィリエイトの枠は文字の詰めも元のまま（kit.css の .k-page p の字間を当てない） */
+.k-page .cta p,.k-page .prlink,.k-page .prlink a{letter-spacing:normal;}
 </style>
 </head>
-<body>
+<body class="k-page">
 
 <header class="site">
   <p class="brand-en en">SHIGOTO TRANSIT GUIDE</p>

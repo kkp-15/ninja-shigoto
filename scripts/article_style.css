@@ -109,3 +109,35 @@ table.kv td .src{display:block;font-size:12.5px;color:var(--ink-soft);margin-top
 table.data td.mark{text-align:center;white-space:nowrap;}
 footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
+/* ===== 2026-10-19 共通部品 D4（ストリート和忍者）に見た目をそろえる（トップ c97ef90 と同じ控えめな入れ方） =====
+   見出しを筆・墨のふち・道しるべ・和紙の地だけ。本文の書体（Noto Sans JP）・本文・数字・出典・
+   アフィリエイトの枠（.cta / .prlink / PR 表記 / 計測img）・広告の位置・GA4・JSON-LD・title は変えない。 */
+body.k-page{background:var(--k-surface) url(/kit/img/d4-washi.webp) 0 0/320px auto;color:var(--ink);font-family:'Noto Sans JP',sans-serif;font-size:16px;line-height:1.8;}
+header.site{background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border-bottom:var(--k-bw) solid var(--k-sumi);}
+header.site .site-name{font-family:var(--k-brush);font-weight:400;font-size:21px;letter-spacing:.12em;font-feature-settings:"palt" 1;}
+header.site .site-name a{color:var(--k-sumi);}
+article h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.06em;color:var(--k-sumi);font-feature-settings:"palt" 1;}
+article h2{font-family:var(--k-brush);font-weight:400;letter-spacing:.08em;color:var(--k-sumi);background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border:var(--k-bw-s) solid var(--k-sumi);border-left:8px solid var(--accent);border-radius:var(--k-r);font-feature-settings:"palt" 1;}
+article h3{border-bottom:var(--k-bw-s) solid var(--k-sumi);}
+.point{background:var(--k-surface);border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s);}
+.point .point-label,.toc b{font-family:var(--k-bold);font-weight:400;letter-spacing:.06em;}
+.toc{border-top:var(--k-bw-s) solid var(--k-sumi);border-bottom:var(--k-bw-s) solid var(--k-sumi);}
+table.data{border:var(--k-bw-s) solid var(--k-sumi);}
+table.data th{background:var(--k-kinari);}
+.toolcta{border-top:var(--k-bw-s) solid var(--k-sumi);border-bottom:var(--k-bw-s) solid var(--k-sumi);}
+/* 自分のツールへの導線は道しるべつきの札（同じ href・計測のまま） */
+.toolcta a{display:inline-flex;align-items:center;gap:10px;min-height:44px;border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s);font-family:var(--k-bold);font-weight:400;letter-spacing:.06em;text-shadow:var(--k-outline);font-feature-settings:"palt" 1;}
+.toolcta a::after{content:"";flex:none;width:26px;height:16px;background:var(--k-sign) center/100% 100% no-repeat;transition:transform .2s;}
+.toolcta a:hover{filter:none;}
+.toolcta a:hover::after{transform:translateX(4px);}
+.toolcta a:active{transform:translate(3px,3px);box-shadow:none;}
+.explain{border-bottom:var(--k-bw-s) solid rgba(31,26,23,.35);}
+/* あわせて読みたい: 右に道しるべ */
+.related a.rel-card{position:relative;padding-right:44px;border-bottom:var(--k-bw-s) solid rgba(31,26,23,.35);}
+.related a.rel-card::after{content:"";position:absolute;right:6px;top:50%;width:26px;height:16px;margin-top:-8px;background:var(--k-sign) center/100% 100% no-repeat;transition:transform .2s;}
+.related a.rel-card:hover::after{transform:translateX(4px);}
+.related a.rel-card b{color:var(--k-sumi);text-decoration:underline;text-decoration-color:var(--k-orange);text-decoration-thickness:2px;text-underline-offset:3px;}
+.related a.rel-card:hover b{color:var(--k-shu);}
+footer{border-top:var(--k-bw-s) solid var(--k-sumi);}
+/* アフィリエイトの枠は文字の詰めも元のまま（kit.css の .k-page p の字間を当てない） */
+.k-page .cta p,.k-page .prlink,.k-page .prlink a{letter-spacing:normal;}
