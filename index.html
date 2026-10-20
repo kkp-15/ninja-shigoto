@@ -399,6 +399,38 @@ h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.12em;color:var(--k
 .innerlink{border:var(--k-bw-s) solid var(--k-sumi);box-shadow:var(--k-sh-s);font-family:var(--k-bold);font-weight:400}
 .innerlink:active{transform:translate(3px,3px);box-shadow:none}
 footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
+/* ===== 2026-10-20 清潔感（kkp-kit 17eac63 の方針）: 色はオレンジ・クリーム＋墨・影は押せるものだけ・箱の中に箱を作らない =====
+   駅の3色（就職＝水色／転職＝珊瑚／退職＝緑）は駅のボタンと段の題にだけ残す。道具の札・結果・リンクの水色は墨に。
+   「残る」判定に広告・CTA を出さない作り・.cta（アフィリ枠）・広告・計算は不変。 */
+.tab-hint{animation:none;background:none;border:0;box-shadow:none;color:var(--k-sumi);text-shadow:none;padding:0 4px;margin-bottom:12px}
+.tab-hint-sub{font-size:12px;color:var(--k-text-2);font-family:var(--k-body);margin-top:2px}
+.station .st-sub{font-size:12px}
+.tool{box-shadow:none}
+.tool h3{display:block;background:none;color:var(--k-sumi);border:0;border-bottom:var(--k-bw-s) solid var(--k-sumi);border-radius:0;text-shadow:none;padding:0 0 6px;margin-bottom:10px}
+.step-btn{color:var(--k-sumi);background:#fff}
+.step-btn:active{background:var(--k-kinari);color:var(--k-sumi)}
+.chip{border-radius:4px}
+.chip:hover,.chip:focus-visible{border-color:var(--k-sumi);color:var(--k-sumi)}
+.chip.on{border-color:var(--k-shu);color:#fff;background:var(--k-shu)}
+.result{background:none;border:0;border-top:var(--k-bw-s) solid var(--k-sumi);border-radius:0;padding:16px 0 0}
+.result .big{color:var(--k-sumi)}
+.q .opts label:has(input:checked){border-color:var(--k-shu);box-shadow:inset 0 0 0 1px var(--k-shu)}
+.q .opts input:checked + span{color:var(--k-shu)}
+.tstep{border-left:2px solid var(--k-sumi)}
+.tstep::before{background:var(--k-sumi);left:-8px}
+.innerlink{color:var(--k-sumi);text-align:left}
+/* 折りたたみは k-fold の形（罫線・＋／−の四角）。箱をやめる */
+.explain{background:none;border:0;border-top:1px solid var(--k-line-soft);border-bottom:1px solid var(--k-line-soft);border-radius:0}
+.explain + .explain{border-top:0}
+.explain summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:8px 2px;color:var(--k-sumi)}
+.explain summary::before{content:none}
+.explain summary::after{content:"＋";flex:0 0 26px;display:grid;place-items:center;width:26px;height:26px;border:var(--k-bw-s) solid var(--k-sumi);border-radius:4px;font-size:.85rem}
+.explain[open] summary::after{content:"−"}
+.exp-body{padding:0 2px 14px}
+.faq .explain{background:none;margin-top:0}
+/* 見出しは k-h2 の形（帯なし・墨2pxの下線・左揃え） */
+.faq h2,.reading h2{display:block;background:none;color:var(--k-sumi);border:0;border-bottom:var(--k-bw-s) solid var(--k-sumi);border-radius:0;text-shadow:none;padding:0 0 6px;margin-bottom:12px}
+.article-card b{color:var(--k-sumi)}
 </style>
 <!-- kkp-rel-d4:start -->
 <style id="kkp-rel-d4">

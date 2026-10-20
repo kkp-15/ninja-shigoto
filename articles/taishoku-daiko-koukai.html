@@ -205,6 +205,13 @@ table.data th{background:var(--k-kinari);}
 footer{border-top:var(--k-bw-s) solid var(--k-sumi);}
 /* アフィリエイトの枠は文字の詰めも元のまま（kit.css の .k-page p の字間を当てない） */
 .k-page .cta p,.k-page .prlink,.k-page .prlink a{letter-spacing:normal;}
+/* ===== 2026-10-20 清潔感（kkp-kit 17eac63 の方針）: 英字の小見出しをやめる・見出しは k-h2 の形（帯・左線・枠なし、墨2pxの下線）・入れ物に影を付けない =====
+   本文・表・出典・アフィリエイトの枠（.cta / .prlink / PR 表記 / 計測img）・広告・ツールへの導線の色は変えない。 */
+header.site .brand-en{display:none;}
+article h2{background:none;border:0;border-bottom:var(--k-bw-s) solid var(--k-sumi);border-radius:0;padding:0 0 6px;}
+.point{box-shadow:none;}
+.point .point-label{color:var(--k-sumi);}
+.explain summary::before{color:var(--k-sumi);}
 </style>
 </head>
 <body class="k-page">
