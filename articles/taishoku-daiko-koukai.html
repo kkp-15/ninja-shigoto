@@ -66,8 +66,8 @@
 :root{
   --orange:#F08A3C;
   --orange-deep:#E06A20;
-  --cyan:#3EB8CE;
-  --coral:#F0615C;
+  --cyan:#2c99ad;
+  --coral:#e51c15;
   --green:#5BB97E;
   --green-deep:#1F6B3F;
   --cream:#FBEFDC;
@@ -85,15 +85,15 @@ html{scroll-behavior:smooth;}
 body{font-family:'Noto Sans JP',sans-serif;background:#fff;color:var(--ink);line-height:1.8;font-size:16px;}
 .en{font-family:'M PLUS Rounded 1c',sans-serif;letter-spacing:.12em;}
 header.site{background:#fff;border-bottom:1px solid var(--line);padding:16px 20px;text-align:center;}
-header.site .brand-en{font-size:10.5px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.3em;}
+header.site .brand-en{font-size:14px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.04em;}
 header.site .site-name{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:19px;letter-spacing:.06em;margin-top:2px;}
 header.site .site-name a{color:var(--orange-deep);text-decoration:none;}
-header.site .site-sub{font-size:12px;color:var(--ink-soft);}
+header.site .site-sub{font-size:14px;color:var(--ink-soft);}
 main{max-width:740px;margin:0 auto;padding:22px 18px 60px;}
-.breadcrumb{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px;}
+.breadcrumb{font-size:14px;color:var(--ink-soft);margin-bottom:14px;}
 .breadcrumb a{color:var(--ink-soft);}
 article h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(22px,4.6vw,29px);font-weight:800;line-height:1.5;letter-spacing:.02em;color:#222;margin-bottom:8px;}
-.article-meta{font-size:13px;color:var(--ink-soft);margin-bottom:20px;}
+.article-meta{font-size:14px;color:var(--ink-soft);margin-bottom:20px;}
 article a{color:var(--link);}
 /* 色付きの角丸箱は「先に結論」の1つだけ */
 .point{background:#FFFAF0;border:1px solid #E8D5B0;border-radius:8px;padding:14px 16px;margin:0 0 20px;}
@@ -109,7 +109,7 @@ article h3{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:
 article p{margin-bottom:16px;font-size:16px;}
 article ul,article ol{margin:0 0 16px 24px;font-size:16px;}
 article li{margin-bottom:6px;}
-.note{font-size:13.5px;color:var(--ink-soft);}
+.note{font-size:14px;color:var(--ink-soft);}
 .table-wrap{overflow-x:auto;margin:14px 0 18px;}
 table.data{width:100%;border-collapse:collapse;font-size:15px;background:#fff;border:1px solid var(--line);}
 table.data th{background:var(--band);font-size:15px;padding:9px 10px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--line);}
@@ -122,7 +122,7 @@ table.data th.grp{text-align:center;border-left:1px solid var(--line);}
 table.data[data-gen] td:first-child{position:sticky;left:0;background:#fff;z-index:1;white-space:nowrap;box-shadow:1px 0 0 var(--line);}
 table.data[data-gen] tr:first-child th:first-child{position:sticky;left:0;z-index:2;box-shadow:1px 0 0 var(--line);}
 @media (max-width:700px){
-  .table-wrap:has(table[data-gen])::before{content:"表は横に動かせます";display:block;font-size:13px;color:var(--ink-soft);margin-bottom:4px;}
+  .table-wrap:has(table[data-gen])::before{content:"表は横に動かせます";display:block;font-size:14px;color:var(--ink-soft);margin-bottom:4px;}
 }
 .example{border-left:3px solid #BBBBBB;padding:2px 0 2px 14px;margin:14px 0 18px;font-size:15px;}
 .example .ex-title{display:block;font-weight:700;color:#222;margin-bottom:4px;}
@@ -139,12 +139,12 @@ table.data[data-gen] tr:first-child th:first-child{position:sticky;left:0;z-inde
 .toolcta p{font-size:15px;margin-bottom:10px;}
 .toolcta a{display:inline-block;padding:10px 18px;border-radius:4px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:15.5px;}
 .toolcta a:hover{filter:brightness(1.12);}
-.toolcta .free{font-size:12.5px;color:var(--ink-soft);margin:8px 0 0;}
+.toolcta .free{font-size:14px;color:var(--ink-soft);margin:8px 0 0;}
 .cta{margin:24px 0;padding:16px;border-radius:4px;background:#fff;border:1px solid var(--orange);}
 .cta p{font-size:14.5px;margin-bottom:10px;}
 .cta a{display:block;text-align:center;padding:12px;border-radius:4px;background:var(--orange);color:#fff;text-decoration:none;font-weight:700;letter-spacing:.1em;font-size:15px;}
 .cta a:hover{background:var(--orange-deep);}
-.cta .cta-note{font-size:12px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
+.cta .cta-note{font-size:14px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
 .faqsec{margin-top:44px;}
 .explain{border-bottom:1px solid var(--line);}
 .explain summary{cursor:pointer;padding:12px 2px;font-size:16px;font-weight:700;color:#222;list-style:none;}
@@ -166,22 +166,22 @@ table.data[data-gen] tr:first-child th:first-child{position:sticky;left:0;z-inde
 /* サービスごとの一覧（転職エージェントの連絡まわり）: 見出し＋2列の表＋1行のPRリンク。箱にしない */
 table.kv th{width:30%;white-space:normal;vertical-align:top;border-top:1px solid var(--line);}
 table.kv td{vertical-align:top;}
-table.kv td .src{display:block;font-size:12.5px;color:var(--ink-soft);margin-top:2px;}
+table.kv td .src{display:block;font-size:14px;color:var(--ink-soft);margin-top:2px;}
 .prlink{margin:8px 0 26px;font-size:15px;}
 .prlink a{font-weight:700;}
 .prlink .pr{display:inline-block;font-size:11px;color:var(--ink-soft);border:1px solid #BBBBBB;border-radius:2px;padding:0 4px;margin-right:6px;line-height:1.6;vertical-align:1px;}
 table.data td.mark{text-align:center;white-space:nowrap;}
-footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:12.5px;color:var(--ink-soft);}
+footer{border-top:1px solid var(--line);padding:30px 20px 44px;text-align:center;font-size:14px;color:var(--ink-soft);}
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 /* ===== 2026-10-19 共通部品 D4（ストリート和忍者）に見た目をそろえる（トップ c97ef90 と同じ控えめな入れ方） =====
    見出しを筆・墨のふち・道しるべ・和紙の地だけ。本文の書体（Noto Sans JP）・本文・数字・出典・
    アフィリエイトの枠（.cta / .prlink / PR 表記 / 計測img）・広告の位置・GA4・JSON-LD・title は変えない。 */
 body.k-page{background:var(--k-surface) url(/kit/img/d4-washi.webp) 0 0/320px auto;color:var(--ink);font-family:'Noto Sans JP',sans-serif;font-size:16px;line-height:1.8;}
 header.site{background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border-bottom:var(--k-bw) solid var(--k-sumi);}
-header.site .site-name{font-family:var(--k-brush);font-weight:400;font-size:21px;letter-spacing:.12em;font-feature-settings:"palt" 1;}
+header.site .site-name{font-family:var(--k-brush);font-weight:400;font-size:21px;letter-spacing:.08em;font-feature-settings:"palt" 1;}
 header.site .site-name a{color:var(--k-sumi);}
-article h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.06em;color:var(--k-sumi);font-feature-settings:"palt" 1;}
-article h2{font-family:var(--k-brush);font-weight:400;letter-spacing:.08em;color:var(--k-sumi);background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border:var(--k-bw-s) solid var(--k-sumi);border-left:8px solid var(--accent);border-radius:var(--k-r);font-feature-settings:"palt" 1;}
+article h1{font-family:var(--k-head);font-weight:800;letter-spacing:.04em;color:var(--k-sumi);font-feature-settings:"palt" 1;}
+article h2{font-family:var(--k-head);font-weight:800;letter-spacing:.04em;color:var(--k-sumi);background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border:var(--k-bw-s) solid var(--k-sumi);border-left:8px solid var(--accent);border-radius:var(--k-r);font-feature-settings:"palt" 1;}
 article h3{border-bottom:var(--k-bw-s) solid var(--k-sumi);}
 .point{background:var(--k-surface);border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s);}
 .point .point-label,.toc b{font-family:var(--k-bold);font-weight:400;letter-spacing:.06em;}
@@ -212,6 +212,9 @@ article h2{background:none;border:0;border-bottom:var(--k-bw-s) solid var(--k-su
 .point{box-shadow:none;}
 .point .point-label{color:var(--k-sumi);}
 .explain summary::before{color:var(--k-sumi);}
+/* 読みやすさ 2026-10-21（字14px以上・明暗差4.5:1以上） */
+.cta a{color:var(--k-sumi)}
+/* /読みやすさ */
 </style>
 </head>
 <body class="k-page">
@@ -340,15 +343,15 @@ article h2{background:none;border:0;border-bottom:var(--k-bw-s) solid var(--k-su
 </footer>
 
 <!-- WEBNINJA_UNIFIED_FOOTER -->
-<footer style="text-align:center;padding:2rem 1rem 2.5rem;font-size:0.78rem;color:#94a3b8;line-height:2;border-top:1px solid #f0e6d2;margin-top:0;background:#fffcf7;">
-  <div style="font-weight:800;color:#8b6b3d;font-size:0.85rem;margin-bottom:0.4rem;">web忍者の砦</div>
+<footer style="text-align:center;padding:2rem 1rem 2.5rem;font-size:.875rem;color:#607490;line-height:2;border-top:1px solid #f0e6d2;margin-top:0;background:#fffcf7;">
+  <div style="font-weight:800;color:#8b6b3d;font-size:.875rem;margin-bottom:0.4rem;">web忍者の砦</div>
   <div>
     <a href="https://kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">本丸トップ</a>·
     <a href="https://privacypolicy.kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">プライバシーポリシー</a>·
     <a href="https://kkpwebninja.com/otoiawase" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">お問い合わせ</a>·
     <a href="https://x.com/kkp_webninja" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">@kkp_webninja</a>
   </div>
-  <div style="margin-top:0.5rem;color:#bfa97a;">© 2025-2026 web忍者の砦</div>
+  <div style="margin-top:0.5rem;color:#846e40;">© 2025-2026 web忍者の砦</div>
 </footer>
 
 </body>

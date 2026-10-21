@@ -94,13 +94,13 @@
 :root{
   --orange:#F08A3C;
   --orange-deep:#E06A20;
-  --cyan:#3EB8CE;
-  --coral:#F0615C;
-  --green:#5BB97E;
+  --cyan:#327d8b;
+  --coral:#cf3a33;
+  --green:#477e5b;
   --cream:#FBEFDC;
   --cream-deep:#F7E3C6;
   --ink:#4A3B28;
-  --ink-soft:#8A7560;
+  --ink-soft:#7b6856;
   --line:#EFD9B6;
   --ok:#4E7A4E;
 }
@@ -123,7 +123,7 @@ header{
   padding:36px 20px 0;
   text-align:center;
 }
-.brand-en{font-size:13px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.3em;}
+.brand-en{font-size:14px;color:var(--orange-deep);text-transform:uppercase;letter-spacing:.04em;}
 h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(26px,5vw,38px);font-weight:800;letter-spacing:.06em;margin:6px 0 4px;color:var(--orange-deep);}
 .lead{color:var(--ink-soft);font-size:14px;max-width:560px;margin:0 auto 22px;}
 
@@ -139,7 +139,7 @@ h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(26px,5vw,38px);fon
   content:"";position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);
   border:8px solid transparent;border-top:8px solid var(--orange);border-bottom:none;
 }
-.tab-hint-sub{display:block;font-size:10.5px;font-weight:500;opacity:.95;line-height:1.3;}
+.tab-hint-sub{display:block;font-size:14px;font-weight:500;opacity:.95;line-height:1.3;}
 @keyframes hintbob{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
 @media (prefers-reduced-motion: reduce){.tab-hint{animation:none;}}
 .route{
@@ -161,7 +161,7 @@ h1{font-family:'M PLUS Rounded 1c',sans-serif;font-size:clamp(26px,5vw,38px);fon
   display:block;font-family:'M PLUS Rounded 1c',sans-serif;
   font-weight:800;font-size:20px;letter-spacing:.08em;line-height:1.3;
 }
-.station .st-sub{display:block;font-size:10.5px;line-height:1.5;opacity:.9;}
+.station .st-sub{display:block;font-size:14px;line-height:1.5;opacity:.9;}
 .station:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb, var(--tab) 65%, #7a4a20);}
 .station.active{
   background:var(--tab);color:#fff;
@@ -191,7 +191,7 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
   border-bottom:3px dotted var(--line);padding-bottom:10px;
 }
 .stage-title h2{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:24px;letter-spacing:.1em;color:var(--accent);}
-.stage-title span{font-size:12px;color:var(--ink-soft);}
+.stage-title span{font-size:14px;color:var(--ink-soft);}
 .stage-intro{font-size:14px;color:var(--ink-soft);margin:14px 0 28px;}
 
 /* ===== tool card ===== */
@@ -205,18 +205,18 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
   font-size:16.5px;letter-spacing:.06em;margin-bottom:6px;
   background:var(--accent);color:#fff;border-radius:8px;padding:4px 16px 5px;
 }
-.tool .tool-note{font-size:13px;color:var(--ink-soft);margin-bottom:18px;}
+.tool .tool-note{font-size:14px;color:var(--ink-soft);margin-bottom:18px;}
 .field{margin-bottom:14px;}
-.field label{display:block;font-size:13.5px;font-weight:500;margin-bottom:4px;}
+.field label{display:block;font-size:14px;font-weight:500;margin-bottom:4px;}
 .field input[type=number],.field select{
   width:100%;padding:10px 12px;font-size:16px;
   font-family:inherit;color:var(--ink);
   border:1.5px solid var(--line);border-radius:8px;background:var(--cream);
 }
 .field input:focus,.field select:focus{outline:2px solid var(--orange);border-color:var(--orange);}
-.field .unit{font-size:12.5px;color:var(--ink-soft);margin-left:4px;}
+.field .unit{font-size:14px;color:var(--ink-soft);margin-left:4px;}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
-.chip{font-family:inherit;font-size:12.5px;color:var(--ink-soft);background:#fff;
+.chip{font-family:inherit;font-size:14px;color:var(--ink-soft);background:#fff;
   border:1.5px solid var(--line);border-radius:999px;padding:5px 13px;cursor:pointer;
   transition:border-color .12s,color .12s;}
 .chip:hover,.chip:focus,.chip.on{border-color:var(--accent);color:var(--accent);outline:none;}
@@ -251,7 +251,7 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 }
 .result .big small{font-size:15px;color:var(--ink);font-weight:500;}
 .result p{font-size:14px;margin-top:8px;}
-.result table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px;}
+.result table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;}
 .result th,.result td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left;}
 .result td.num{text-align:right;font-variant-numeric:tabular-nums;}
 .result .plus{color:var(--ok);font-weight:700;}
@@ -262,7 +262,7 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 .q p{font-size:14.5px;font-weight:500;margin-bottom:8px;}
 .q .opts{display:flex;gap:8px;flex-wrap:wrap;}
 .q .opts label{
-  flex:1;min-width:90px;text-align:center;font-size:13.5px;
+  flex:1;min-width:90px;text-align:center;font-size:14px;
   padding:9px 6px;border:1.5px solid var(--line);border-radius:8px;
   background:var(--cream);cursor:pointer;transition:all .15s;
 }
@@ -303,14 +303,14 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
   margin-top:18px;padding:16px;border-radius:14px;
   background:#fff;border:2px solid var(--orange);
 }
-.cta p{font-size:13.5px;margin-bottom:10px;}
+.cta p{font-size:14px;margin-bottom:10px;}
 .cta a{
   display:block;text-align:center;padding:12px;border-radius:8px;
   background:var(--orange);color:#fff;text-decoration:none;
   font-weight:700;letter-spacing:.1em;font-size:14.5px;
 }
 .cta a:hover{background:var(--orange-deep);}
-.cta .cta-note{font-size:11px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
+.cta .cta-note{font-size:14px;color:var(--ink-soft);margin:8px 0 0;text-align:center;}
 
 /* ===== 解説ブロック(検索ニーズ対応) ===== */
 .explain{margin-top:16px;border:1px solid var(--line);border-radius:10px;background:var(--cream);}
@@ -319,7 +319,7 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 .explain summary::before{content:"+ ";}
 .explain[open] summary::before{content:"− ";}
 .explain summary:focus-visible{outline:2px solid var(--orange);outline-offset:-2px;border-radius:10px;}
-.exp-body{padding:0 16px 16px;font-size:13.5px;}
+.exp-body{padding:0 16px 16px;font-size:14px;}
 .exp-body h4{font-size:14px;margin:12px 0 4px;}
 .exp-body p{margin-bottom:6px;}
 
@@ -331,16 +331,16 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 /* ===== 読みもの(記事一覧) ===== */
 .reading{margin-top:44px;}
 .reading h2{display:inline-block;font-family:'M PLUS Rounded 1c',sans-serif;font-weight:700;font-size:17px;letter-spacing:.08em;margin-bottom:6px;background:var(--green);color:#fff;border-radius:8px;padding:4px 16px 5px;}
-.reading .reading-lead{font-size:13px;color:var(--ink-soft);margin-bottom:12px;}
+.reading .reading-lead{font-size:14px;color:var(--ink-soft);margin-bottom:12px;}
 .article-card{display:block;background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:12px;text-decoration:none;color:var(--ink);box-shadow:0 3px 0 rgba(150,110,60,.08);transition:border-color .15s;}
 .article-card:hover{border-color:var(--green);}
 .article-card b{display:block;font-family:'M PLUS Rounded 1c',sans-serif;font-size:15px;color:var(--green);line-height:1.6;}
-.article-card span{font-size:12.5px;color:var(--ink-soft);line-height:1.7;}
+.article-card span{font-size:14px;color:var(--ink-soft);line-height:1.7;}
 
 /* ===== footer ===== */
 footer{
   border-top:1px solid var(--line);padding:30px 20px 44px;
-  text-align:center;font-size:12px;color:var(--ink-soft);
+  text-align:center;font-size:14px;color:var(--ink-soft);
 }
 footer .disclaimer{max-width:620px;margin:0 auto 14px;text-align:left;}
 
@@ -371,13 +371,13 @@ header { background: #fff; border-bottom: 1px solid #eadfcd; }
    アフィリエイトの枠（.cta）・広告・GA4・JSON-LD・title は変えない。本文の書体もこのサイトのまま。 */
 body.k-page{background:var(--k-surface) url(/kit/img/d4-washi.webp) 0 0/320px auto;color:var(--ink);font-family:'Noto Sans JP',sans-serif;line-height:1.85}
 header{background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto;border-bottom:var(--k-bw) solid var(--k-sumi)}
-h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.12em;color:var(--k-sumi);font-feature-settings:"palt" 1}
+h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.08em;color:var(--k-sumi);font-feature-settings:"palt" 1}
 .tab-hint{font-family:var(--k-bold);font-weight:400;border:var(--k-bw-s) solid var(--k-sumi);box-shadow:var(--k-sh-s);color:#fff;text-shadow:var(--k-outline)}
 .station{box-shadow:var(--k-sh-s)}
 .station.active{box-shadow:none}
 .station .st-ja{font-family:var(--k-bold);font-weight:400}
 .stage-title{border-bottom:var(--k-bw-s) solid var(--k-sumi)}
-.stage-title h2{font-family:var(--k-brush);font-weight:400;letter-spacing:.14em}
+.stage-title h2{font-family:var(--k-head);font-weight:800;letter-spacing:.04em}
 .tool{background:var(--k-surface);border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s)}
 .tool h3{font-family:var(--k-bold);font-weight:400;border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);text-shadow:var(--k-outline)}
 .field input[type=number],.field select{border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);background:#fff}
@@ -390,7 +390,7 @@ h1{font-family:var(--k-brush);font-weight:400;letter-spacing:.12em;color:var(--k
 .q .opts label{border:var(--k-bw-s) solid rgba(31,26,23,.4);background:#fff}
 .q .opts label:has(input:checked){border-color:var(--k-sumi);box-shadow:inset 0 0 0 2px var(--accent)}
 .explain{border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);background:var(--k-kinari)}
-.faq h2,.reading h2{font-family:var(--k-brush);font-weight:400;letter-spacing:.12em;border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);text-shadow:var(--k-outline)}
+.faq h2,.reading h2{font-family:var(--k-head);font-weight:800;letter-spacing:.04em;border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);text-shadow:var(--k-outline)}
 .article-card{background:var(--k-surface);border:var(--k-bw-s) solid var(--k-sumi);border-radius:var(--k-r);box-shadow:var(--k-sh-s);position:relative;padding-right:52px}
 .article-card::after{content:"";position:absolute;right:14px;top:50%;width:26px;height:16px;margin-top:-8px;background:var(--k-sign) center/100% 100% no-repeat;transition:transform .2s}
 .article-card:hover{border-color:var(--k-sumi)}
@@ -403,8 +403,8 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
    駅の3色（就職＝水色／転職＝珊瑚／退職＝緑）は駅のボタンと段の題にだけ残す。道具の札・結果・リンクの水色は墨に。
    「残る」判定に広告・CTA を出さない作り・.cta（アフィリ枠）・広告・計算は不変。 */
 .tab-hint{animation:none;background:none;border:0;box-shadow:none;color:var(--k-sumi);text-shadow:none;padding:0 4px;margin-bottom:12px}
-.tab-hint-sub{font-size:12px;color:var(--k-text-2);font-family:var(--k-body);margin-top:2px}
-.station .st-sub{font-size:12px}
+.tab-hint-sub{font-size:14px;color:var(--k-text-2);font-family:var(--k-body);margin-top:2px}
+.station .st-sub{font-size:14px}
 .tool{box-shadow:none}
 .tool h3{display:block;background:none;color:var(--k-sumi);border:0;border-bottom:var(--k-bw-s) solid var(--k-sumi);border-radius:0;text-shadow:none;padding:0 0 6px;margin-bottom:10px}
 .step-btn{color:var(--k-sumi);background:#fff}
@@ -424,7 +424,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 .explain + .explain{border-top:0}
 .explain summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;padding:8px 2px;color:var(--k-sumi)}
 .explain summary::before{content:none}
-.explain summary::after{content:"＋";flex:0 0 26px;display:grid;place-items:center;width:26px;height:26px;border:var(--k-bw-s) solid var(--k-sumi);border-radius:4px;font-size:.85rem}
+.explain summary::after{content:"＋";flex:0 0 26px;display:grid;place-items:center;width:26px;height:26px;border:var(--k-bw-s) solid var(--k-sumi);border-radius:4px;font-size:.875rem}
 .explain[open] summary::after{content:"−"}
 .exp-body{padding:0 2px 14px}
 .faq .explain{background:none;margin-top:0}
@@ -437,13 +437,17 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 /* あわせて使えるアプリ（統一仕様の欄）を D4 に: 和紙の面・筆の見出し・墨の字＋オレンジの下線＋道しるべ。入れ物なので影なし（kit: 影は押せるものだけ）。中身とリンクは触らない（インライン style に勝つため !important） */
 @media screen{
 .kkp-rel{box-sizing:border-box;background:var(--k-kinari) url(/kit/img/d4-washi.webp) 0 0/320px auto!important;border:var(--k-bw-s) solid var(--k-sumi)!important;border-radius:var(--k-r)!important;box-shadow:none!important;padding:12px 16px 6px!important;color:var(--k-sumi);text-align:left}
-.kkp-rel>div:first-child,.kkp-rel>b:first-child{display:block;margin:0 0 4px!important;padding:0!important;border:0!important;font-family:var(--k-brush)!important;font-weight:400!important;font-size:19px!important;line-height:1.3!important;letter-spacing:.12em;color:var(--k-sumi)!important;font-feature-settings:"palt" 1}
+.kkp-rel>div:first-child,.kkp-rel>b:first-child{display:block;margin:0 0 4px!important;padding:0!important;border:0!important;font-family:var(--k-head)!important;font-weight:800!important;font-size:19px!important;line-height:1.3!important;letter-spacing:.04em;color:var(--k-sumi)!important;font-feature-settings:"palt" 1}
 .kkp-rel>a{display:flex!important;align-items:center;gap:12px;box-sizing:border-box;min-height:48px;margin:0!important;padding:10px 0!important;border:0!important;border-top:1px dashed var(--k-line-soft)!important;background:none!important;color:var(--k-sumi)!important;font-size:15px!important;font-weight:700!important;line-height:1.55!important;letter-spacing:.02em;text-decoration:underline!important;text-decoration-color:var(--k-orange)!important;text-decoration-thickness:2px!important;text-underline-offset:4px;-webkit-tap-highlight-color:transparent}
 .kkp-rel>a::after{content:"";flex:none;width:26px;height:17px;margin-left:auto;background:var(--k-sign) center/100% 100% no-repeat;transition:transform .2s}
 .kkp-rel>a:hover{color:var(--k-shu)!important}
 .kkp-rel>a:hover::after,.kkp-rel>a:active::after,.kkp-rel>a:focus-visible::after{transform:translateX(4px)}
 }
 @media screen and (max-width:712px){.kkp-rel{max-width:calc(100vw - 24px)!important;margin-left:auto!important;margin-right:auto!important}}
+/* 読みやすさ 2026-10-21（字14px以上・明暗差4.5:1以上） */
+.cta a{color:var(--k-sumi)}
+.station .st-sub{opacity:1}
+/* /読みやすさ */
 </style>
 <!-- kkp-rel-d4:end -->
 </head>
@@ -965,8 +969,8 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 </div>
 
 <!-- WEBNINJA_UNIFIED_FOOTER -->
-<footer style="text-align:center;padding:2rem 1rem 2.5rem;font-size:0.78rem;color:#94a3b8;line-height:2;border-top:1px solid #f0e6d2;margin-top:0;background:#fffcf7;">
-  <div style="font-weight:800;color:#8b6b3d;font-size:0.85rem;margin-bottom:0.4rem;">web忍者の砦</div>
+<footer style="text-align:center;padding:2rem 1rem 2.5rem;font-size:.875rem;color:#607490;line-height:2;border-top:1px solid #f0e6d2;margin-top:0;background:#fffcf7;">
+  <div style="font-weight:800;color:#8b6b3d;font-size:.875rem;margin-bottom:0.4rem;">web忍者の砦</div>
   <div>
     <a href="https://kkpwebninja.com/" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">本丸トップ</a>·
     <a href="https://kkpwebninja.com/apps" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">全アプリ一覧</a>·
@@ -974,7 +978,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
     <a href="https://kkpwebninja.com/otoiawase" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">お問い合わせ</a>·
     <a href="https://x.com/kkp_webninja" target="_blank" rel="noopener" style="color:#8b6b3d;text-decoration:none;margin:0 0.5rem;">@kkp_webninja</a>
   </div>
-  <div style="margin-top:0.5rem;color:#bfa97a;">© 2025-2026 web忍者の砦</div>
+  <div style="margin-top:0.5rem;color:#846e40;">© 2025-2026 web忍者の砦</div>
 </footer>
 
 <script>
@@ -1157,7 +1161,7 @@ function calcHitori(){
     <p class="big">手取り 約 ${f1(net)}<small> 万円/月</small></p>
     <table>${rows}</table>
     <p>家賃の目安は約 ${f1(rent)} 万円まで。${verdict}</p>
-    <p style="margin-top:8px;font-size:12.5px;color:var(--ink-soft);">※ 配分はあくまで一例です。大事なのは項目の正確さより「先取り貯蓄を最初に確保する」順番のほうです。</p>`;
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft);">※ 配分はあくまで一例です。大事なのは項目の正確さより「先取り貯蓄を最初に確保する」順番のほうです。</p>`;
   box.classList.add("show");
 }
 
@@ -1214,7 +1218,7 @@ function calcQuiz(){
     body = "消耗のサインがはっきり出ています。ただし「今すぐ辞める」ではなく「在職中に転職活動を始める」が正解です。収入が途切れない状態で動くほうが、条件交渉でも精神面でも圧倒的に有利です。体調への影響が大きい場合は、まず休むことも選択肢に入れてください。";
   }
   box.innerHTML = `<p class="big" style="font-size:20px;">${title}</p><p>${body}</p>
-    <p style="margin-top:10px;font-size:12.5px;color:var(--ink-soft);">※ この診断は簡易的な目安です。重要な決断は、信頼できる人や専門家にも相談しながら進めてください。</p>${cta}`;
+    <p style="margin-top:10px;font-size:14px;color:var(--ink-soft);">※ この診断は簡易的な目安です。重要な決断は、信頼できる人や専門家にも相談しながら進めてください。</p>${cta}`;
   box.classList.add("show");
 }
 
@@ -1326,7 +1330,7 @@ function calcExitPlan(){
       ${paid>0 ? `<div class="tstep"><b>有給消化(${paid}日)</b>引き継ぎ後にまとめて消化します。退職時の有給は買い取り義務がないため、使い切るのが原則です。</div>` : ""}
       <div class="tstep"><b>退職日: ${fmtM(lastDay)}の末日</b>月の途中で辞めると、その月から国民年金・国民健康保険への切り替えで自己負担が増えるケースがあります。末日退職なら退職月まで会社の社会保険(会社と折半)が使えます。</div>
     </div>
-    <p style="margin-top:12px;font-size:12.5px;color:var(--ink-soft);">※ 就業規則で「退職は○ヶ月前までに申し出」と定められている場合はそちらが優先です。あくまで一般的な目安として使ってください。</p>`;
+    <p style="margin-top:12px;font-size:14px;color:var(--ink-soft);">※ 就業規則で「退職は○ヶ月前までに申し出」と定められている場合はそちらが優先です。あくまで一般的な目安として使ってください。</p>`;
   box.classList.add("show");
 }
 
