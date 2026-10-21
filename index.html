@@ -456,7 +456,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 <header>
   <p class="brand-en en">SHIGOTO TRANSIT GUIDE</p>
   <h1>しごとの乗りかえ案内</h1>
-  <p class="lead">就職・転職・退職。働きかたの分岐点で迷ったとき、感情ではなく数字で考えるための小さな道具箱です。</p>
+  <p class="lead">就職・転職・退職で迷ったら、数字で考えるための道具箱です。</p>
 
   <p class="tab-hint">いまのあなたは、どの段階?<span class="tab-hint-sub">タップで切り替わります</span></p>
   <nav class="route" aria-label="ステージ切り替え">
@@ -480,11 +480,11 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 <!-- ================= 乗る(就職) ================= -->
 <section class="stage show" id="stage-board">
   <div class="stage-title"><h2>就職</h2><span>求人票の額面に惑わされないために</span></div>
-  <p class="stage-intro">求人票の「月給」と、実際に口座に入る金額は別物です。まずは手取りの感覚をつかみましょう。</p>
+  <p class="stage-intro">求人票の月給と、口座に入る額は違います。まず手取りを知りましょう。</p>
 
   <div class="tool" id="tool-tedori">
     <h3>手取り計算機</h3>
-    <p class="tool-note">月収でも年収でも、社会保険料と税金を引いた手取りの概算を計算します(扶養なしの簡易計算)。</p>
+    <p class="tool-note">税金と社会保険料を引いた手取りの目安を出します(扶養なしで計算)。</p>
     <div class="field">
       <label for="b-mode">入力方法</label>
       <select id="b-mode" onchange="toggleTedoriMode()">
@@ -544,7 +544,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
   <div class="tool" id="tool-jikyu">
     <h3>求人票の実質時給チェッカー</h3>
-    <p class="tool-note">「月給25万円」の中身は会社によって全く違います。固定残業・年間休日・通勤時間まで含めた1時間あたりの実質的な稼ぎを計算して、求人を同じ物差しで比べます。</p>
+    <p class="tool-note">固定残業・休日・通勤時間まで入れた「本当の時給」で、求人を比べます。</p>
     <div class="field">
       <label for="j-gross">月給(額面・固定残業代込み)<span class="unit">万円</span></label>
       <div class="stepper">
@@ -614,7 +614,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
   <div class="tool" id="tool-hitori">
     <h3>ひとり暮らしやっていける?シミュレーター</h3>
-    <p class="tool-note">その手取りでひとり暮らしが成り立つか、家賃の目安と生活費の配分例を確認します。</p>
+    <p class="tool-note">その手取りでひとり暮らしできるか、家賃の目安と生活費の配分例を出します。</p>
     <div class="field">
       <label for="h-gross">額面月収<span class="unit">万円</span></label>
       <div class="stepper">
@@ -644,11 +644,11 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 <!-- ================= 乗りかえる(転職) ================= -->
 <section class="stage" id="stage-transfer">
   <div class="stage-title"><h2>転職</h2><span>動くか、残るか、まだ決めなくていい</span></div>
-  <p class="stage-intro">転職は「するか・しないか」の二択ではありません。今の位置を確かめてから、必要なら数字で比べる。その順番で考えます。</p>
+  <p class="stage-intro">まず今の状態を確かめ、必要なら数字で比べます。</p>
 
   <div class="tool" id="tool-quiz">
     <h3>辞めどき診断</h3>
-    <p class="tool-note">6つの質問に直感で答えてください。「残る」という結果もきちんと出ます。</p>
+    <p class="tool-note">6つの質問に直感で答えます。「残る」という結果も出ます。</p>
     <div id="quiz"></div>
     <div class="result" id="q-result"></div>
     <details class="explain">
@@ -667,7 +667,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
   <div class="tool" id="tool-compare">
     <h3>手取り比較シミュレーター</h3>
-    <p class="tool-note">現職(夜勤手当・交代手当込み)と転職先想定の手取りを並べて比較します。額面が下がっても手取り差は意外と小さいことがあります。</p>
+    <p class="tool-note">今の職場(夜勤・交代手当込み)と転職先の手取りを並べます。</p>
     <div class="field">
       <label for="t-base">現職:基本給(月)<span class="unit">万円</span></label>
       <div class="stepper">
@@ -723,11 +723,11 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 <!-- ================= 降りる(退職) ================= -->
 <section class="stage" id="stage-exit">
   <div class="stage-title"><h2>退職</h2><span>損しない辞め方には、順番がある</span></div>
-  <p class="stage-intro">退職は段取りで手元に残るお金が変わります。「いつ言うか・いつ辞めるか・辞めたあと何ヶ月もつか」を順に確認します。</p>
+  <p class="stage-intro">いつ言う・いつ辞める・何ヶ月もつかを、順に確かめます。</p>
 
   <div class="tool" id="tool-exitplan">
     <h3>退職日プランナー</h3>
-    <p class="tool-note">ボーナスと有給を取りこぼさない退職スケジュールの目安を組み立てます。</p>
+    <p class="tool-note">ボーナスと有給を取りこぼさない退職日の目安を出します。</p>
     <div class="field">
       <label for="e-bonus">次のボーナス支給月</label>
       <select id="e-bonus" onchange="calcExitPlan()">
@@ -778,7 +778,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
   <div class="tool" id="tool-taishokukin">
     <h3>退職金の手取り計算</h3>
-    <p class="tool-note">退職金にかかる税金(所得税・住民税)を引いた手取りの概算を出します。退職金は税制優遇が大きく、額面に近い金額が手元に残ります。</p>
+    <p class="tool-note">退職金から税金を引いた手取りの目安を出します。</p>
     <div class="field">
       <label for="rk-amount">退職金(額面)<span class="unit">万円</span></label>
       <div class="stepper">
@@ -823,7 +823,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
   <div class="tool" id="tool-unemploy">
     <h3>失業手当シミュレーター</h3>
-    <p class="tool-note">雇用保険の基本手当(失業手当)の日額・給付日数・総額の概算と、貯蓄と合わせて「何ヶ月もつか」を計算します。</p>
+    <p class="tool-note">失業手当の日額・日数・総額と、貯金と合わせて何ヶ月暮らせるかを出します。</p>
     <div class="field">
       <label for="u-age">年齢</label>
       <select id="u-age" onchange="calcUnemploy()">
@@ -915,7 +915,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 <!-- ================= 読みもの(記事) ================= -->
 <section class="reading" id="reading">
   <h2>読みもの</h2>
-  <p class="reading-lead">ツールとあわせてどうぞ。転職の準備と、損しない辞め方・もらい方の基礎知識です。</p>
+  <p class="reading-lead">転職の準備と、損しない辞め方・もらい方の記事です。</p>
   <a class="article-card" href="/articles/tenshoku-agent-renraku"><b>転職エージェントの電話が不安な人へ｜LINE連絡・電話の止め方・退会方法</b><span>11社の公式FAQを出典つきで比べました。LINEで連絡できると書いているのは7社</span></a>
   <a class="article-card" href="/articles/taishokukin-tedori"><b>退職金の手取りはいくら?税金の計算方法と早見表【2026年版】</b><span>勤続20年・1,000万円なら税金は約15万円。非課税枠(退職所得控除)のしくみと手取り早見表</span></a>
   <a class="article-card" href="/articles/shitsugyo-hoken-itsukara"><b>自己都合退職の失業保険はいつからもらえる?</b><span>待期7日+給付制限1ヶ月。申請から振込までのタイムラインと金額の目安</span></a>
@@ -1100,7 +1100,7 @@ function calcTedori(){
       <tr><th>所得税+住民税(年)</th><td class="num">− ${f1(r.tax)} 万円</td></tr>
       <tr><th>手取り(年)</th><td class="num"><b>${f1(r.net)} 万円</b></td></tr>
     </table>
-    <p>額面のおよそ ${Math.round(r.net/annual*100)}% が手元に残る計算です。求人を比べるときは、月給ではなくこの「手取り年収」で並べると判断を間違えにくくなります。</p>
+    <p>額面のおよそ ${Math.round(r.net/annual*100)}% が手元に残ります。求人は月給でなく手取りで比べましょう。</p>
     <button class="innerlink" onclick="goTool('board','tool-jikyu')">次は、固定残業・休日込みの「実質時給」も見てみる →</button>`;
   box.classList.add("show");
 }
@@ -1130,7 +1130,7 @@ function calcJikyu(){
       <tr><th>仕事に使う時間(残業・通勤込み)</th><td class="num">約 ${f0(workHoursM + commuteHoursM)} 時間/月</td></tr>
       <tr><th>手取り月収(概算)</th><td class="num">約 ${f1(net)} 万円</td></tr>
     </table>
-    <p>${zangyo>0 ? `固定残業${zangyo}時間込みの月給なので、表面の金額より時給は下がります。固定残業代は「その時間分の残業代が最初から月給に含まれている」仕組みで、残業ゼロでも金額は同じです。` : ""}複数の求人で迷ったら、この実質時給で並べると条件の良し悪しが一目で分かります。年間休日の10日差は、実質時給に換算すると意外と大きく効きます。</p>
+    <p>${zangyo>0 ? `固定残業${zangyo}時間込みなので、見た目より時給は下がります。` : ""}迷ったら、求人をこの実質時給で並べてみてください。</p>
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">いま働いている職場の数字だった方へ:辞めどき診断 →</button>`;
   box.classList.add("show");
 }
@@ -1154,14 +1154,14 @@ function calcHitori(){
   ];
   const rows = items.map(i=>`<tr><th>${i[0]}</th><td class="num">約 ${f1(i[1])} 万円</td></tr>`).join("");
   let verdict;
-  if(rent < 4) verdict = "家賃4万円未満の物件は地域によっては選択肢が限られます。実家からの通勤や寮・社宅つきの求人も含めて検討すると現実的です。";
-  else if(rent < 6) verdict = "地方都市なら十分やっていける水準です。家賃を目安より下に抑えられれば、その分がそのまま貯蓄と自由なお金になります。";
-  else verdict = "都市部でも無理なくひとり暮らしできる水準です。最初に固定費(家賃・通信)を低く決めてしまえば、あとはほぼ自動で家計が回ります。";
+  if(rent < 4) verdict = "家賃4万円未満の物件は、地域によって少なめです。実家通いや寮・社宅つきの求人も考えましょう。";
+  else if(rent < 6) verdict = "地方都市なら十分やっていけます。家賃を目安より下げた分は、そのまま貯金に回せます。";
+  else verdict = "都市部でも無理なく暮らせます。家賃と通信費を先に低く決めると、家計が回ります。";
   box.innerHTML = `
     <p class="big">手取り 約 ${f1(net)}<small> 万円/月</small></p>
     <table>${rows}</table>
     <p>家賃の目安は約 ${f1(rent)} 万円まで。${verdict}</p>
-    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft);">※ 配分はあくまで一例です。大事なのは項目の正確さより「先取り貯蓄を最初に確保する」順番のほうです。</p>`;
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft);">※ 配分は一例です。貯金を先に取り分けるのがコツです。</p>`;
   box.classList.add("show");
 }
 
@@ -1218,7 +1218,7 @@ function calcQuiz(){
     body = "消耗のサインがはっきり出ています。ただし「今すぐ辞める」ではなく「在職中に転職活動を始める」が正解です。収入が途切れない状態で動くほうが、条件交渉でも精神面でも圧倒的に有利です。体調への影響が大きい場合は、まず休むことも選択肢に入れてください。";
   }
   box.innerHTML = `<p class="big" style="font-size:20px;">${title}</p><p>${body}</p>
-    <p style="margin-top:10px;font-size:14px;color:var(--ink-soft);">※ この診断は簡易的な目安です。重要な決断は、信頼できる人や専門家にも相談しながら進めてください。</p>${cta}`;
+    <p style="margin-top:10px;font-size:14px;color:var(--ink-soft);">※ 簡単な目安です。大事な決断は、信頼できる人や専門家にも相談してください。</p>${cta}`;
   box.classList.add("show");
 }
 
@@ -1245,7 +1245,7 @@ function calcCompare(){
       <tr><th>手取り(年)</th><td class="num">${f1(rNow.net)} 万円</td><td class="num">${f1(rNew.net)} 万円</td></tr>
       <tr><th>手取り(月平均)</th><td class="num">${f1(rNow.net/12)} 万円</td><td class="num">${f1(rNew.net/12)} 万円</td></tr>
     </table>
-    <p>${shift>0 ? `夜勤・交代手当 ${f1(shift)} 万円が額面を押し上げていますが、税と社会保険を引いた手取りの差は額面の差より縮みます。` : ""}手取りの差額と引き換えに得るもの・失うもの(生活リズム、健康、時間)まで含めて比べるのがこのツールの目的です。</p>
+    <p>${shift>0 ? `夜勤・交代手当 ${f1(shift)} 万円の分、手取りの差は額面の差より小さくなります。` : ""}お金の差と一緒に、生活リズム・健康・時間も比べてください。</p>
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">数字は分かった、でも気持ちが決まらない方へ:辞めどき診断 →</button>`;
   box.classList.add("show");
 }
@@ -1288,7 +1288,7 @@ function calcTaishokukin(){
     </table>
     <p>${taxableMan<=0
       ? `勤続${years}年の退職所得控除(${f1(kojoMan)}万円)が退職金を上回るため、<b>税金はかからず額面がそのまま手取り</b>になります。`
-      : `退職金は税制優遇が大きく、額面の約${Math.round(netMan/amount*100)}%が手元に残ります。会社に「退職所得の受給に関する申告書」を出していれば、この優遇が自動で適用されます。`}</p>
+      : `額面の約${Math.round(netMan/amount*100)}%が手元に残ります。会社に「退職所得の受給に関する申告書」を出せば、この優遇が自動で付きます。`}</p>
     ${tanki ? `<p>勤続5年以下のため、控除を引いた残りのうち<b>300万円を超える部分は1/2になりません</b>(短期退職手当等)。会社役員・公務員などで勤続5年以下の場合は1/2課税そのものがなく、税額はこれより大きくなります。</p>` : ""}`;
   box.classList.add("show");
 }
@@ -1325,12 +1325,12 @@ function calcExitPlan(){
   box.innerHTML = `
     <p class="big" style="font-size:22px;">退職日の目安: ${fmtM(lastDay)}末日</p>
     <div class="timeline">
-      <div class="tstep"><b>退職を申し出る(${fmt(notice)})</b>${bonusNote}、直属の上司に伝えます。支給「後」に伝えるのは、査定でボーナスを減らされるリスクを避けるためです。</div>
-      <div class="tstep"><b>引き継ぎ(約${handoverWeeks/4 >= 1 ? Math.round(handoverWeeks/4)+"ヶ月" : handoverWeeks+"週間"})</b>引き継ぎ資料を文書で残すと、最後まで関係を悪くせずに済みます。</div>
-      ${paid>0 ? `<div class="tstep"><b>有給消化(${paid}日)</b>引き継ぎ後にまとめて消化します。退職時の有給は買い取り義務がないため、使い切るのが原則です。</div>` : ""}
-      <div class="tstep"><b>退職日: ${fmtM(lastDay)}の末日</b>月の途中で辞めると、その月から国民年金・国民健康保険への切り替えで自己負担が増えるケースがあります。末日退職なら退職月まで会社の社会保険(会社と折半)が使えます。</div>
+      <div class="tstep"><b>退職を申し出る(${fmt(notice)})</b>${bonusNote}、直属の上司に伝えます。</div>
+      <div class="tstep"><b>引き継ぎ(約${handoverWeeks/4 >= 1 ? Math.round(handoverWeeks/4)+"ヶ月" : handoverWeeks+"週間"})</b>引き継ぎ資料を文書で残すと、揉めずに済みます。</div>
+      ${paid>0 ? `<div class="tstep"><b>有給消化(${paid}日)</b>引き継ぎ後にまとめて使います。買い取りの義務はないので、使い切るのが基本です。</div>` : ""}
+      <div class="tstep"><b>退職日: ${fmtM(lastDay)}の末日</b>末日に辞めると、退職月まで会社の社会保険が使えます。月の途中だと自己負担が増えることがあります。</div>
     </div>
-    <p style="margin-top:12px;font-size:14px;color:var(--ink-soft);">※ 就業規則で「退職は○ヶ月前までに申し出」と定められている場合はそちらが優先です。あくまで一般的な目安として使ってください。</p>`;
+    <p style="margin-top:12px;font-size:14px;color:var(--ink-soft);">※ 就業規則に申し出の期限があれば、そちらが優先です。</p>`;
   box.classList.add("show");
 }
 
@@ -1347,7 +1347,7 @@ function calcUnemploy(){
 
   if(reason==="self" && years===0){
     box.innerHTML = `<p class="big" style="font-size:20px;">受給できない可能性が高いです</p>
-    <p>自己都合退職の場合、原則として退職前2年間に雇用保険の加入期間が通算12ヶ月以上必要です。加入1年未満の自己都合退職では基本手当を受け取れないのが一般的です。</p>`;
+    <p>自己都合の場合、原則として退職前2年間に雇用保険の加入が通算12ヶ月以上必要です。</p>`;
     box.classList.add("show"); return;
   }
 
@@ -1384,8 +1384,8 @@ function calcUnemploy(){
     runway = `<tr><th>貯蓄+手当で暮らせる期間</th><td class="num"><b>約 ${f1(months)} ヶ月</b></td></tr>`;
   }
   const restriction = reason==="self"
-    ? "自己都合退職は、待期7日のあと原則1ヶ月の給付制限があります(2025年4月から短縮)。実際にお金が入るまで2ヶ月程度かかる前提で資金計画を立ててください。"
-    : "会社都合退職は待期7日のみで給付制限がなく、比較的早く受給が始まります。";
+    ? "自己都合は、待期7日のあと原則1ヶ月の給付制限があります。お金が入るまで約2ヶ月と考えてください。"
+    : "会社都合は待期7日だけで、給付制限はありません。";
 
   box.innerHTML = `
     <p class="big">総額 およそ ${f0(total)}<small> 万円</small></p>
