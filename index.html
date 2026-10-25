@@ -1059,6 +1059,20 @@ function setVal(id, v){
   el.value = v;
   el.dispatchEvent(new Event("input", {bubbles:true}));
 }
+/* 2026-10-25 早押しボタンは、いまの値と同じものに色を付ける（入力欄・−／＋で変えたときも合わせる） */
+function syncChips(){
+  document.querySelectorAll('button.chip[onclick^="setVal("]').forEach(function(b){
+    const m = b.getAttribute('onclick').match(/setVal\('([^']+)',\s*([-\d.]+)\)/);
+    if (!m) return;
+    const el = document.getElementById(m[1]);
+    const on = !!el && el.value !== '' && Number(el.value) === Number(m[2]);
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+document.addEventListener('input', syncChips);
+document.addEventListener('change', syncChips);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncChips); else syncChips();
 /* ステッパー: −/＋ で値を増減して即・自動再計算 */
 function stepVal(id, delta){
   const el = document.getElementById(id);
