@@ -1366,14 +1366,16 @@ function calcUnemploy(){
     box.classList.add("show"); return;
   }
 
-  // 賃金日額と給付率(簡易)
-  const wage = salary*10000/30;
+  // 賃金日額と給付率（2026年8月1日からの額。厚生労働省「雇用保険の基本手当日額の変更」別添2・2026-11-01確認
+  //  https://www.mhlw.go.jp/stf/newpage_74837.html ）。60歳未満は80%→50%、60〜64歳は80%→45%（概算）
+  const wage = Math.max(salary*10000/30, 3203);           // 賃金日額の下限 3,203円
+  const lo = 5480, hi = age===64 ? 12120 : 13490, floor = age===64 ? 0.45 : 0.5;
   let rate;
-  if(wage <= 5200) rate = 0.8;
-  else if(wage <= 12790) rate = 0.5 + 0.3*(12790-wage)/(12790-5200);
-  else rate = 0.5;
+  if(wage <= lo) rate = 0.8;
+  else if(wage <= hi) rate = 0.8 - (0.8-floor)*(wage-lo)/(hi-lo);
+  else rate = floor;
   let daily = wage*rate;
-  const caps = {29:7255, 34:8055, 44:8055, 59:8870, 64:7623}; // 上限日額の目安
+  const caps = {29:7450, 34:8270, 44:8270, 59:9110, 64:7830}; // 基本手当日額の上限（年齢別）
   daily = Math.min(daily, caps[age]);
 
   // 給付日数
@@ -1411,6 +1413,7 @@ function calcUnemploy(){
       ${runway}
     </table>
     <p>${restriction}</p>
+    <p style="font-size:13px;color:var(--ink-soft);">※ 給付率と1日の上限は2026年8月1日からの額（<a href="https://www.mhlw.go.jp/stf/newpage_74837.html" target="_blank" rel="noopener">厚生労働省の発表</a>・2026年11月1日確認）。正確な額はハローワークで決まります。</p>
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">「辞める」とまだ決めきれていない方へ:辞めどき診断 →</button>`;
   box.classList.add("show");
 }
