@@ -958,7 +958,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 </main>
 
 <footer>
-  <p class="disclaimer">※ 計算と解説は2026年6月時点の制度・税率に基づいています。当サイトの計算結果はすべて簡易的な概算です。税金・社会保険料・雇用保険の給付額は個人の状況(扶養・控除・加入状況など)により変わります。正確な金額は、お住まいの自治体・ハローワーク・税理士等にご確認ください。当サイトにはプロモーションが含まれます。</p>
+  <p class="disclaimer">※ 計算と解説は2026年11月時点の制度・税率（所得税は令和8年分の基礎控除・給与所得控除）に基づいています。当サイトの計算結果はすべて簡易的な概算です。税金・社会保険料・雇用保険の給付額は個人の状況(扶養・控除・加入状況など)により変わります。正確な金額は、お住まいの自治体・ハローワーク・税理士等にご確認ください。当サイトにはプロモーションが含まれます。</p>
   <p class="en">SHIGOTO TRANSIT GUIDE &copy; 2026 KKP</p>
 </footer>
 
@@ -1029,15 +1029,17 @@ function goTool(stageKey, toolId){
 function netFromAnnual(annualMan){
   const annual = annualMan * 10000;
   const shaho = annual * 0.145;
-  // 給与所得控除(2025年改正反映の簡易版)
+  // 給与所得控除(令和8年分: 最低74万円。国税庁「源泉所得税の改正のあらまし」令和8年4月)
   let koujo;
-  if(annual <= 1900000) koujo = 650000;
-  else if(annual <= 3600000) koujo = annual*0.3 + 80000;
+  if(annual <= 3600000) koujo = Math.max(740000, annual*0.3 + 80000);
   else if(annual <= 6600000) koujo = annual*0.2 + 440000;
   else if(annual <= 8500000) koujo = annual*0.1 + 1100000;
   else koujo = 1950000;
-  // 所得税(基礎控除95万円の簡易版・復興税込み)
-  let taxable = Math.max(0, annual - koujo - shaho - 950000);
+  // 所得税(令和8年分の基礎控除: 合計所得489万円以下104万・655万円以下67万・2,350万円以下62万。復興税込み)
+  const gokei = annual - koujo;
+  const kiso = gokei <= 4890000 ? 1040000 : gokei <= 6550000 ? 670000 : gokei <= 23500000 ? 620000
+    : gokei <= 24000000 ? 480000 : gokei <= 24500000 ? 320000 : gokei <= 25000000 ? 160000 : 0;
+  let taxable = Math.max(0, annual - koujo - shaho - kiso);
   let shotoku;
   if(taxable <= 1950000) shotoku = taxable*0.05;
   else if(taxable <= 3300000) shotoku = taxable*0.10 - 97500;
