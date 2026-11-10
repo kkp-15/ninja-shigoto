@@ -467,15 +467,31 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 .bk-ku a{font-weight:800;color:var(--k-sumi)}
 </style>
 <!-- kkp-rel-d4:end -->
+
+<style id="trial-less-ai">
+/* 11/10 試し: AIっぽさを減らす（囲みを減らす・札を細く・ラベル整理） */
+.route{gap:0!important;border:var(--k-bw-s,2px) solid var(--k-sumi,#2b2118);border-radius:10px;overflow:hidden;max-width:420px;margin:0 auto}
+.route .station{flex:1;border:0!important;border-radius:0!important;box-shadow:none!important;padding:10px 4px!important;min-height:48px;background:var(--k-surface,#fff)!important;color:var(--k-sumi,#2b2118)!important}
+.route .station+.station{border-left:1px solid var(--k-sumi,#2b2118)!important}
+.route .station .st-ja{font-size:17px;color:inherit!important}
+.route .station .st-sub{display:none}
+.route .station.active{background:var(--k-sumi,#2b2118)!important;color:#fff!important}
+.route .station.active::after{display:none!important}
+.tool{border:0!important;box-shadow:none!important;background:none!important;border-radius:0!important;border-top:1px solid #d9cbb5!important;padding-left:0!important;padding-right:0!important}
+.tool h3{border:0!important;text-shadow:none!important;padding-left:0!important;background:none!important}
+.stage-title{margin-bottom:8px}
+.route{padding:0!important;height:auto!important;align-items:stretch}
+.route .station{margin:0!important;transform:none!important}
+.stage-title+.tool{border-top:0!important;padding-top:4px!important}
+</style>
 </head>
 <body class="k-page">
 
 <header>
   <p class="brand-en en">SHIGOTO TRANSIT GUIDE</p>
   <h1>しごとの乗りかえ案内</h1>
-  <p class="lead">就職・転職・退職で迷ったら、数字で考えるための道具箱です。</p>
 
-  <p class="tab-hint">いまのあなたは、どの段階?<span class="tab-hint-sub">タップで切り替わります</span></p>
+  <p class="tab-hint">いまのあなたは、どの段階?</p>
   <nav class="route" aria-label="ステージ切り替え">
     <button class="station active" data-stage="board" aria-pressed="true">
       <span class="st-ja">就職</span>
@@ -496,8 +512,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
 <!-- ================= 乗る(就職) ================= -->
 <section class="stage show" id="stage-board">
-  <div class="stage-title"><h2>就職</h2><span>求人票の額面に惑わされないために</span></div>
-  <p class="stage-intro">求人票の月給と、口座に入る額は違います。まず手取りを知りましょう。</p>
+  <div class="stage-title"><h2>就職</h2></div>
 
   <div class="tool" id="tool-tedori">
     <h3>手取り計算機</h3>
@@ -660,8 +675,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
 <!-- ================= 乗りかえる(転職) ================= -->
 <section class="stage" id="stage-transfer">
-  <div class="stage-title"><h2>転職</h2><span>動くか、残るか、まだ決めなくていい</span></div>
-  <p class="stage-intro">まず今の状態を確かめ、必要なら数字で比べます。</p>
+  <div class="stage-title"><h2>転職</h2></div>
 
   <div class="tool" id="tool-quiz">
     <h3>辞めどき診断</h3>
@@ -739,8 +753,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 
 <!-- ================= 降りる(退職) ================= -->
 <section class="stage" id="stage-exit">
-  <div class="stage-title"><h2>退職</h2><span>損しない辞め方には、順番がある</span></div>
-  <p class="stage-intro">いつ言う・いつ辞める・何ヶ月もつかを、順に確かめます。</p>
+  <div class="stage-title"><h2>退職</h2></div>
 
   <div class="tool" id="tool-exitplan">
     <h3>退職日プランナー</h3>
