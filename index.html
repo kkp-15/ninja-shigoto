@@ -483,6 +483,22 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 .route{padding:0!important;height:auto!important;align-items:stretch}
 .route .station{margin:0!important;transform:none!important}
 .stage-title+.tool{border-top:0!important;padding-top:4px!important}
+/* 2026-11-11 80-4 段のタブ: 生成りの地＋墨の枠、選んだ段はオレンジ（文字は墨） */
+.route{border-color:var(--k-sumi,#1f1a17)!important;background:var(--k-kinari,#fbf3e4)}
+.route .station{background:var(--k-kinari,#fbf3e4)!important;color:var(--k-sumi,#1f1a17)!important}
+.route .station.active{background:var(--k-orange,#ff8a3d)!important;color:var(--k-sumi,#1f1a17)!important;font-weight:700}
+.route .station:focus-visible{outline:3px solid var(--k-sumi,#1f1a17);outline-offset:-4px}
+/* 2026-11-11 109 求人2つを並べて比べる */
+.j-cmp{margin-top:10px}
+.j-cmp-btn{min-height:44px;padding:8px 14px;border:var(--k-bw-s,2px) solid var(--k-sumi,#1f1a17);border-radius:6px;background:#fff;color:var(--k-sumi,#1f1a17);font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.j-cmp-btn:active{background:var(--k-kinari,#fbf3e4)}
+.j-cmp-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:14px}
+.j-cmp-table th,.j-cmp-table td{border-bottom:1px solid #d9cbb5;padding:8px 4px;text-align:left;vertical-align:top;line-height:1.45}
+.j-cmp-table tr:first-child th{border-bottom:2px solid var(--k-sumi,#1f1a17);font-size:14px}
+.j-cmp-table td.num{text-align:right;font-weight:700}
+.j-cmp-table small{font-weight:400;color:var(--k-text-2,#4a3f37)}
+.j-cmp-cond,.j-cmp-note{font-size:14px;line-height:1.6;color:var(--k-text-2,#4a3f37);margin:8px 0 0}
+.j-cmp-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 </style>
 </head>
 <body class="k-page">
@@ -633,6 +649,10 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
       </div>
     </div>
     <div class="result" id="j-result"></div>
+    <div class="j-cmp" id="j-compare">
+      <button type="button" class="j-cmp-btn" id="j-cmp-keep" onclick="jikyuKeep()">もう1社と比べる</button>
+      <div id="j-cmp-body"></div>
+    </div>
     <details class="explain">
       <summary>固定残業代(みなし残業)とは|「月給25万」の罠</summary>
       <div class="exp-body">
@@ -1159,14 +1179,7 @@ function calcTedori(){
 }
 
 /* ========== 乗る: 実質時給チェッカー ========== */
-function calcJikyu(){
-  const gross = parseFloat(document.getElementById("j-gross").value);
-  const zangyo = parseFloat(document.getElementById("j-zangyo").value) || 0;
-  const holiday = parseInt(document.getElementById("j-holiday").value);
-  const commute = parseFloat(document.getElementById("j-commute").value) || 0;
-  const box = document.getElementById("j-result");
-  if(!gross || !holiday){ box.innerHTML="<p>月給と年間休日を入力してください。</p>"; box.classList.add("show"); return; }
-
+function jikyuOf(gross, holiday, zangyo, commute){
   const workDaysM = (365 - holiday)/12;            // 月の出勤日数
   const baseHoursM = workDaysM * 8;                // 所定労働時間/月
   const workHoursM = baseHoursM + zangyo;          // 残業込み
@@ -1174,6 +1187,18 @@ function calcJikyu(){
   const surface = gross*10000 / baseHoursM;        // 表面の時給
   const net = netFromAnnual(gross*12).net/12;      // 手取り月収(万円)
   const real = net*10000 / (workHoursM + commuteHoursM); // 実質時給
+  return {workDaysM, workHoursM, commuteHoursM, surface, net, real, yearHours:(workHoursM + commuteHoursM)*12};
+}
+function calcJikyu(){
+  const gross = parseFloat(document.getElementById("j-gross").value);
+  const zangyo = parseFloat(document.getElementById("j-zangyo").value) || 0;
+  const holiday = parseInt(document.getElementById("j-holiday").value);
+  const commute = parseFloat(document.getElementById("j-commute").value) || 0;
+  const box = document.getElementById("j-result");
+  if(!gross || !holiday){ box.innerHTML="<p>月給と年間休日を入力してください。</p>"; box.classList.add("show"); jikyuCompare(null); return; }
+
+  const r = jikyuOf(gross, holiday, zangyo, commute);
+  const {workDaysM, workHoursM, commuteHoursM, surface, net, real} = r;
 
   box.innerHTML = `
     <p class="big">実質時給 ${f0(real)}<small> 円</small></p>
@@ -1186,6 +1211,52 @@ function calcJikyu(){
     <p>${zangyo>0 ? `固定残業${zangyo}時間込みなので、見た目より時給は下がります。` : ""}迷ったら、求人をこの実質時給で並べてみてください。</p>
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">いま働いている職場の数字だった方へ:辞めどき診断 →</button>`;
   box.classList.add("show");
+  jikyuCompare({gross, holiday, zangyo, commute, r});
+}
+/* 2026-11-11 求人2つを並べて比べる（A社の数字はこの端末の localStorage にだけ残す・送信なし） */
+const JIKYU_A_KEY = "shigoto_jikyu_a";
+function jikyuGetA(){ try{ const v = JSON.parse(localStorage.getItem(JIKYU_A_KEY)||"null"); return (v && v.gross && v.holiday) ? v : null; }catch(e){ return window.__jikyuA || null; } }
+function jikyuKeep(){
+  const a = {
+    gross: parseFloat(document.getElementById("j-gross").value),
+    holiday: parseInt(document.getElementById("j-holiday").value),
+    zangyo: parseFloat(document.getElementById("j-zangyo").value) || 0,
+    commute: parseFloat(document.getElementById("j-commute").value) || 0
+  };
+  if(!a.gross || !a.holiday) return;
+  window.__jikyuA = a;
+  try{ localStorage.setItem(JIKYU_A_KEY, JSON.stringify(a)); }catch(e){}
+  calcJikyu();
+  document.getElementById("j-compare").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function jikyuClear(){
+  window.__jikyuA = null;
+  try{ localStorage.removeItem(JIKYU_A_KEY); }catch(e){}
+  calcJikyu();
+}
+function jikyuCompare(cur){
+  const body = document.getElementById("j-cmp-body"), btn = document.getElementById("j-cmp-keep");
+  if(!body) return;
+  const a = jikyuGetA() || window.__jikyuA || null;
+  if(!a){ body.innerHTML = ""; btn.textContent = "もう1社と比べる"; btn.hidden = false; return; }
+  btn.hidden = true;
+  if(!cur){ body.innerHTML = ""; return; }
+  const ra = jikyuOf(a.gross, a.holiday, a.zangyo, a.commute), rb = cur.r;
+  const cond = (x)=>`${x.gross}万・休${x.holiday}日・残業${x.zangyo}h・片道${x.commute}分`;
+  const diff = (b, aa, unit, dec)=>{ const d = b - aa; if(Math.abs(d) < (dec?0.05:0.5)) return "同じ"; return (d>0?"+":"−") + (dec? f1(Math.abs(d)) : f0(Math.abs(d))) + unit; };
+  body.innerHTML = `
+    <table class="j-cmp-table">
+      <tr><th></th><th>A社</th><th>B社(いま)</th></tr>
+      <tr><th>手取り月収</th><td class="num">約 ${f1(ra.net)} 万円</td><td class="num">約 ${f1(rb.net)} 万円<br><small>${diff(rb.net, ra.net, "万円", true)}</small></td></tr>
+      <tr><th>実質時給</th><td class="num">${f0(ra.real)} 円</td><td class="num">${f0(rb.real)} 円<br><small>${diff(rb.real, ra.real, "円", false)}</small></td></tr>
+      <tr><th>年間の拘束時間<br><small>(残業・通勤込み)</small></th><td class="num">約 ${f0(ra.yearHours)} 時間</td><td class="num">約 ${f0(rb.yearHours)} 時間<br><small>${diff(rb.yearHours, ra.yearHours, "時間", false)}</small></td></tr>
+    </table>
+    <p class="j-cmp-cond">A社: ${cond(a)}<br>B社: ${cond(cur)}</p>
+    <p class="j-cmp-note">上の欄を変えるとB社の列が変わります。A社の数字はこの端末にだけ残ります。</p>
+    <div class="j-cmp-acts">
+      <button type="button" class="j-cmp-btn" onclick="jikyuKeep()">B社をA社として残す</button>
+      <button type="button" class="j-cmp-btn" onclick="jikyuClear()">比べるのをやめる</button>
+    </div>`;
 }
 
 /* ========== 乗る: ひとり暮らしシミュレーター ========== */
