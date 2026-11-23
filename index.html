@@ -285,6 +285,8 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 .q-clear{min-height:44px;margin-left:6px;padding:6px 12px;border:1.5px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);font:inherit;font-size:13px;cursor:pointer;}
 .q-again{font-size:13px;color:var(--ink-soft);margin:0 0 6px;}
 
+/* 2026-11-23 答えの直後に次の道具へ1行(固定費の砦・年金計算) */
+.xlink{margin:8px 0 0;font-size:15px}
 /* ===== timeline (退職日プランナー) ===== */
 .timeline{margin-top:14px;}
 .tstep{
@@ -1419,6 +1421,7 @@ function calcQuiz(){
     cta = `<button class="innerlink" onclick="goTool('transfer','tool-compare')">転職したら手取りがどう変わるか比べる(手取り比較) →</button>`;
   } else if(key === "move"){
     cta = `<button class="innerlink" onclick="goTool('exit','tool-exitplan')">ボーナスと有給を取りこぼさない退職日を出す →</button>
+    <p class="xlink"><a class="k-link" href="https://nenkin-sim.kkpwebninja.com/" onclick="if(typeof gtag==='function')gtag('event','xlink_nenkin',{from:'shigoto'})">辞めたあとの年金の目安</a></p>
     <div class="cta" style="margin-top:14px;">
       <p>自分から切り出せない・引き止めが強くて辞めさせてもらえない、というときは、弁護士が運営する退職代行に任せる方法もあります。有給の消化や未払いの話も、弁護士なら会社と交渉できます。</p>
       <a href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3773481&amp;pid=892635584" rel="nofollow sponsored noopener" target="_blank" onclick="if(typeof gtag==='function')gtag('event','affiliate_click',{page:'index',from:'quiz_move',via:'${via}'})">弁護士運営の退職代行を見る<img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3773481&amp;pid=892635584" height="1" width="1" border="0" alt=""></a>
@@ -1634,6 +1637,7 @@ function calcUnemploy(){
       <tr><th>給付日数</th><td class="num">${days} 日</td></tr>
       ${runway}
     </table>
+    ${runway ? `<p class="xlink"><a class="k-link" href="https://kotei.kkpwebninja.com/" onclick="if(typeof gtag==='function')gtag('event','xlink_kotei',{from:'shigoto'})">毎月の固定費を見直す</a></p>` : ""}
     <p>${restriction}</p>
     <p style="font-size:13px;color:var(--ink-soft);">※ 給付率と1日の上限は2026年8月1日からの額（<a href="https://www.mhlw.go.jp/stf/newpage_74837.html" target="_blank" rel="noopener">厚生労働省の発表</a>・2026年11月1日確認）。正確な額はハローワークで決まります。</p>
     <button class="innerlink" onclick="goTool('transfer','tool-quiz')">「辞める」とまだ決めきれていない方へ:辞めどき診断 →</button>`;
