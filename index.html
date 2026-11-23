@@ -7,7 +7,7 @@
    撤去したのは tool-jikyu下/tool-compare下/calcQuiz内(JS)2箇所。
    再設置するときは、提携済みの案件を確認してから。A8に退職代行は無い(2026-09-01調査)。
    もしもに退職代行7件・転職エージェント57件あり(いずれも未申請)。
-   ※現在稼働中のアフィリはVC弁護士法人ZEN(退職代行)1本のみ。tool-unemploy下に設置済み
+   ※現在稼働中のアフィリはVC弁護士法人ZEN(退職代行)1本のみ。tool-unemploy下と、辞めどき診断の「動く」結果(2026-11-23)に設置
 2. AdSense: 下部1枠に集約・有効化済み(2026-06-16・KKP「広告は下部のみ」準拠)。本文中3枠は撤去。
    `</main>`直前の `.ad-slot` に既存ユニット「kkpwebninja」slot=2937937957 を設置済み(client=ca-pub-1298304917726270)。本番のみ表示
 3. [済 2026-06-12] OGP: ogp.png(1200x630)設置済み。canonical/og:url/og:image有効化済み(shigoto.kkpwebninja.com)
@@ -20,6 +20,14 @@
 - カテゴリ色: 就職=--cyan, 転職=--coral, 退職=--green(各stageの--accentで継承)
 - 診断「残る」判定にはCTAを出さない(三方良し方針・変更しないこと)
 - 計算はすべて概算。税率等の更新時はnetFromAnnual()とcalcUnemploy()を修正
+■ 受け取れるURL引数(2026-11-23)
+- #tool-<id>      その道具の段を開いてスクロール。id = tedori / jikyu / hitori / quiz / compare / exitplan / taishokukin / unemploy
+- ?stage=<段>     段のタブを開く。board(就職) / transfer(転職) / exit(退職)。#tool- があればそちらを優先
+- ?from=<記事slug> どこから来たか。辞めどき診断の上に記事に合わせた一行を出し(QUIZ_LEAD)、GA4 shigoto_quiz の from に入る
+                   一行あり: taishoku-daiko-koukai / taishoku-daiko-bengoshi / taishoku-kiridashikata / tenshoku-agent-renraku
+  例: /?from=taishoku-daiko-koukai#tool-quiz
+- 辞めどき診断の答えは localStorage「shigoto_quiz_v1」にだけ残す(送信なし)。#tool-quiz で来たら前回の結果へ送る。「答えを消す」で消える
+- GA4 shigoto_quiz {via: form|article|saved, from, result: stay|info|move}。「動く」の退職代行は affiliate_click {page:'index', from:'quiz_move', via}
 ═══════════════════════════════════════════════
 -->
 <html lang="ja">
@@ -29,7 +37,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#F08A3C">
 <title>手取り計算・実質時給・辞めどき診断・退職日・失業手当シミュレーター|しごとの乗りかえ案内</title>
-<meta name="description" content="月収から手取りを計算、固定残業込みの実質時給チェック、辞めどき診断、ボーナスと有給を取りこぼさない退職日プランナー、失業手当の総額シミュレーション。就職・転職・退職の判断に必要な数字が全部無料で分かるツール集。登録不要、入力データは保存されません。">
+<meta name="description" content="月収から手取りを計算、固定残業込みの実質時給チェック、辞めどき診断、ボーナスと有給を取りこぼさない退職日プランナー、失業手当の総額シミュレーション。就職・転職・退職の判断に必要な数字が全部無料で分かるツール集。登録不要、入力データは外に送信されません。">
 <meta property="og:title" content="しごとの乗りかえ案内|就職・転職・退職の無料計算ツール集">
 <meta property="og:description" content="手取り・実質時給・辞めどき・退職日・失業手当。働きかたの分岐点で迷ったとき、感情ではなく数字で考えるための道具箱。">
 <meta property="og:type" content="website">
@@ -271,6 +279,11 @@ main{max-width:780px;margin:0 auto;padding:34px 18px 60px;--accent:var(--orange)
 .q .opts input:checked + span{color:var(--accent);font-weight:700;}
 .q .opts label:has(input:checked){border-color:var(--accent);background:#fff;}
 .q .opts input:focus-visible + span{outline:2px solid var(--orange);outline-offset:6px;}
+/* 2026-11-23 記事から来た人への一行・答えを端末に残す案内と消すボタン */
+.q-lead{font-size:15px;font-weight:700;margin:0 0 12px;}
+.q-save{font-size:13px;color:var(--ink-soft);margin:10px 0 0;line-height:1.7;}
+.q-clear{min-height:44px;margin-left:6px;padding:6px 12px;border:1.5px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);font:inherit;font-size:13px;cursor:pointer;}
+.q-again{font-size:13px;color:var(--ink-soft);margin:0 0 6px;}
 
 /* ===== timeline (退職日プランナー) ===== */
 .timeline{margin-top:14px;}
@@ -700,8 +713,10 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
   <div class="tool" id="tool-quiz">
     <h3>辞めどき診断</h3>
     <p class="tool-note">6つの質問に直感で答えます。「残る」という結果も出ます。</p>
+    <p class="q-lead" id="q-lead" hidden></p>
     <div id="quiz"></div>
     <div class="result" id="q-result"></div>
+    <p class="q-save" id="q-save" hidden>答えはこの端末の中にだけ残ります(送信しません)。<button type="button" class="q-clear" onclick="quizClear()">答えを消す</button></p>
     <details class="explain">
       <summary>「仕事を辞めたい」は甘え?|考え方の整理</summary>
       <div class="exp-body">
@@ -1052,6 +1067,10 @@ document.querySelectorAll(".station").forEach(btn=>{
   });
 });
 
+/* ========== URL引数(一覧は冒頭のコメント) ========== */
+const QP = new URLSearchParams(location.search);
+const FROM = (QP.get('from')||'').toLowerCase().replace(/[^a-z0-9-]/g,'').slice(0,40);
+
 /* ========== ハッシュ深リンク(記事→ツールの導線。#tool-xxx で該当タブを開いてスクロール) ========== */
 function jumpToHash(){
   const id = location.hash.replace('#','');
@@ -1068,6 +1087,11 @@ function jumpToHash(){
 }
 window.addEventListener('hashchange', jumpToHash);
 jumpToHash();
+/* ?stage=board|transfer|exit で段を開く(#tool-xxx があればそちらが優先) */
+if(!location.hash && stages[QP.get('stage')]){
+  const sb = document.querySelector('.station[data-stage="'+QP.get('stage')+'"]');
+  if(sb) sb.click();
+}
 
 /* ========== 内部リンク: ステージ切替+移動 ========== */
 function goTool(stageKey, toolId){
@@ -1306,19 +1330,64 @@ const reversed = [false,false,false,false,true,true];
     div.className = "q";
     div.innerHTML = `<p>Q${i+1}. ${q}</p>
       <div class="opts">
-        <label><input type="radio" name="q${i}" value="2" onchange="quizAuto()"><span>あてはまる</span></label>
-        <label><input type="radio" name="q${i}" value="1" onchange="quizAuto()"><span>どちらとも</span></label>
-        <label><input type="radio" name="q${i}" value="0" onchange="quizAuto()"><span>あてはまらない</span></label>
+        <label><input type="radio" name="q${i}" value="2" onchange="quizAuto(${i})"><span>あてはまる</span></label>
+        <label><input type="radio" name="q${i}" value="1" onchange="quizAuto(${i})"><span>どちらとも</span></label>
+        <label><input type="radio" name="q${i}" value="0" onchange="quizAuto(${i})"><span>あてはまらない</span></label>
       </div>`;
     wrap.appendChild(div);
   });
 })();
-/* 6問すべて回答されたら自動で診断を表示する */
-function quizAuto(){
-  for(let i=0;i<questions.length;i++){
-    if(!document.querySelector(`input[name="q${i}"]:checked`)) return;
+/* 2026-11-23 答えまでを短く: 答えると次の問いへ送る／6問そろったら結果へ送る／
+   答えはこの端末(localStorage)にだけ残し、次に来たときは結果から見せる。「答えを消す」で消える。送信はしない */
+const QUIZ_KEY = "shigoto_quiz_v1";
+/* 記事から来た人に、その記事に合わせた一行を出す(?from=記事のslug) */
+const QUIZ_LEAD = {
+  "taishoku-daiko-koukai":"退職代行を頼む前に、辞めるかどうかを6問で確かめます。",
+  "taishoku-daiko-bengoshi":"退職代行を選ぶ前に、辞めるかどうかを6問で確かめます。",
+  "taishoku-kiridashikata":"切り出す前に、辞めたい理由を6問で整理します。",
+  "tenshoku-agent-renraku":"エージェントに登録する前に、いまの気持ちを6問で確かめます。"
+};
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function quizScroll(el, off){
+  window.scrollTo({top: el.getBoundingClientRect().top + window.scrollY - off, behavior: reduceMotion ? 'auto' : 'smooth'});
+}
+function quizAnswers(){
+  return questions.map((q,i)=>{ const c = document.querySelector(`input[name="q${i}"]:checked`); return c ? +c.value : null; });
+}
+function quizSaveNote(on){ document.getElementById("q-save").hidden = !on; }
+function quizSave(){
+  try{ localStorage.setItem(QUIZ_KEY, JSON.stringify(quizAnswers())); }catch(e){}
+  quizSaveNote(true);
+}
+function quizLoad(){
+  try{
+    const a = JSON.parse(localStorage.getItem(QUIZ_KEY)||"null");
+    return (Array.isArray(a) && a.length===questions.length) ? a : null;
+  }catch(e){ return null; }
+}
+function quizClear(){
+  try{ localStorage.removeItem(QUIZ_KEY); }catch(e){}
+  document.querySelectorAll('#quiz input[type="radio"]').forEach(r=>{ r.checked = false; });
+  const box = document.getElementById("q-result");
+  box.innerHTML = ""; box.classList.remove("show");
+  quizSaveNote(false);
+  window.__quizVia = "form";
+  quizScroll(document.getElementById("tool-quiz"), 12);
+}
+/* 答えるたびに呼ぶ。i = 答えた問いの番号 */
+function quizAuto(i){
+  quizSave();
+  const ans = quizAnswers();
+  let next = -1;
+  for(let k=1;k<=questions.length;k++){ const j=(i+k)%questions.length; if(ans[j]===null){ next=j; break; } }
+  if(next >= 0){
+    const nq = document.querySelectorAll("#quiz .q")[next];
+    if(nq && nq.getBoundingClientRect().bottom > window.innerHeight - 16) quizScroll(nq, 96);
+    return;
   }
   calcQuiz();
+  const box = document.getElementById("q-result");
+  if(box.getBoundingClientRect().top > window.innerHeight * 0.4) quizScroll(box, 12);
 }
 function calcQuiz(){
   const box = document.getElementById("q-result");
@@ -1330,21 +1399,65 @@ function calcQuiz(){
     if(reversed[i]) v = 2 - v;
     score += v;
   }
-  let title, body, cta = "";
+  let title, body, cta = "", key;
+  const via = window.__quizVia || (FROM ? "article" : "form");
   if(score <= 4){
+    key = "stay";
     title = "いまは「残って土台を固める」時期";
     body = "現状への深刻な消耗は見られません。今の職場で経験とスキルを積み上げるほうが、将来の選択肢はむしろ広がります。年に一度、同じ診断をして変化を確かめる程度で十分です。";
   } else if(score <= 8){
+    key = "info";
     title = "いまは「情報収集を始める」時期";
     body = "辞めるほどではないけれど、引っかかりが積もり始めています。この段階でやるべきは退職ではなく、自分の市場価値と求人相場を知ること。下の手取り比較シミュレーターで、転職した場合の数字を一度見ておくと、感情と事実を切り分けられます。";
   } else {
+    key = "move";
     title = "いまは「具体的に動く」時期";
     body = "消耗のサインがはっきり出ています。ただし「今すぐ辞める」ではなく「在職中に転職活動を始める」が正解です。収入が途切れない状態で動くほうが、条件交渉でも精神面でも圧倒的に有利です。体調への影響が大きい場合は、まず休むことも選択肢に入れてください。";
   }
-  box.innerHTML = `<p class="big" style="font-size:20px;">${title}</p><p>${body}</p>
+  /* 「残る」には案件を出さない(設計の核)。情報収集→比べる道具へ。動く→辞める日の目安→最後に退職代行を1つだけ */
+  if(key === "info"){
+    cta = `<button class="innerlink" onclick="goTool('transfer','tool-compare')">転職したら手取りがどう変わるか比べる(手取り比較) →</button>`;
+  } else if(key === "move"){
+    cta = `<button class="innerlink" onclick="goTool('exit','tool-exitplan')">ボーナスと有給を取りこぼさない退職日を出す →</button>
+    <div class="cta" style="margin-top:14px;">
+      <p>自分から切り出せない・引き止めが強くて辞めさせてもらえない、というときは、弁護士が運営する退職代行に任せる方法もあります。有給の消化や未払いの話も、弁護士なら会社と交渉できます。</p>
+      <a href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3773481&amp;pid=892635584" rel="nofollow sponsored noopener" target="_blank" onclick="if(typeof gtag==='function')gtag('event','affiliate_click',{page:'index',from:'quiz_move',via:'${via}'})">弁護士運営の退職代行を見る<img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3773481&amp;pid=892635584" height="1" width="1" border="0" alt=""></a>
+      <p class="cta-note">PR・弁護士法人ZENの退職代行(外部サイト)に移動します</p>
+    </div>`;
+  }
+  const again = via === "saved" ? `<p class="q-again">前回の答えから表示しています。答えを変えると結果も変わります。</p>` : "";
+  box.innerHTML = `${again}<p class="big" style="font-size:20px;">${title}</p><p>${body}</p>
     <p style="margin-top:10px;font-size:14px;color:var(--ink-soft);">※ 簡単な目安です。大事な決断は、信頼できる人や専門家にも相談してください。</p>${cta}`;
   box.classList.add("show");
+  /* GA4: 同じページで同じ結果は1回だけ。via = form(その場で答えた)/article(記事から来て答えた)/saved(前回の答えから表示) */
+  const sig = via + ":" + key;
+  if(window.__quizSent !== sig){
+    window.__quizSent = sig;
+    if(typeof gtag==='function') gtag('event','shigoto_quiz',{via:via, from:FROM||'(none)', result:key});
+  }
+  if(via === "saved") window.__quizVia = "form";
 }
+/* 記事から来た人への一行・前回の答えの復元(診断の場所へ来たときだけ結果へ送る) */
+(function quizInit(){
+  const lead = QUIZ_LEAD[FROM];
+  if(lead){ const el = document.getElementById("q-lead"); el.textContent = lead; el.hidden = false; }
+  const saved = quizLoad();
+  if(!saved) return;
+  saved.forEach((v,i)=>{ const r = document.querySelector(`input[name="q${i}"][value="${v}"]`); if(r) r.checked = true; });
+  quizSaveNote(true);
+  if(saved.some(v=>v===null)) return;
+  const landing = location.hash === "#tool-quiz";
+  window.__quizVia = "saved";
+  if(landing){
+    calcQuiz();
+    /* ブラウザ自身の #tool-quiz への移動や読み込み中のずれのあとで、結果へ送る */
+    const go = ()=>setTimeout(()=>quizScroll(document.getElementById("q-result"), 12), 300);
+    if(document.readyState === "complete") go(); else window.addEventListener("load", go);
+  } else {
+    /* 診断を開いていない人には計測を送らずに結果だけ用意しておく */
+    const g = window.gtag; window.gtag = undefined; try{ calcQuiz(); } finally { window.gtag = g; }
+  }
+})();
 
 /* ========== 乗りかえる: 手取り比較 ========== */
 function calcCompare(){
