@@ -1066,7 +1066,7 @@ footer{border-top:var(--k-bw-s) solid var(--k-sumi)}
 <!-- WEBNINJA_RELATED_APPS -->
 <div class="kkp-rel" style="text-align:left;max-width:680px;margin:2rem auto 0;padding:1rem 1.2rem;background:#fffcf7;border:1px solid #f0e6d2;border-radius:12px;font-family:inherit;">
   <div style="font-weight:800;color:#8b6b3d;font-size:0.9rem;margin-bottom:0.3rem;">あわせて使えるアプリ</div>
-  <div class="k-map"><div class="k-map-core"><span>仕事とお金の見直し</span></div><div class="k-map-b"><div class="k-map-br"><p class="k-map-h">税金</p><a class="k-link" href="https://kkpwebninja.com/furusato/">ふるさと納税の上限額</a><a class="k-link" href="https://kkpwebninja.com/money/">お金の道具の一覧</a></div><div class="k-map-br"><p class="k-map-h">毎月の出費</p><a class="k-link" href="https://kotei.kkpwebninja.com/">固定費の砦</a><a class="k-link" href="https://3warizan.kkpwebninja.com/">お金持ちの3つの割り算</a></div><div class="k-map-br"><p class="k-map-h">これからのお金</p><a class="k-link" href="https://nenkin-sim.kkpwebninja.com/">年金計算サイト</a><a class="k-link" href="https://car.kkpwebninja.com/">車の維持費シミュレーション</a></div><div class="k-map-br"><p class="k-map-h">副業の記録</p><a class="k-link" href="https://merukanri.kkpwebninja.com/">せどり管理</a></div></div></div>
+  <div class="k-map"><div class="k-map-core"><span>仕事とお金の見直し</span></div><div class="k-map-b"><div class="k-map-br"><p class="k-map-h">税金</p><a class="k-link" href="https://kkpwebninja.com/furusato/">ふるさと納税の上限額</a><a class="k-link" href="https://kkpwebninja.com/money/">お金の道具の一覧</a></div><div class="k-map-br"><p class="k-map-h">毎月の出費</p><a class="k-link" href="https://kotei.kkpwebninja.com/">固定費の砦</a><a class="k-link" href="https://3warizan.kkpwebninja.com/">お金持ちの3つの割り算</a><a class="k-link" href="https://kkpwebninja.com/blog/tsushin/ahamo-ryokin">スマホ代 ahamo の新料金で月いくら？</a></div><div class="k-map-br"><p class="k-map-h">これからのお金</p><a class="k-link" href="https://nenkin-sim.kkpwebninja.com/">年金計算サイト</a><a class="k-link" href="https://kkpwebninja.com/hoken-tsumitate/">保険と積立をくらべる</a><a class="k-link" href="https://car.kkpwebninja.com/">車コスト比較</a></div><div class="k-map-br"><p class="k-map-h">副業の記録</p><a class="k-link" href="https://merukanri.kkpwebninja.com/">せどり管理</a><a class="k-link" href="https://kkpwebninja.com/haitou/">配当金の管理ノート</a></div><div class="k-map-br"><p class="k-map-h">読みもの</p><a class="k-link" href="https://kkpwebninja.com/blog/book/okane-no-daigaku-5nen">『お金の大学』を5年実践した感想</a></div></div></div>
 </div>
 
 <!-- WEBNINJA_UNIFIED_FOOTER -->
@@ -1227,7 +1227,8 @@ function calcTedori(){
       <tr><th>手取り(年)</th><td class="num"><b>${f1(r.net)} 万円</b></td></tr>
     </table>
     <p>額面のおよそ ${Math.round(r.net/annual*100)}% が手元に残ります。求人は月給でなく手取りで比べましょう。</p>
-    <button class="innerlink" onclick="goTool('board','tool-jikyu')">次は、固定残業・休日込みの「実質時給」も見てみる →</button>`;
+    <button class="innerlink" onclick="goTool('board','tool-jikyu')">次は、固定残業・休日込みの「実質時給」も見てみる →</button>
+    <p class="xlink"><a class="k-link" href="https://kkpwebninja.com/furusato/" onclick="if(typeof gtag==='function')gtag('event','xlink_furusato',{from:'shigoto'})">この年収のふるさと納税の上限額</a> <a class="k-link" href="https://kotei.kkpwebninja.com/" onclick="if(typeof gtag==='function')gtag('event','xlink_kotei',{from:'shigoto_tedori'})">手取りから出ていく固定費を見直す</a></p>`;
   box.classList.add("show");
 }
 
@@ -1338,7 +1339,8 @@ function calcHitori(){
     <p class="big">手取り 約 ${f1(net)}<small> 万円/月</small></p>
     <table>${rows}</table>
     <p>家賃の目安は約 ${f1(rent)} 万円まで。${verdict}</p>
-    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft);">※ 配分は一例です。貯金を先に取り分けるのがコツです。</p>`;
+    <p style="margin-top:8px;font-size:14px;color:var(--ink-soft);">※ 配分は一例です。貯金を先に取り分けるのがコツです。</p>
+    <p class="xlink"><a class="k-link" href="https://kotei.kkpwebninja.com/" onclick="if(typeof gtag==='function')gtag('event','xlink_kotei',{from:'shigoto_hitori'})">家賃のほかの固定費も一覧で見直す</a> <a class="k-link" href="https://kkpwebninja.com/blog/tsushin/ahamo-ryokin" onclick="if(typeof gtag==='function')gtag('event','xlink_ahamo',{from:'shigoto_hitori'})">スマホ代は月いくら？（ahamo の新料金）</a></p>`;
   box.classList.add("show");
 }
 
